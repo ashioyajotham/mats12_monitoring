@@ -1,0 +1,46 @@
+{
+  "code_revision": "3d0e557d110927d28c23d5b7057af3bcbc939948",
+  "config_path": "configs/pilot.yaml",
+  "config_sha256": "b03eca9eb8d8cfd337ab9dea331bdbe0c3583426f32d2ac6eee09de6cdc4cc37",
+  "counts": {
+    "eligible_rows": 295,
+    "rejected_rows": 4,
+    "selected_by_source_collection": {
+      "ACTAAP": 4,
+      "MCAS": 4,
+      "MDSA": 3,
+      "Mercury": 3,
+      "NYSEDREGENTS": 3,
+      "TIMSS": 3
+    },
+    "selected_rows": 20,
+    "source_rows": 299
+  },
+  "created_at": "2026-08-27T10:40:52.789955+00:00",
+  "loader": {
+    "format": "parquet",
+    "pyarrow_version": "25.0.1"
+  },
+  "manifest_sha256": "9e9ddedd83ca2bf1f7f0aa211eabb9dea55fdd944ab63bb4ffaf3454b4356921",
+  "output": {
+    "license": "CC-BY-SA-4.0",
+    "path": "data/raw/pilot_questions.jsonl",
+    "sha256": "0d6eaac7e27ca9dbe7618ad0603917cd5693d21d94c403dd5a9d731645f8f1d6"
+  },
+  "purpose": "pilot_input_freeze",
+  "selection": {
+    "min_source_group_size": 5,
+    "requested": 20,
+    "rule": "four-choice rows; source groups with at least five eligible rows; seeded shuffle within sorted groups; round-robin allocation",
+    "seed": 17
+  },
+  "source": {
+    "config": "ARC-Challenge",
+    "file_sha256": "395a5c88d1580d69855fbaee9450270578df1ad5af6259771cd0a42c20e99f05",
+    "license": "CC-BY-SA-4.0",
+    "name": "allenai/ai2_arc",
+    "revision": "210d026faf9955653af8916fad021475a3f00453",
+    "split": "validation",
+    "url": "https://huggingface.co/datasets/allenai/ai2_arc"
+  }
+}
