@@ -6,6 +6,7 @@ import hashlib
 import json
 import random
 import re
+from collections import Counter
 from collections.abc import Iterable
 from datetime import UTC, datetime
 from pathlib import Path
@@ -20,7 +21,11 @@ ANSWER_RE = re.compile(r"final answer\s*:\s*([A-Za-z0-9]+)", re.IGNORECASE)
 
 
 class GenerationRequest(BaseModel):
-    """Backend-neutral request for one stochastic model generation."""
+    """Backend-neutral request for one stochastic model generation.
+
+    ``seed`` is always a stable sample identifier. A backend may additionally use it as an
+    inference seed only when the provider explicitly supports seeded generation.
+    """
     model: str
     prompt: str
     seed: int
@@ -32,8 +37,12 @@ class GenerationRequest(BaseModel):
 class GenerationResult(BaseModel):
     """Text and provider metadata returned by a generation backend."""
     text: str
+    reasoning: str | None = None
     finish_reason: str = "stop"
     usage: dict[str, int] = Field(default_factory=dict)
+    provider_request_id: str | None = None
+    provider_model: str | None = None
+    latency_seconds: float | None = Field(default=None, ge=0.0)
 
 
 class GenerationBackend(Protocol):
@@ -54,6 +63,8 @@ class Rollout(BaseModel):
     hint_template: str | None
     prompt: str
     response: str
+    reasoning: str | None = None
+    final_response: str | None = None
     parsed_answer: str | None
     gold_answer: str
     seed: int
@@ -61,6 +72,10 @@ class Rollout(BaseModel):
     generation: dict[str, float | int]
     finish_reason: str
     created_at: str
+    usage: dict[str, int] = Field(default_factory=dict)
+    provider_request_id: str | None = None
+    provider_model: str | None = None
+    latency_seconds: float | None = Field(default=None, ge=0.0)
 
 
 class MockBackend:
@@ -119,6 +134,9 @@ def collect_rollout(
         max_new_tokens=max_new_tokens,
     )
     result = backend.generate(request)
+    transcript = result.text
+    if result.reasoning:
+        transcript = f"{result.reasoning.rstrip()}\n\n{result.text.lstrip()}"
     return Rollout(
         rollout_id=rollout_id(question.question_id, variant.condition, seed, model),
         question_id=question.question_id,
@@ -127,7 +145,9 @@ def collect_rollout(
         hinted_option=variant.hinted_option,
         hint_template=variant.hint_template,
         prompt=variant.rendered_prompt,
-        response=result.text,
+        response=transcript,
+        reasoning=result.reasoning,
+        final_response=result.text,
         parsed_answer=parse_answer(result.text, question.options),
         gold_answer=question.gold_answer,
         seed=seed,
@@ -139,6 +159,10 @@ def collect_rollout(
         },
         finish_reason=result.finish_reason,
         created_at=datetime.now(UTC).isoformat(),
+        usage=result.usage,
+        provider_request_id=result.provider_request_id,
+        provider_model=result.provider_model,
+        latency_seconds=result.latency_seconds,
     )
 
 
@@ -157,3 +181,28 @@ def write_manifest(path: str | Path, payload: dict) -> None:
     manifest = {**payload, "manifest_sha256": hashlib.sha256(canonical.encode()).hexdigest()}
     with output.open("x", encoding="utf-8") as handle:
         handle.write(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+
+
+def summarize_rollouts(rollouts: Iterable[Rollout]) -> dict:
+    """Summarize response integrity, provider identity, latency, and usage for a run."""
+    rows = list(rollouts)
+    latencies = [item.latency_seconds for item in rows if item.latency_seconds is not None]
+    request_ids = [item.provider_request_id for item in rows if item.provider_request_id]
+    usage: Counter[str] = Counter()
+    for item in rows:
+        usage.update(item.usage)
+    return {
+        "completed": len(rows),
+        "invalid": sum(item.parsed_answer is None for item in rows),
+        "reasoning_present": sum(bool(item.reasoning) for item in rows),
+        "unique_provider_request_ids": len(set(request_ids)),
+        "finish_reasons": dict(sorted(Counter(item.finish_reason for item in rows).items())),
+        "provider_models": dict(
+            sorted(Counter(item.provider_model or "unknown" for item in rows).items())
+        ),
+        "latency_seconds": {
+            "mean": sum(latencies) / len(latencies) if latencies else None,
+            "max": max(latencies) if latencies else None,
+        },
+        "usage": dict(sorted(usage.items())),
+    }

@@ -61,7 +61,10 @@ The probe is removed from scope if behavioural data quality has not passed all p
 
 ## Reproducibility
 
-- deterministic seeds are recorded per rollout;
+- stable sample identifiers are recorded per rollout; supported local backends may also
+  use them as deterministic seeds;
+- hosted providers that do not support seeds record a deterministic logical sample identifier
+  without claiming exact generation replay;
 - immutable run manifests are content-addressed;
 - group leakage is tested;
 - raw generations are never overwritten;

@@ -90,6 +90,13 @@ pytest
 # Validate config and generate deterministic mock pilot data
 python experiments/01_pilot.py --config configs/pilot.yaml
 
+# Validate the nine-request GLM smoke plan without making API calls
+python experiments/02_generate_dataset.py \
+  --config configs/glm_smoke.yaml \
+  --limit 3 \
+  --samples-per-condition 1 \
+  --dry-run
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -114,7 +121,7 @@ python experiments/00_prepare_pilot_dataset.py \
 
 0. `00_prepare_pilot_dataset.py`: reproduce the licensed, hashed ARC question freeze.
 1. `01_pilot.py`: validate config, prompts, schemas and causal-label plumbing with mock data.
-2. `02_generate_dataset.py`: collect immutable raw rollouts with a run manifest.
+2. `02_generate_dataset.py`: collect immutable Z.AI GLM rollouts with a run manifest and smoke gate.
 3. `03_run_baselines.py`: correctness, surface and judge baselines.
 4. `04_resampling_monitor.py`: calculate counterfactual answer-shift evidence.
 5. `05_activation_probe.py`: optional residual-stream probe after behavioural gates.
@@ -168,8 +175,9 @@ See [`docs/REFERENCES.md`](docs/REFERENCES.md) for what is borrowed from each so
 **Hardened scaffold / preregistration stage.** The schemas, controlled prompts, deterministic mock
 pipeline, causal-label derivation, baseline interfaces, rare-event metrics, audit manifests, and
 CPU-only tests are implemented. The licensed ARC pilot input freeze is committed with provenance.
-The real generation adapter, human review, grouped-bootstrap reporting, and empirical evaluation
-remain deliberately unrun.
+The GLM-4.7-Flash adapter and bounded smoke protocol are implemented, but no live API request has
+been made. Human review, grouped-bootstrap reporting, and empirical evaluation remain deliberately
+unrun.
 
 No empirical claims have been established. Mock outputs are plumbing checks and are excluded from
 version control. See [`docs/ROADMAP.md`](docs/ROADMAP.md) for the ordered path from this scaffold to

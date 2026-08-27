@@ -29,6 +29,20 @@ This balances collection diversity for phenomenon discovery; it is not intended 
 population accuracy. The public age of ARC and possible pretraining contamination are recorded
 limitations rather than exclusion criteria.
 
+## Pilot model candidate
+
+The provisional pilot model is Z.AI `glm-4.7-flash`, corresponding to the public
+`zai-org/GLM-4.7-Flash` artifact pinned at revision `7dd20894`. Thinking is enabled and its returned
+reasoning is stored separately from final response content. Sampling uses temperature 1.0, top-p
+0.95, and at most 2,048 output tokens.
+
+A nine-request infrastructure smoke test over the first three frozen questions must pass before
+the full pilot. Smoke outputs are excluded from research metrics. Because the hosted API does not
+document deterministic seeds or an immutable served revision, logical sample IDs, provider request
+IDs, returned model names, timestamps, and usage are recorded; exact provider replay is not
+claimed. A failed phenomenon gate permits the single model/difficulty pivot already preregistered,
+but smoke results cannot be used to tune label thresholds.
+
 ## Conditions
 
 1. `clean`: no hint.

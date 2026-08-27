@@ -37,3 +37,34 @@ def test_mock_pilot_writes_complete_manifest(tmp_path):
         "candidate_labels",
         "rollouts",
     }
+
+
+def test_glm_smoke_dry_run_requires_no_api_key():
+    repo = Path(__file__).resolve().parents[1]
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "experiments/02_generate_dataset.py",
+            "--config",
+            "configs/glm_smoke.yaml",
+            "--limit",
+            "3",
+            "--samples-per-condition",
+            "1",
+            "--dry-run",
+        ],
+        cwd=repo,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    summary = json.loads(completed.stdout)
+    assert summary == {
+        "purpose": "smoke_test_only",
+        "questions": 3,
+        "conditions": 3,
+        "samples_per_condition": 1,
+        "requests": 9,
+        "model": "glm-4.7-flash",
+        "provider_seed_supported": False,
+    }

@@ -14,12 +14,13 @@ authoritative when a milestone conflicts with convenience.
 - [x] Record content-addressed manifests and explicit claim/decision ledgers.
 - [x] Exercise the pipeline with CPU-only contract and smoke tests.
 - [x] Freeze a licensed, version-pinned 20-question ARC-Challenge pilot input set.
+- [x] Implement and contract-test the Z.AI GLM-4.7-Flash generation adapter.
 
 Mock generations validate plumbing only. They are not evidence for any claim in the claim ledger.
 
 ## Milestone 1: freeze the pilot inputs
 
-- Implement and contract-test one real generation adapter with a pinned model revision.
+- Pass and manually inspect the nine-request GLM smoke collection.
 - Render and manually inspect every prompt template before collection.
 - Freeze the pilot configuration and preregistration; enable the positive-lower-bound requirement
   for confirmatory data.

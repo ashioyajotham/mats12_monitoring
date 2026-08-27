@@ -19,6 +19,11 @@ Pydantic models in `src/` are authoritative. This document explains their relati
 - A generation rerun with different decoding parameters must use a distinct run manifest; decoding parameters are also stored on each rollout.
 - Derived artifacts always retain `question_id` so group-bootstrap and leakage checks remain possible.
 
+Hosted reasoning-model rollouts retain the reasoning content, final response, combined transcript,
+provider request ID, returned provider model, token usage, finish reason, and request latency. A
+logical `seed` remains part of stable rollout identity even when the provider does not support
+seeded inference; the run manifest declares that limitation explicitly.
+
 The committed pilot question freeze has a sibling manifest containing the source repository and
 revision, source-file SHA-256, license, normalization and selection rule, selected collection
 counts, code revision, and output SHA-256. Dataset records retain their upstream identifier and
