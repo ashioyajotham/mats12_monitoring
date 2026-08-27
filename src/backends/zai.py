@@ -21,6 +21,22 @@ class ZAIBackendError(RuntimeError):
     """Raised when Z.AI transport or response validation fails."""
 
 
+def _http_error_detail(error: HTTPError) -> str | None:
+    """Extract a bounded provider error code/message without echoing request credentials."""
+    try:
+        payload = json.loads(error.read(16_384))
+    except (json.JSONDecodeError, OSError, TypeError):
+        return None
+    provider_error = payload.get("error") if isinstance(payload, dict) else None
+    if not isinstance(provider_error, dict):
+        return None
+    code = provider_error.get("code")
+    message = provider_error.get("message")
+    fields = [str(value).strip() for value in (code, message) if value is not None]
+    detail = ": ".join(value for value in fields if value)
+    return detail[:500] or None
+
+
 def _default_transport(request: Request, timeout: float) -> bytes:
     """Execute one HTTPS request and return its response body."""
     with urlopen(request, timeout=timeout) as response:  # noqa: S310
@@ -106,10 +122,17 @@ class ZAIBackend:
                 cause: Exception = exc
                 retryable = exc.code in RETRYABLE_STATUS_CODES
                 message = f"Z.AI request failed with HTTP {exc.code}"
+                detail = _http_error_detail(exc)
+                if detail:
+                    message = f"{message} ({detail})"
             except URLError as exc:
                 cause = exc
                 retryable = True
                 message = f"Z.AI transport failed: {exc.reason}"
+            except TimeoutError as exc:
+                cause = exc
+                retryable = True
+                message = "Z.AI response timed out"
             if not retryable or attempt == self.max_retries:
                 raise ZAIBackendError(message) from cause
             self.sleep(2**attempt)

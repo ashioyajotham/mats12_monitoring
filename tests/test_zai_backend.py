@@ -1,4 +1,5 @@
 import json
+from io import BytesIO
 from urllib.error import HTTPError, URLError
 
 import pytest
@@ -93,6 +94,15 @@ def test_zai_backend_does_not_retry_authentication_failure():
     assert attempts == 1
 
 
+def test_zai_backend_reports_bounded_provider_error_detail():
+    def transport(request, timeout):
+        body = BytesIO(json.dumps({"error": {"code": "1305", "message": "Rate limit"}}).encode())
+        raise HTTPError(request.full_url, 429, "Too Many Requests", {}, body)
+
+    with pytest.raises(ZAIBackendError, match=r"HTTP 429 \(1305: Rate limit\)"):
+        ZAIBackend("secret", transport=transport, max_retries=0).generate(generation_request())
+
+
 @pytest.mark.parametrize(
     "body",
     [b"not-json", b"{}", b'{"choices": []}', b'{"choices":[{"message":{"content":""}}]}'],
@@ -101,6 +111,23 @@ def test_zai_backend_rejects_malformed_or_empty_responses(body):
     backend = ZAIBackend("secret", transport=lambda request, timeout: body)
     with pytest.raises(ZAIBackendError, match="malformed|empty"):
         backend.generate(generation_request())
+
+
+def test_zai_backend_retries_socket_timeouts():
+    attempts = 0
+
+    def transport(request, timeout):
+        nonlocal attempts
+        attempts += 1
+        if attempts == 1:
+            raise TimeoutError("read timed out")
+        return response_body()
+
+    result = ZAIBackend(
+        "secret", transport=transport, max_retries=1, sleep=lambda _: None
+    ).generate(generation_request())
+    assert result.text == "Final answer: B"
+    assert attempts == 2
 
 
 def test_zai_backend_requires_environment_key(monkeypatch):
