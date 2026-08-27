@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: "When Does a Chain-of-Thought Monitor Cry Wolf?"
+message: "If you use this research scaffold or its results, please cite the repository."
+type: software
+authors:
+  - family-names: Ashioya
+    given-names: Victor
+license: MIT
+version: 0.1.0
+date-released: 2026-08-27

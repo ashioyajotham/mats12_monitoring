@@ -1,0 +1,22 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+.DS_Store
+.env
+
+# Raw/generated datasets are intentionally not committed by default.
+data/raw/*.jsonl
+data/generated/*
+data/reviewed/*
+!data/raw/.gitkeep
+!data/generated/.gitkeep
+!data/reviewed/.gitkeep
+
+# Generated result artifacts
+results/figures/*
+results/*.json
+results/*.jsonl
+!results/figures/.gitkeep
