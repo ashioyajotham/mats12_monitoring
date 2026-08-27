@@ -12,6 +12,8 @@ data/raw/*.jsonl
 data/generated/*
 data/reviewed/*
 !data/raw/.gitkeep
+!data/raw/pilot_questions.jsonl
+!data/raw/pilot_questions.manifest.json
 !data/generated/.gitkeep
 !data/reviewed/.gitkeep
 

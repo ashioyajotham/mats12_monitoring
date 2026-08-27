@@ -32,8 +32,8 @@ Raw generations are immutable. Derived labels can always be rebuilt from them.
 ## Pilot scope
 
 - One current open reasoning model, configured in `configs/pilot.yaml`.
-- One multiple-choice task family.
-- 20 base questions.
+- One multiple-choice task family: the pinned ARC-Challenge validation split.
+- 20 deterministically selected base questions spanning six source collections.
 - Three prompt conditions: clean, incorrect-answer hint, and irrelevant metadata.
 - Five samples per condition (approximately 300 rollouts if clean counterfactual resamples are included).
 - Full manual review of candidate positives and high-confidence monitor errors.
@@ -63,6 +63,7 @@ mats12_monitoring/
 │   └── reviewed/                  # human review and derived labels
 ├── src/
 │   ├── tasks.py                   # question schema, loading and grouped splits
+│   ├── datasets/                  # licensed source normalization and freeze selection
 │   ├── hints.py                   # controlled prompt interventions
 │   ├── generate_rollouts.py       # backend-neutral rollout generation
 │   ├── causal_labels.py           # causal label derivation
@@ -95,9 +96,24 @@ python experiments/06_low_base_rate_eval.py \
   --output results/low_base_rate_metrics.json
 ```
 
+To reproduce the committed question freeze, download the exact pinned source file and run the
+preparation entrypoint. The command refuses a source whose SHA-256 differs from the configured
+hash and never overwrites an existing freeze.
+
+```bash
+curl -fL \
+  https://huggingface.co/datasets/allenai/ai2_arc/resolve/210d026faf9955653af8916fad021475a3f00453/ARC-Challenge/validation-00000-of-00001.parquet \
+  -o /tmp/arc_challenge_validation.parquet
+
+python experiments/00_prepare_pilot_dataset.py \
+  --config configs/pilot.yaml \
+  --source /tmp/arc_challenge_validation.parquet
+```
+
 ## Experiment order
 
-1. `01_pilot.py`: validate config, prompts, schemas and the phenomenon gate.
+0. `00_prepare_pilot_dataset.py`: reproduce the licensed, hashed ARC question freeze.
+1. `01_pilot.py`: validate config, prompts, schemas and causal-label plumbing with mock data.
 2. `02_generate_dataset.py`: collect immutable raw rollouts with a run manifest.
 3. `03_run_baselines.py`: correctness, surface and judge baselines.
 4. `04_resampling_monitor.py`: calculate counterfactual answer-shift evidence.
@@ -151,8 +167,9 @@ See [`docs/REFERENCES.md`](docs/REFERENCES.md) for what is borrowed from each so
 
 **Hardened scaffold / preregistration stage.** The schemas, controlled prompts, deterministic mock
 pipeline, causal-label derivation, baseline interfaces, rare-event metrics, audit manifests, and
-CPU-only tests are implemented. The real generation adapter, licensed pilot dataset, human review,
-grouped-bootstrap reporting, and empirical evaluation remain deliberately unrun.
+CPU-only tests are implemented. The licensed ARC pilot input freeze is committed with provenance.
+The real generation adapter, human review, grouped-bootstrap reporting, and empirical evaluation
+remain deliberately unrun.
 
 No empirical claims have been established. Mock outputs are plumbing checks and are excluded from
 version control. See [`docs/ROADMAP.md`](docs/ROADMAP.md) for the ordered path from this scaffold to
@@ -160,4 +177,7 @@ a reviewed pilot; the claim ledger remains intentionally empty of results.
 
 ## License
 
-MIT. Dataset licenses must be recorded in the run manifest before any source data is committed or redistributed.
+Code and original documentation are MIT-licensed. The committed ARC-derived question records are
+licensed separately under CC BY-SA 4.0; see [`data/raw/README.md`](data/raw/README.md). Future
+dataset licenses must be recorded in the run manifest before source data is committed or
+redistributed.

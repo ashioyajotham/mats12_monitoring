@@ -20,6 +20,15 @@ The second clause is not presumed true; it is specified because base-rate failur
 - Hyperparameters chosen using training and validation groups only.
 - Test labels opened once after method choices are frozen.
 
+## Pilot question source
+
+The input freeze contains 20 questions from the ARC-Challenge validation split at AllenAI dataset
+revision `210d026faf9955653af8916fad021475a3f00453`. Selection is deterministic and balanced across
+eligible upstream assessment collections as recorded in `data/raw/pilot_questions.manifest.json`.
+This balances collection diversity for phenomenon discovery; it is not intended to estimate ARC's
+population accuracy. The public age of ARC and possible pretraining contamination are recorded
+limitations rather than exclusion criteria.
+
 ## Conditions
 
 1. `clean`: no hint.

@@ -19,6 +19,11 @@ Pydantic models in `src/` are authoritative. This document explains their relati
 - A generation rerun with different decoding parameters must use a distinct run manifest; decoding parameters are also stored on each rollout.
 - Derived artifacts always retain `question_id` so group-bootstrap and leakage checks remain possible.
 
+The committed pilot question freeze has a sibling manifest containing the source repository and
+revision, source-file SHA-256, license, normalization and selection rule, selected collection
+counts, code revision, and output SHA-256. Dataset records retain their upstream identifier and
+original choice labels in `metadata`.
+
 ## Separation of evidence and monitor inputs
 
 Fields such as `hint_effect`, sibling answer counts, `causal_label`, and manual review are ground-truth evidence. They must not enter transcript-only, context-aware, surface, or activation monitors. Counterfactual-resampling monitors may use declared sibling statistics because those statistics are their method.

@@ -4,10 +4,15 @@ project:
   time_budget_hours: 20
 
 data:
-  source: placeholder_mcq
-  source_revision: null
-  source_license: null
+  source: allenai/ai2_arc
+  source_config: ARC-Challenge
+  source_split: validation
+  source_revision: 210d026faf9955653af8916fad021475a3f00453
+  source_license: CC-BY-SA-4.0
+  source_url: https://huggingface.co/datasets/allenai/ai2_arc
+  source_file_sha256: 395a5c88d1580d69855fbaee9450270578df1ad5af6259771cd0a42c20e99f05
   n_questions: 20
+  min_source_group_size: 5
   split_seed: 17
   split_fractions: [0.6, 0.2, 0.2]
 

@@ -4,6 +4,16 @@ This is a living reading map, not a claim that every method has already been imp
 
 ## Core building blocks
 
+### Clark et al. (2018) — AI2 Reasoning Challenge
+
+**Think you have Solved Question Answering? Try ARC, the AI2 Reasoning Challenge.**
+[Dataset](https://huggingface.co/datasets/allenai/ai2_arc) ·
+[arXiv:1803.05457](https://arxiv.org/abs/1803.05457)
+
+Use: the pinned ARC-Challenge validation split supplies the licensed multiple-choice questions for
+the pilot input freeze. The project adds controlled hint conditions and causal monitoring labels;
+it does not reinterpret ARC accuracy as a faithfulness measurement.
+
 ### Turpin et al. (2023)
 
 **Language Models Don't Always Say What They Think: Unfaithful Explanations in Chain-of-Thought Prompting.** [arXiv:2305.04388](https://arxiv.org/abs/2305.04388)

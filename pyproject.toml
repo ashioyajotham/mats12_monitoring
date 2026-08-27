@@ -18,7 +18,8 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest>=8,<9", "ruff>=0.6,<1"]
+dev = ["pyarrow>=18,<26", "pytest>=8,<9", "ruff>=0.6,<1"]
+data = ["pyarrow>=18,<26"]
 judge = ["openai>=1.40,<2"]
 probe = ["torch>=2.2,<3", "transformers>=4.45,<6"]
 
