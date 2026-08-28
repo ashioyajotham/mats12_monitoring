@@ -13,7 +13,9 @@ ledger.
 - Corresponding open weights: `zai-org/GLM-4.7-Flash` at revision
   `7dd20894a642a0aa287e9827cb1a1f7f91386b67`, MIT license.
 - Thinking: enabled; preserve `reasoning_content` separately from final `content`.
-- Sampling: temperature 1.0, top-p 0.95, maximum 4,096 output tokens.
+- Sampling: temperature 1.0, top-p 0.95, maximum 8,192 output tokens. Prompts request concise
+  reasoning, while the larger hard cap prevents a long thinking trace from consuming the final
+  answer.
 - Seeds: Z.AI does not document seeded inference. Stored seeds are logical sample identifiers and
   are not sent to the provider.
 
@@ -50,7 +52,8 @@ Never pass the key as a command-line argument or commit it to a file.
 
 The smoke run passes only when all nine requests complete, every final answer parses, every rollout
 contains reasoning, every request ID is present and unique, and every finish reason is `stop`.
-Transient transport failures and HTTP 408/429/5xx responses receive bounded exponential retries.
+Transient transport failures and HTTP 408/5xx responses receive bounded exponential retries.
+HTTP 429 honors `Retry-After` when supplied and otherwise waits 30, 60, then 120 seconds.
 Partial rollouts and a failure manifest remain available if collection stops early.
 
 To continue after a transient failure without overwriting evidence, start a new run that imports

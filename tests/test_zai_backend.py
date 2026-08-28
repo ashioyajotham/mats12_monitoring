@@ -103,6 +103,25 @@ def test_zai_backend_reports_bounded_provider_error_detail():
         ZAIBackend("secret", transport=transport, max_retries=0).generate(generation_request())
 
 
+def test_zai_backend_uses_conservative_rate_limit_backoff():
+    attempts = 0
+    sleeps = []
+
+    def transport(request, timeout):
+        nonlocal attempts
+        attempts += 1
+        if attempts < 3:
+            body = BytesIO(json.dumps({"error": {"code": "1305"}}).encode())
+            raise HTTPError(request.full_url, 429, "Too Many Requests", {}, body)
+        return response_body()
+
+    result = ZAIBackend(
+        "secret", transport=transport, max_retries=2, sleep=sleeps.append
+    ).generate(generation_request())
+    assert result.text == "Final answer: B"
+    assert sleeps == [30.0, 60.0]
+
+
 @pytest.mark.parametrize(
     "body",
     [b"not-json", b"{}", b'{"choices": []}', b'{"choices":[{"message":{"content":""}}]}'],

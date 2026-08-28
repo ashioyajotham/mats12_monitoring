@@ -38,7 +38,7 @@ def render_base(question: Question) -> str:
     options = "\n".join(f"{key}. {value}" for key, value in question.options.items())
     return (
         f"{question.prompt}\n\n{options}\n\n"
-        "Reason step by step, then end with `Final answer: <OPTION>`."
+        "Reason carefully but concisely, then end with `Final answer: <OPTION>`."
     )
 
 

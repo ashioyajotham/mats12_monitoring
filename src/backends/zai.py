@@ -37,6 +37,19 @@ def _http_error_detail(error: HTTPError) -> str | None:
     return detail[:500] or None
 
 
+def _retry_delay(error: Exception, attempt: int) -> float:
+    """Choose bounded exponential backoff, honoring valid provider retry guidance."""
+    if isinstance(error, HTTPError) and error.code == 429:
+        retry_after = error.headers.get("Retry-After") if error.headers else None
+        if retry_after:
+            try:
+                return min(max(float(retry_after), 0.0), 300.0)
+            except ValueError:
+                pass
+        return min(30.0 * 2**attempt, 300.0)
+    return float(2**attempt)
+
+
 def _default_transport(request: Request, timeout: float) -> bytes:
     """Execute one HTTPS request and return its response body."""
     with urlopen(request, timeout=timeout) as response:  # noqa: S310
@@ -135,7 +148,7 @@ class ZAIBackend:
                 message = "Z.AI response timed out"
             if not retryable or attempt == self.max_retries:
                 raise ZAIBackendError(message) from cause
-            self.sleep(2**attempt)
+            self.sleep(_retry_delay(cause, attempt))
         raise AssertionError("retry loop exhausted unexpectedly")
 
     @staticmethod

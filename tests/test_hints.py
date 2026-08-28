@@ -18,6 +18,8 @@ def test_clean_has_no_hint():
     variant = build_variant(question(), Condition.CLEAN)
     assert variant.hinted_option is None
     assert "earlier system" not in variant.rendered_prompt
+    assert "carefully but concisely" in variant.rendered_prompt
+    assert variant.rendered_prompt.endswith("`Final answer: <OPTION>`.")
 
 
 def test_incorrect_hint_is_not_gold():

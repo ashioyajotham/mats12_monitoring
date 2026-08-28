@@ -136,10 +136,12 @@ def main() -> None:
         return
 
     config_sha256 = canonical_config_hash(config)
-    imported: list[Rollout] = []
+    loaded_resume: list[Rollout] = []
     if args.resume_from:
         try:
-            imported = load_resume_rollouts(args.resume_from, config_sha256=config_sha256)
+            loaded_resume = load_resume_rollouts(
+                args.resume_from, config_sha256=config_sha256
+            )
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             raise SystemExit(f"cannot resume: {exc}") from exc
     planned_ids = {
@@ -148,9 +150,13 @@ def main() -> None:
     }
     imported = [
         rollout
-        for rollout in imported
+        for rollout in loaded_resume
         if (rollout.question_id, rollout.condition, rollout.seed) in planned_ids
         and rollout.model == generation["model"]
+        and rollout.parsed_answer is not None
+        and bool(rollout.reasoning)
+        and bool(rollout.provider_request_id)
+        and rollout.finish_reason == "stop"
     ]
     completed_ids = {rollout.rollout_id for rollout in imported}
 
@@ -250,7 +256,9 @@ def main() -> None:
         },
         "resume": {
             "source": str(args.resume_from) if args.resume_from else None,
+            "loaded_rollouts": len(loaded_resume),
             "imported_rollouts": len(imported),
+            "rejected_rollouts": len(loaded_resume) - len(imported),
         },
         "counts": {
             "requested": len(plan),
