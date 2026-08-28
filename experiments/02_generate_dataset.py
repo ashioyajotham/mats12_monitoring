@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 from collections.abc import Iterator
 from datetime import UTC, datetime
 from pathlib import Path
@@ -17,7 +18,13 @@ from src.audit import (
     utc_now,
 )
 from src.backends.zai import ZAIBackend, ZAIBackendError
-from src.generate_rollouts import Rollout, collect_rollout, summarize_rollouts, write_manifest
+from src.generate_rollouts import (
+    Rollout,
+    collect_rollout,
+    rollout_id,
+    summarize_rollouts,
+    write_manifest,
+)
 from src.hints import Condition, build_variant, select_incorrect_option
 from src.tasks import Question, read_jsonl
 
@@ -42,6 +49,22 @@ def collection_plan(
                 yield question, condition, hinted_option, logical_seed
 
 
+def load_resume_rollouts(path: Path, *, config_sha256: str) -> list[Rollout]:
+    """Load completed rollouts from a compatible prior run without modifying it."""
+    manifest_path = path / "manifest.json"
+    rollouts_path = path / "rollouts.jsonl"
+    if not manifest_path.is_file() or not rollouts_path.is_file():
+        raise ValueError("resume directory must contain manifest.json and rollouts.jsonl")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    if manifest.get("config_sha256") != config_sha256:
+        raise ValueError("resume run uses a different configuration hash")
+    return [
+        Rollout.model_validate_json(line)
+        for line in rollouts_path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+
+
 def main() -> None:
     """Run a bounded smoke collection or the configured full GLM pilot collection."""
     parser = argparse.ArgumentParser()
@@ -55,6 +78,17 @@ def main() -> None:
     parser.add_argument(
         "--dry-run", action="store_true", help="Validate and print the request plan"
     )
+    parser.add_argument(
+        "--resume-from",
+        type=Path,
+        help="Import compatible completed rollouts from a prior run and skip their identities",
+    )
+    parser.add_argument(
+        "--request-delay-seconds",
+        type=float,
+        default=0.0,
+        help="Wait between provider requests to reduce free-tier throttling",
+    )
     args = parser.parse_args()
 
     config = load_config(args.config)
@@ -63,6 +97,8 @@ def main() -> None:
         raise SystemExit("02_generate_dataset requires generation.backend=zai")
     if args.limit is not None and args.limit <= 0:
         raise SystemExit("--limit must be positive")
+    if args.request_delay_seconds < 0:
+        raise SystemExit("--request-delay-seconds must be non-negative")
 
     questions = [
         record
@@ -99,6 +135,25 @@ def main() -> None:
         print(json.dumps(plan_summary, indent=2))
         return
 
+    config_sha256 = canonical_config_hash(config)
+    imported: list[Rollout] = []
+    if args.resume_from:
+        try:
+            imported = load_resume_rollouts(args.resume_from, config_sha256=config_sha256)
+        except (OSError, ValueError, json.JSONDecodeError) as exc:
+            raise SystemExit(f"cannot resume: {exc}") from exc
+    planned_ids = {
+        (question.question_id, condition, logical_seed)
+        for question, condition, _, logical_seed in plan
+    }
+    imported = [
+        rollout
+        for rollout in imported
+        if (rollout.question_id, rollout.condition, rollout.seed) in planned_ids
+        and rollout.model == generation["model"]
+    ]
+    completed_ids = {rollout.rollout_id for rollout in imported}
+
     try:
         backend = ZAIBackend.from_env(
             base_url=generation["base_url"],
@@ -113,11 +168,24 @@ def main() -> None:
     output_dir = Path(config["paths"]["generated_dir"]) / f"glm_{purpose}_{timestamp}"
     output_dir.mkdir(parents=True, exist_ok=False)
     rollouts_path = output_dir / "rollouts.jsonl"
-    completed: list[Rollout] = []
+    completed: list[Rollout] = list(imported)
     failure: str | None = None
     with rollouts_path.open("x", encoding="utf-8") as handle:
+        for rollout in imported:
+            handle.write(rollout.model_dump_json() + "\n")
+        handle.flush()
         try:
-            for question, condition, hinted_option, logical_seed in plan:
+            pending = [
+                item
+                for item in plan
+                if rollout_id(item[0].question_id, item[1], item[3], generation["model"])
+                not in completed_ids
+            ]
+            for request_index, (question, condition, hinted_option, logical_seed) in enumerate(
+                pending
+            ):
+                if request_index and args.request_delay_seconds:
+                    time.sleep(args.request_delay_seconds)
                 variant = build_variant(question, condition, hinted_option=hinted_option)
                 rollout = collect_rollout(
                     question,
@@ -156,7 +224,7 @@ def main() -> None:
         "failure": failure,
         "smoke_gate_passed": smoke_gate_passed if purpose == "smoke_test_only" else None,
         "config_path": str(Path(args.config)),
-        "config_sha256": canonical_config_hash(config),
+        "config_sha256": config_sha256,
         "code_revision": git_revision(),
         "started_at": started_at.isoformat(),
         "completed_at": utc_now(),
@@ -178,6 +246,11 @@ def main() -> None:
             "top_p": generation["top_p"],
             "max_new_tokens": generation["max_new_tokens"],
             "logical_base_seed": generation["base_seed"],
+            "request_delay_seconds": args.request_delay_seconds,
+        },
+        "resume": {
+            "source": str(args.resume_from) if args.resume_from else None,
+            "imported_rollouts": len(imported),
         },
         "counts": {
             "requested": len(plan),

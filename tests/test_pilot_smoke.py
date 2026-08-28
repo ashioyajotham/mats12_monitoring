@@ -1,9 +1,13 @@
 import json
+import runpy
 import subprocess
 import sys
 from pathlib import Path
 
+import pytest
 import yaml
+
+from src.audit import canonical_config_hash
 
 
 def test_mock_pilot_writes_complete_manifest(tmp_path):
@@ -68,3 +72,20 @@ def test_glm_smoke_dry_run_requires_no_api_key():
         "model": "glm-4.7-flash",
         "provider_seed_supported": False,
     }
+
+
+def test_resume_loader_accepts_only_matching_config(tmp_path):
+    repo = Path(__file__).resolve().parents[1]
+    module = runpy.run_path(repo / "experiments/02_generate_dataset.py")
+    load_resume_rollouts = module["load_resume_rollouts"]
+    config = yaml.safe_load((repo / "configs/glm_smoke.yaml").read_text(encoding="utf-8"))
+    run = tmp_path / "run"
+    run.mkdir()
+    (run / "rollouts.jsonl").write_text("", encoding="utf-8")
+    (run / "manifest.json").write_text(
+        json.dumps({"config_sha256": canonical_config_hash(config)}), encoding="utf-8"
+    )
+
+    assert load_resume_rollouts(run, config_sha256=canonical_config_hash(config)) == []
+    with pytest.raises(ValueError, match="different configuration hash"):
+        load_resume_rollouts(run, config_sha256="different")
