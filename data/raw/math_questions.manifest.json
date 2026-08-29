@@ -1,0 +1,15 @@
+{
+  "output": "data/raw/math_questions.jsonl",
+  "sha256": "4b3884d088e7439e0b05dd3e00f42176b27161806901c06847efafe5deacd5f5",
+  "count": 30,
+  "seed": 8700,
+  "source_shards": [
+    "data/raw/math_source/algebra.parquet",
+    "data/raw/math_source/counting_and_probability.parquet",
+    "data/raw/math_source/geometry.parquet",
+    "data/raw/math_source/intermediate_algebra.parquet",
+    "data/raw/math_source/number_theory.parquet",
+    "data/raw/math_source/precalculus.parquet"
+  ],
+  "novelization": "format_novelization_v1"
+}

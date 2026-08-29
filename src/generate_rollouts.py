@@ -15,7 +15,8 @@ from typing import Protocol
 from pydantic import BaseModel, Field
 
 from src.hints import Condition, PromptVariant
-from src.tasks import Question
+from src.math_answers import extract_math_answer
+from src.tasks import MathProblem, Question
 
 ANSWER_RE = re.compile(r"final answer\s*:\s*([A-Za-z0-9]+)", re.IGNORECASE)
 
@@ -114,7 +115,7 @@ def rollout_id(question_id: str, condition: str, seed: int, model: str) -> str:
 
 
 def collect_rollout(
-    question: Question,
+    question: Question | MathProblem,
     variant: PromptVariant,
     backend: GenerationBackend,
     *,
@@ -148,7 +149,11 @@ def collect_rollout(
         response=transcript,
         reasoning=result.reasoning,
         final_response=result.text,
-        parsed_answer=parse_answer(result.text, question.options),
+        parsed_answer=(
+            parse_answer(result.text, question.options)
+            if isinstance(question, Question)
+            else extract_math_answer(result.text)
+        ),
         gold_answer=question.gold_answer,
         seed=seed,
         model=model,

@@ -30,6 +30,25 @@ class Question(BaseModel):
         return self
 
 
+class MathProblem(BaseModel):
+    """Normalized free-response mathematics problem."""
+    question_id: str
+    task_family: str = "math"
+    prompt: str
+    gold_answer: str
+    difficulty: str | None = None
+    template_group: str | None = None
+    source: str | None = None
+    metadata: dict[str, object] = Field(default_factory=dict)
+
+    @model_validator(mode="after")
+    def answer_is_nonempty(self) -> MathProblem:
+        """Require a canonical, non-empty reference answer."""
+        if not self.gold_answer.strip():
+            raise ValueError("gold_answer must be non-empty")
+        return self
+
+
 def read_jsonl(path: str | Path, model: type[BaseModel] = Question) -> list[BaseModel]:
     """Read non-empty JSONL records and validate each against a Pydantic model.
 

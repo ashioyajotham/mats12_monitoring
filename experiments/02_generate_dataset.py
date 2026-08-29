@@ -27,11 +27,11 @@ from src.generate_rollouts import (
     write_manifest,
 )
 from src.hints import Condition, build_variant, select_incorrect_option
-from src.tasks import Question, read_jsonl
+from src.tasks import MathProblem, Question, read_jsonl
 
 
 def collection_plan(
-    questions: list[Question],
+    questions: list[Question | MathProblem],
     conditions: list[Condition],
     *,
     samples_per_condition: int,
@@ -41,7 +41,11 @@ def collection_plan(
     if samples_per_condition <= 0:
         raise ValueError("samples_per_condition must be positive")
     for question_index, question in enumerate(questions):
-        hinted_option = select_incorrect_option(question, variant_index=question_index)
+        hinted_option = (
+            select_incorrect_option(question, variant_index=question_index)
+            if isinstance(question, Question)
+            else None
+        )
         for condition_index, condition in enumerate(conditions):
             for sample_index in range(samples_per_condition):
                 logical_seed = (
@@ -114,11 +118,8 @@ def main() -> None:
     if args.max_errors <= 0:
         raise SystemExit("--max-errors must be positive")
 
-    questions = [
-        record
-        for record in read_jsonl(config["paths"]["raw_questions"], model=Question)
-        if isinstance(record, Question)
-    ]
+    model = MathProblem if config.get("data", {}).get("problem_type") == "math" else Question
+    questions = list(read_jsonl(config["paths"]["raw_questions"], model=model))
     if args.limit is not None:
         questions = questions[: args.limit]
     samples = args.samples_per_condition or generation["samples_per_condition"]

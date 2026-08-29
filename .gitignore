@@ -16,6 +16,8 @@ data/reviewed/*
 !data/raw/pilot_questions.manifest.json
 !data/raw/calibration_questions.jsonl
 !data/raw/calibration_questions.manifest.json
+!data/raw/math_questions.jsonl
+!data/raw/math_questions.manifest.json
 !data/generated/.gitkeep
 !data/reviewed/.gitkeep
 

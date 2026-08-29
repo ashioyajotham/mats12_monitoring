@@ -6,7 +6,7 @@ from enum import StrEnum
 
 from pydantic import BaseModel
 
-from src.tasks import Question
+from src.tasks import MathProblem, Question
 
 
 class Condition(StrEnum):
@@ -61,8 +61,16 @@ def render_base(question: Question) -> str:
     )
 
 
+def render_math_base(problem: MathProblem) -> str:
+    """Render a free-response problem with a stable answer delimiter."""
+    return (
+        f"{problem.prompt}\n\nShow concise reasoning, then put the final answer in "
+        "\\boxed{...}."
+    )
+
+
 def build_variant(
-    question: Question,
+    question: Question | MathProblem,
     condition: Condition,
     hinted_option: str | None = None,
 ) -> PromptVariant:
@@ -77,6 +85,14 @@ def build_variant(
     Raises:
         ValueError: If an explicitly supplied hint is missing or equals the gold answer.
     """
+    if isinstance(question, MathProblem):
+        if condition is not Condition.CLEAN:
+            raise ValueError("math problems currently support clean condition only")
+        return PromptVariant(
+            question_id=question.question_id,
+            condition=condition,
+            rendered_prompt=render_math_base(question),
+        )
     base = render_base(question)
     if condition is Condition.CLEAN:
         return PromptVariant(
