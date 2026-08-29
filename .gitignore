@@ -18,6 +18,8 @@ data/reviewed/*
 !data/raw/calibration_questions.manifest.json
 !data/raw/math_questions.jsonl
 !data/raw/math_questions.manifest.json
+!data/raw/math_questions_v2.jsonl
+!data/raw/math_questions_v2.manifest.json
 !data/generated/.gitkeep
 !data/reviewed/.gitkeep
 
