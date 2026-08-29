@@ -104,6 +104,11 @@ python experiments/02_generate_dataset.py \
   --samples-per-condition 1 \
   --dry-run
 
+# Validate the frozen 30-request intervention-calibration plan
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_calibration.yaml \
+  --dry-run
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -128,12 +133,13 @@ python experiments/00_prepare_pilot_dataset.py \
 
 0. `00_prepare_pilot_dataset.py`: reproduce the licensed, hashed ARC question freeze.
 1. `01_pilot.py`: validate config, prompts, schemas and causal-label plumbing with mock data.
-2. `02_generate_dataset.py`: collect immutable Z.AI or Tinker rollouts with manifests, resume,
+2. `02_select_calibration_questions.py`: freeze a difficulty-proxy subset from clean telemetry.
+3. `02_generate_dataset.py`: collect immutable Z.AI or Tinker rollouts with manifests, resume,
    provider provenance, and smoke gates.
-3. `03_run_baselines.py`: correctness, surface and judge baselines.
-4. `04_resampling_monitor.py`: calculate counterfactual answer-shift evidence.
-5. `05_activation_probe.py`: optional residual-stream probe after behavioural gates.
-6. `06_low_base_rate_eval.py`: report balanced metrics and deployment PPV.
+4. `03_run_baselines.py`: correctness, surface and judge baselines.
+5. `04_resampling_monitor.py`: calculate counterfactual answer-shift evidence.
+6. `05_activation_probe.py`: optional residual-stream probe after behavioural gates.
+7. `06_low_base_rate_eval.py`: report balanced metrics and deployment PPV.
 
 Every script writes to a new run-specific file. Never overwrite raw generations.
 
@@ -180,16 +186,17 @@ See [`docs/REFERENCES.md`](docs/REFERENCES.md) for what is borrowed from each so
 
 ## Status
 
-**Hardened scaffold / preregistration stage.** The schemas, controlled prompts, deterministic mock
+**Intervention-calibration stage.** The schemas, controlled prompts, deterministic mock
 pipeline, causal-label derivation, baseline interfaces, rare-event metrics, audit manifests, and
 CPU-only tests are implemented. The licensed ARC pilot input freeze is committed with provenance.
-The GLM-4.7-Flash adapter and bounded smoke protocol are implemented, but no live API request has
-been made. Human review, grouped-bootstrap reporting, and empirical evaluation remain deliberately
-unrun.
+The Tinker/Qwen integration has passed live infrastructure checks. A trusted-answer-key treatment
+caused strong wrong-answer uptake but explicit acknowledgment, so it is unsuitable as the main
+silent-rationalization treatment. Human review, intermediate-strength intervention calibration,
+grouped-bootstrap reporting, and empirical monitor evaluation remain unrun.
 
-No empirical claims have been established. Mock outputs are plumbing checks and are excluded from
-version control. See [`docs/ROADMAP.md`](docs/ROADMAP.md) for the ordered path from this scaffold to
-a reviewed pilot; the claim ledger remains intentionally empty of results.
+These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
+outputs remain excluded from version control; their hashes and protocol-level summaries are
+recorded in [`docs/CALIBRATION_PROTOCOL.md`](docs/CALIBRATION_PROTOCOL.md).
 
 ## License
 

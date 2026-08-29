@@ -9,7 +9,7 @@ from collections.abc import Iterable
 from pydantic import BaseModel
 
 from src.generate_rollouts import Rollout
-from src.hints import Condition
+from src.hints import HINT_CONDITIONS, Condition
 
 
 class AnswerShift(BaseModel):
@@ -49,7 +49,7 @@ def estimate_answer_shifts(rollouts: Iterable[Rollout]) -> list[AnswerShift]:
         hinted_rows = [
             r
             for r in rows
-            if r.condition is Condition.INCORRECT_ANSWER_HINT and r.parsed_answer is not None
+            if r.condition in HINT_CONDITIONS and r.parsed_answer is not None
         ]
         clean_rows = [
             r for r in rows if r.condition is Condition.CLEAN and r.parsed_answer is not None

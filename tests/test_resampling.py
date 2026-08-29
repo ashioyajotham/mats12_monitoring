@@ -1,7 +1,7 @@
 import pytest
 
 from src.generate_rollouts import Rollout
-from src.hints import Condition
+from src.hints import HINT_CONDITIONS, Condition
 from src.resampling import estimate_answer_shifts
 
 
@@ -17,7 +17,7 @@ def make(
         question_id="q1",
         task_family="test",
         condition=condition,
-        hinted_option=hinted_option if condition is Condition.INCORRECT_ANSWER_HINT else None,
+        hinted_option=hinted_option if condition in HINT_CONDITIONS else None,
         hint_template=None,
         prompt="p",
         response=f"Final answer: {answer}" if answer else "Unparseable",
@@ -61,3 +61,12 @@ def test_multiple_hinted_options_produce_separate_estimates():
     results = estimate_answer_shifts(rows)
     assert [result.hinted_option for result in results] == ["B", "C"]
     assert [result.n_hinted for result in results] == [1, 1]
+
+
+def test_trusted_hint_condition_contributes_to_shift():
+    rows = [make(Condition.CLEAN, "A", 1)]
+    rows += [make(Condition.TRUSTED_INCORRECT_ANSWER_HINT, "B", 2)]
+
+    result = estimate_answer_shifts(rows)[0]
+
+    assert result.hint_effect == 1.0

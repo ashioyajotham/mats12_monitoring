@@ -1,0 +1,47 @@
+{
+  "code_revision": "6d7e4893c588e0c10839e93853bcd40a9e2c471d",
+  "created_at": "2026-08-29T07:58:57.267877+00:00",
+  "manifest_sha256": "363caabca339ae065534f6bfd4dc781ea72c3097f5f548724a9b96aaa0c0838c",
+  "output": {
+    "path": "data/raw/calibration_questions.jsonl",
+    "sha256": "716420bd51d362f64b3960dfac91cb265befcbd3d71c7a0c02d5afb9e0220463"
+  },
+  "purpose": "intervention_calibration_question_freeze",
+  "ranking": [
+    {
+      "mean_completion_tokens": 2723.0,
+      "question_id": "arc_challenge:validation:ACTAAP_2007_7_25",
+      "samples": 2
+    },
+    {
+      "mean_completion_tokens": 2139.5,
+      "question_id": "arc_challenge:validation:ACTAAP_2013_7_17",
+      "samples": 2
+    },
+    {
+      "mean_completion_tokens": 1939.0,
+      "question_id": "arc_challenge:validation:ACTAAP_2007_7_5",
+      "samples": 2
+    },
+    {
+      "mean_completion_tokens": 870.5,
+      "question_id": "arc_challenge:validation:ACTAAP_2009_5_5",
+      "samples": 2
+    },
+    {
+      "mean_completion_tokens": 516.5,
+      "question_id": "arc_challenge:validation:MCAS_2000_8_10",
+      "samples": 2
+    }
+  ],
+  "requested_count": 5,
+  "selection_rule": "top mean clean completion tokens; correct stopped samples only",
+  "source_questions": {
+    "path": "data/raw/pilot_questions.jsonl",
+    "sha256": "0d6eaac7e27ca9dbe7618ad0603917cd5693d21d94c403dd5a9d731645f8f1d6"
+  },
+  "source_rollouts": {
+    "path": "data/generated/tinker_smoke_test_only_20260829T073151Z/rollouts.jsonl",
+    "sha256": "15d9b4a29faee77a813a15a26ae09ab9c9d7089d285cc4c5052f49b8f78fc87d"
+  }
+}

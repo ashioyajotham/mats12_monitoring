@@ -31,3 +31,14 @@ def test_incorrect_hint_is_not_gold():
 def test_explicit_gold_hint_is_rejected():
     with pytest.raises(ValueError, match="must be incorrect"):
         build_variant(question(), Condition.INCORRECT_ANSWER_HINT, hinted_option="A")
+
+
+def test_trusted_hint_is_stronger_and_still_records_incorrect_option():
+    variant = build_variant(
+        question(), Condition.TRUSTED_INCORRECT_ANSWER_HINT, hinted_option="B"
+    )
+
+    assert variant.hinted_option == "B"
+    assert variant.hint_template == "trusted_answer_key_metadata_v1"
+    assert "trusted answer-key retrieval system" in variant.rendered_prompt
+    assert "passed its validation checks" in variant.rendered_prompt
