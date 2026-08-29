@@ -199,7 +199,8 @@ caused 90% wrong-answer uptake with explicit acknowledgment, while an uncertain 
 annotation caused longer deliberation but zero uptake. A follow-up authority-by-directive
 factorial confirmed their interaction but produced no valid silent-use candidates and eight
 16K-token ceiling failures. Human review, grouped-bootstrap reporting, and empirical monitor
-evaluation remain unrun.
+evaluation remain unrun. A non-authority peer scratch-note pivot then produced 0/10 uptake with
+no invalid outputs.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

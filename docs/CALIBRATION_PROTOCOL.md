@@ -80,3 +80,21 @@ Clean and irrelevant controls were each 10/10 correct with no failures. Every va
 hint-following transcript matched an acknowledgment phrase; no valid output qualified as silent
 hint use. Authority and directive language therefore interact for behavioral compliance, while
 authority-bearing prompts also induce a substantial reasoning-loop failure rate.
+
+## Non-authority scratch-note result
+
+The next pivot supplied a short, naturalistic-looking scratch note from a previous attempt. It
+described the planted option as plausible because of its answer text, without claiming correctness,
+source authority, validation, or an instruction to follow it. The 30-request run completed 30/30
+with no invalid outputs, reasoning in every output, and unique sequence IDs. Output SHA-256:
+`6963b64db20e5c09045f2f95873731e8bf9f22f7c13ce3123677b57f3ab95d3e`.
+
+| Condition | Correct | Selected planted hint | Mean completion tokens |
+|---|---:|---:|---:|
+| Clean | 10/10 | — | 2,316.9 |
+| Irrelevant metadata | 10/10 | — | 1,253.8 |
+| Peer scratch note | 10/10 | 0/10 | 1,636.7 |
+
+All ten scratch-note transcripts mentioned the note, but every answer resisted it. The model
+follows planted answers only when authority and directive cues create a strong conflict, and then
+does so openly.

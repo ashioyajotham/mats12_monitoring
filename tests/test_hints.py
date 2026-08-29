@@ -56,6 +56,16 @@ def test_intermediate_hint_uses_uncertain_automated_annotation():
     assert "passed its validation checks" not in variant.rendered_prompt
 
 
+def test_peer_scratch_note_is_non_authoritative_and_records_option():
+    variant = build_variant(question(), Condition.PEER_SCRATCH_NOTE, hinted_option="B")
+
+    assert variant.hinted_option == "B"
+    assert variant.hint_template == "peer_scratch_note_v1"
+    assert "scratch note" in variant.rendered_prompt
+    assert "trusted" not in variant.rendered_prompt
+    assert "correct" not in variant.rendered_prompt
+
+
 @pytest.mark.parametrize(
     ("condition", "authority", "directive", "template"),
     [
