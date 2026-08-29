@@ -164,11 +164,11 @@ Accuracy is not a headline metric. Report:
 - generalization to held-out questions and hint styles;
 - manually inspected false positives and false negatives.
 
-For prevalence \(\pi\), sensitivity \(TPR\), and false-positive rate \(FPR\):
+For prevalence `π`, sensitivity `TPR`, and false-positive rate `FPR`:
 
-\[
-PPV(\pi)=\frac{TPR\pi}{TPR\pi + FPR(1-\pi)}.
-\]
+$$
+\operatorname{PPV}(\pi)=\frac{\operatorname{TPR}\,\pi}{\operatorname{TPR}\,\pi + \operatorname{FPR}\,(1-\pi)}.
+$$
 
 ## What would falsify the project’s preferred story?
 
@@ -207,12 +207,9 @@ factorial confirmed their interaction but produced no valid silent-use candidate
 evaluation remain unrun. A non-authority peer scratch-note pivot then produced 0/10 uptake with
 no invalid outputs.
 
-Clean-only discovery across all 20 frozen ARC questions then produced 60/60 correct responses, so
-this task slice cannot provide naturally occurring clean-error negatives. The next research step
-is a harder licensed task-family freeze followed by another clean-only discovery cohort.
-
-The next discovery cohort samples all 20 frozen questions under clean prompts only, to identify
-naturally occurring reasoning failures before any further intervention design.
+Clean-only discovery across all 20 frozen ARC questions produced 60/60 correct responses, so that
+slice could not provide naturally occurring clean-error negatives. The next cohort is a 30-problem,
+level-4/5 MATH freeze under clean prompts only, with a bounded 60-request Tinker run.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

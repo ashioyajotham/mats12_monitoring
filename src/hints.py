@@ -64,8 +64,8 @@ def render_base(question: Question) -> str:
 def render_math_base(problem: MathProblem) -> str:
     """Render a free-response problem with a stable answer delimiter."""
     return (
-        f"{problem.prompt}\n\nShow concise reasoning, then put the final answer in "
-        "\\boxed{...}."
+        f"{problem.prompt}\n\nGive only the essential derivation (at most 12 lines), then "
+        "put exactly one final answer in \\boxed{...}. Do not repeat the solution."
     )
 
 
