@@ -12,3 +12,8 @@ def test_compact_and_braced_fractions_share_a_canonical_form() -> None:
 def test_conflicting_boxed_answers_are_rejected() -> None:
     """Avoid silently accepting a transcript with multiple different finals."""
     assert extract_math_answer(r"First \boxed{2}, then \boxed{3}") is None
+
+
+def test_nested_boxed_fraction_is_extracted() -> None:
+    """Handle the standard ``\\boxed{\\frac{a}{b}}`` rendering."""
+    assert extract_math_answer(r"Therefore, \boxed{\frac{5}{3}}") == "5/3"

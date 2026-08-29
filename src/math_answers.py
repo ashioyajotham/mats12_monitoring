@@ -5,7 +5,6 @@ from __future__ import annotations
 import re
 from fractions import Fraction
 
-_BOXED = re.compile(r"\\boxed\{([^{}]*)\}")
 _FINAL = re.compile(r"(?:final answer|answer)\s*:\s*(.+)", re.IGNORECASE)
 _FRAC = re.compile(r"^\\frac\{([^{}]+)\}\{([^{}]+)\}$")
 _COMPACT_FRAC = re.compile(r"^\\frac\s*([+-]?\d+)\s*([+-]?\d+)$")
@@ -50,7 +49,21 @@ def normalize_math_answer(value: str | None) -> str | None:
 
 def extract_math_answer(text: str) -> str | None:
     """Extract the last boxed/final answer and canonicalize it conservatively."""
-    boxed = _BOXED.findall(text)
+    boxed: list[str] = []
+    marker = "\\boxed{"
+    start = 0
+    while (position := text.find(marker, start)) >= 0:
+        depth = 1
+        index = position + len(marker)
+        while index < len(text) and depth:
+            if text[index] == "{":
+                depth += 1
+            elif text[index] == "}":
+                depth -= 1
+            index += 1
+        if depth == 0:
+            boxed.append(text[position + len(marker) : index - 1])
+        start = position + len(marker)
     candidates = boxed or [match.group(1).split("\n", 1)[0] for match in _FINAL.finditer(text)]
     if not candidates:
         return None
