@@ -97,6 +97,13 @@ python experiments/02_generate_dataset.py \
   --samples-per-condition 1 \
   --dry-run
 
+# Validate the seeded Tinker/Qwen smoke plan without spending credits
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_smoke.yaml \
+  --limit 1 \
+  --samples-per-condition 1 \
+  --dry-run
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -121,7 +128,8 @@ python experiments/00_prepare_pilot_dataset.py \
 
 0. `00_prepare_pilot_dataset.py`: reproduce the licensed, hashed ARC question freeze.
 1. `01_pilot.py`: validate config, prompts, schemas and causal-label plumbing with mock data.
-2. `02_generate_dataset.py`: collect immutable Z.AI GLM rollouts with a run manifest and smoke gate.
+2. `02_generate_dataset.py`: collect immutable Z.AI or Tinker rollouts with manifests, resume,
+   provider provenance, and smoke gates.
 3. `03_run_baselines.py`: correctness, surface and judge baselines.
 4. `04_resampling_monitor.py`: calculate counterfactual answer-shift evidence.
 5. `05_activation_probe.py`: optional residual-stream probe after behavioural gates.

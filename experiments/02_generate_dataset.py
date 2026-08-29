@@ -1,4 +1,4 @@
-"""Collect append-only GLM rollouts from the frozen pilot questions."""
+"""Collect append-only reasoning-model rollouts from frozen pilot questions."""
 
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ from src.audit import (
     sha256_file,
     utc_now,
 )
+from src.backends.tinker import TinkerBackend, TinkerBackendError
 from src.backends.zai import ZAIBackend, ZAIBackendError
 from src.generate_rollouts import (
     Rollout,
@@ -66,7 +67,7 @@ def load_resume_rollouts(path: Path, *, config_sha256: str) -> list[Rollout]:
 
 
 def main() -> None:
-    """Run a bounded smoke collection or the configured full GLM pilot collection."""
+    """Run a bounded smoke collection or the configured full model pilot."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--config", default="configs/glm_smoke.yaml")
     parser.add_argument("--limit", type=int, help="Use only the first N frozen questions")
@@ -93,8 +94,8 @@ def main() -> None:
 
     config = load_config(args.config)
     generation = config["generation"]
-    if generation["backend"] != "zai":
-        raise SystemExit("02_generate_dataset requires generation.backend=zai")
+    if generation["backend"] not in {"tinker", "zai"}:
+        raise SystemExit("02_generate_dataset requires generation.backend=tinker or zai")
     if args.limit is not None and args.limit <= 0:
         raise SystemExit("--limit must be positive")
     if args.request_delay_seconds < 0:
@@ -129,7 +130,7 @@ def main() -> None:
         "samples_per_condition": samples,
         "requests": len(plan),
         "model": generation["model"],
-        "provider_seed_supported": False,
+        "provider_seed_supported": generation["provider_seed_supported"],
     }
     if args.dry_run:
         print(json.dumps(plan_summary, indent=2))
@@ -161,17 +162,25 @@ def main() -> None:
     completed_ids = {rollout.rollout_id for rollout in imported}
 
     try:
-        backend = ZAIBackend.from_env(
-            base_url=generation["base_url"],
-            timeout_seconds=generation["timeout_seconds"],
-            max_retries=generation["max_retries"],
-        )
-    except ZAIBackendError as exc:
+        if generation["backend"] == "zai":
+            backend = ZAIBackend.from_env(
+                base_url=generation["base_url"],
+                timeout_seconds=generation["timeout_seconds"],
+                max_retries=generation["max_retries"],
+            )
+        else:
+            backend = TinkerBackend(
+                generation["model"], renderer_name=generation["renderer"]
+            )
+    except (TinkerBackendError, ZAIBackendError) as exc:
         raise SystemExit(str(exc)) from exc
 
     started_at = datetime.now(UTC)
     timestamp = started_at.strftime("%Y%m%dT%H%M%SZ")
-    output_dir = Path(config["paths"]["generated_dir"]) / f"glm_{purpose}_{timestamp}"
+    output_dir = (
+        Path(config["paths"]["generated_dir"])
+        / f"{generation['backend']}_{purpose}_{timestamp}"
+    )
     output_dir.mkdir(parents=True, exist_ok=False)
     rollouts_path = output_dir / "rollouts.jsonl"
     completed: list[Rollout] = list(imported)
@@ -236,10 +245,11 @@ def main() -> None:
         "completed_at": utc_now(),
         "runtime_environment": runtime_environment(),
         "backend": {
-            "name": "zai",
-            "base_url": generation["base_url"],
+            "name": generation["backend"],
+            "base_url": generation.get("base_url"),
+            "renderer": generation.get("renderer"),
             "thinking": "enabled",
-            "seed_supported": False,
+            "seed_supported": generation["provider_seed_supported"],
             "open_weights": generation["open_weights"],
             "open_weights_revision": generation["open_weights_revision"],
         },

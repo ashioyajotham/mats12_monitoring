@@ -74,6 +74,36 @@ def test_glm_smoke_dry_run_requires_no_api_key():
     }
 
 
+def test_tinker_smoke_dry_run_requires_no_api_key():
+    repo = Path(__file__).resolve().parents[1]
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "experiments/02_generate_dataset.py",
+            "--config",
+            "configs/tinker_smoke.yaml",
+            "--limit",
+            "1",
+            "--samples-per-condition",
+            "1",
+            "--dry-run",
+        ],
+        cwd=repo,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    assert json.loads(completed.stdout) == {
+        "purpose": "smoke_test_only",
+        "questions": 1,
+        "conditions": 3,
+        "samples_per_condition": 1,
+        "requests": 3,
+        "model": "Qwen/Qwen3.6-35B-A3B",
+        "provider_seed_supported": True,
+    }
+
+
 def test_resume_loader_accepts_only_matching_config(tmp_path):
     repo = Path(__file__).resolve().parents[1]
     module = runpy.run_path(repo / "experiments/02_generate_dataset.py")
