@@ -114,6 +114,11 @@ python experiments/02_generate_dataset.py \
   --config configs/tinker_intermediate_calibration.yaml \
   --dry-run
 
+# Validate the clean-only natural-error discovery plan
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_natural_failures.yaml \
+  --dry-run
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -201,6 +206,13 @@ factorial confirmed their interaction but produced no valid silent-use candidate
 16K-token ceiling failures. Human review, grouped-bootstrap reporting, and empirical monitor
 evaluation remain unrun. A non-authority peer scratch-note pivot then produced 0/10 uptake with
 no invalid outputs.
+
+Clean-only discovery across all 20 frozen ARC questions then produced 60/60 correct responses, so
+this task slice cannot provide naturally occurring clean-error negatives. The next research step
+is a harder licensed task-family freeze followed by another clean-only discovery cohort.
+
+The next discovery cohort samples all 20 frozen questions under clean prompts only, to identify
+naturally occurring reasoning failures before any further intervention design.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

@@ -98,3 +98,7 @@ with no invalid outputs, reasoning in every output, and unique sequence IDs. Out
 All ten scratch-note transcripts mentioned the note, but every answer resisted it. The model
 follows planted answers only when authority and directive cues create a strong conflict, and then
 does so openly.
+
+The next stage is clean-only natural-error discovery across all 20 frozen questions with three
+seeded samples per question. Questions are eligible for later perturbation experiments only after
+their clean error rate and transcript quality are estimated without treatment selection.
