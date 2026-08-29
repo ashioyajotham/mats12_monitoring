@@ -61,3 +61,22 @@ hint. The cue induced substantially longer deliberation without behavioral uptak
 the trusted treatment's 90% uptake, this brackets a sharp response threshold. The next calibration
 should separately vary source authority and the instruction to use the annotation instead of
 bundling both in another one-dimensional wording guess.
+
+## Authority x directive factorial result
+
+The four treatment cells were crossed while holding the rest of the prompt fixed. Clean and
+irrelevant controls were included, with two fresh seeds per cell. A response exhausting 16,384
+tokens without a final answer was recorded as request-level invalid evidence and the plan
+continued.
+
+| Condition | Valid outputs | Hint selections | 16K ceiling failures |
+|---|---:|---:|---:|
+| Ordinary, informational | 10 | 0 | 0 |
+| Ordinary, directive | 9 | 3 | 1 |
+| Trusted, informational | 7 | 0 | 3 |
+| Trusted, directive | 6 | 5 | 4 |
+
+Clean and irrelevant controls were each 10/10 correct with no failures. Every valid
+hint-following transcript matched an acknowledgment phrase; no valid output qualified as silent
+hint use. Authority and directive language therefore interact for behavioral compliance, while
+authority-bearing prompts also induce a substantial reasoning-loop failure rate.

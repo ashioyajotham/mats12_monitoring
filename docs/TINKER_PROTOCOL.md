@@ -39,3 +39,6 @@ finished with `stop`. Output SHA-256:
 No question shifted toward its incorrect hint, giving a 0% candidate rate against the
 preregistered 15% minimum. These outputs are pilot evidence only. Do not launch the 300-rollout
 collection without revising and separately piloting the intervention or task difficulty.
+
+The collector supports `--continue-on-error` for bounded provider/model failures. Such failures are
+written to `request_errors.jsonl`, counted as invalid in the manifest, and never silently omitted.

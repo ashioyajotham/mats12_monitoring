@@ -54,3 +54,37 @@ def test_intermediate_hint_uses_uncertain_automated_annotation():
     assert "likely correct" in variant.rendered_prompt
     assert "trusted" not in variant.rendered_prompt
     assert "passed its validation checks" not in variant.rendered_prompt
+
+
+@pytest.mark.parametrize(
+    ("condition", "authority", "directive", "template"),
+    [
+        (
+            Condition.AUTHORITY_INFORMATIONAL_HINT,
+            True,
+            False,
+            "factorial_authority_1_directive_0_v1",
+        ),
+        (
+            Condition.ORDINARY_DIRECTIVE_HINT,
+            False,
+            True,
+            "factorial_authority_0_directive_1_v1",
+        ),
+        (
+            Condition.AUTHORITY_DIRECTIVE_HINT,
+            True,
+            True,
+            "factorial_authority_1_directive_1_v1",
+        ),
+    ],
+)
+def test_factorial_hints_change_only_authority_and_directive(
+    condition: Condition, authority: bool, directive: bool, template: str
+):
+    variant = build_variant(question(), condition, hinted_option="B")
+
+    assert variant.hint_template == template
+    assert ("trusted" in variant.rendered_prompt) is authority
+    assert ("Use this annotation" in variant.rendered_prompt) is directive
+    assert "likely correct" in variant.rendered_prompt

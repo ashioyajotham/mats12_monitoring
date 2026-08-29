@@ -90,6 +90,17 @@ def main() -> None:
         default=0.0,
         help="Wait between provider requests to reduce free-tier throttling",
     )
+    parser.add_argument(
+        "--continue-on-error",
+        action="store_true",
+        help="Record bounded request failures and continue collecting the remaining plan",
+    )
+    parser.add_argument(
+        "--max-errors",
+        type=int,
+        default=10,
+        help="Abort after this many recorded request failures",
+    )
     args = parser.parse_args()
 
     config = load_config(args.config)
@@ -100,6 +111,8 @@ def main() -> None:
         raise SystemExit("--limit must be positive")
     if args.request_delay_seconds < 0:
         raise SystemExit("--request-delay-seconds must be non-negative")
+    if args.max_errors <= 0:
+        raise SystemExit("--max-errors must be positive")
 
     questions = [
         record
@@ -183,9 +196,14 @@ def main() -> None:
     )
     output_dir.mkdir(parents=True, exist_ok=False)
     rollouts_path = output_dir / "rollouts.jsonl"
+    errors_path = output_dir / "request_errors.jsonl"
     completed: list[Rollout] = list(imported)
+    request_errors: list[dict[str, object]] = []
     failure: str | None = None
-    with rollouts_path.open("x", encoding="utf-8") as handle:
+    with (
+        rollouts_path.open("x", encoding="utf-8") as handle,
+        errors_path.open("x", encoding="utf-8") as errors_handle,
+    ):
         for rollout in imported:
             handle.write(rollout.model_dump_json() + "\n")
         handle.flush()
@@ -201,17 +219,38 @@ def main() -> None:
             ):
                 if request_index and args.request_delay_seconds:
                     time.sleep(args.request_delay_seconds)
-                variant = build_variant(question, condition, hinted_option=hinted_option)
-                rollout = collect_rollout(
-                    question,
-                    variant,
-                    backend,
-                    model=generation["model"],
-                    seed=logical_seed,
-                    temperature=generation["temperature"],
-                    top_p=generation["top_p"],
-                    max_new_tokens=generation["max_new_tokens"],
-                )
+                try:
+                    variant = build_variant(question, condition, hinted_option=hinted_option)
+                    rollout = collect_rollout(
+                        question,
+                        variant,
+                        backend,
+                        model=generation["model"],
+                        seed=logical_seed,
+                        temperature=generation["temperature"],
+                        top_p=generation["top_p"],
+                        max_new_tokens=generation["max_new_tokens"],
+                    )
+                except Exception as exc:
+                    if not args.continue_on_error:
+                        raise
+                    error = {
+                        "question_id": question.question_id,
+                        "condition": str(condition),
+                        "seed": logical_seed,
+                        "model": generation["model"],
+                        "error_type": type(exc).__name__,
+                        "error": str(exc),
+                        "recorded_at": utc_now(),
+                    }
+                    request_errors.append(error)
+                    errors_handle.write(json.dumps(error, sort_keys=True) + "\n")
+                    errors_handle.flush()
+                    if len(request_errors) >= args.max_errors:
+                        raise RuntimeError(
+                            f"reached --max-errors={args.max_errors}"
+                        ) from exc
+                    continue
                 handle.write(rollout.model_dump_json() + "\n")
                 handle.flush()
                 completed.append(rollout)
@@ -230,7 +269,7 @@ def main() -> None:
             and set(quality["finish_reasons"]) == {"stop"}
         )
     )
-    status = "failed" if failure else "complete"
+    status = "failed" if failure else "complete_with_errors" if request_errors else "complete"
     if purpose == "smoke_test_only" and not failure and not smoke_gate_passed:
         status = "quality_failed"
     manifest_payload = {
@@ -263,6 +302,8 @@ def main() -> None:
             "max_new_tokens": generation["max_new_tokens"],
             "logical_base_seed": generation["base_seed"],
             "request_delay_seconds": args.request_delay_seconds,
+            "continue_on_error": args.continue_on_error,
+            "max_errors": args.max_errors,
         },
         "resume": {
             "source": str(args.resume_from) if args.resume_from else None,
@@ -273,7 +314,8 @@ def main() -> None:
         "counts": {
             "requested": len(plan),
             "completed": quality["completed"],
-            "invalid": quality["invalid"],
+            "invalid": quality["invalid"] + len(request_errors),
+            "request_errors": len(request_errors),
             "reasoning_present": quality["reasoning_present"],
             "unique_provider_request_ids": quality["unique_provider_request_ids"],
         },
@@ -282,6 +324,7 @@ def main() -> None:
         "latency_seconds": quality["latency_seconds"],
         "usage": quality["usage"],
         "output_sha256": sha256_file(rollouts_path),
+        "request_errors_sha256": sha256_file(errors_path),
     }
     write_manifest(output_dir / "manifest.json", manifest_payload)
     print(json.dumps({"output_dir": str(output_dir), **manifest_payload["counts"]}, indent=2))

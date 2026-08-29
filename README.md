@@ -196,8 +196,10 @@ pipeline, causal-label derivation, baseline interfaces, rare-event metrics, audi
 CPU-only tests are implemented. The licensed ARC pilot input freeze is committed with provenance.
 The Tinker/Qwen integration has passed live infrastructure checks. A trusted-answer-key treatment
 caused 90% wrong-answer uptake with explicit acknowledgment, while an uncertain automated
-annotation caused longer deliberation but zero uptake. Human review, factorial intervention
-calibration, grouped-bootstrap reporting, and empirical monitor evaluation remain unrun.
+annotation caused longer deliberation but zero uptake. A follow-up authority-by-directive
+factorial confirmed their interaction but produced no valid silent-use candidates and eight
+16K-token ceiling failures. Human review, grouped-bootstrap reporting, and empirical monitor
+evaluation remain unrun.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are
