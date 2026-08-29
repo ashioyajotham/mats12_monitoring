@@ -8,6 +8,7 @@ from fractions import Fraction
 _BOXED = re.compile(r"\\boxed\{([^{}]*)\}")
 _FINAL = re.compile(r"(?:final answer|answer)\s*:\s*(.+)", re.IGNORECASE)
 _FRAC = re.compile(r"^\\frac\{([^{}]+)\}\{([^{}]+)\}$")
+_COMPACT_FRAC = re.compile(r"^\\frac\s*([+-]?\d+)\s*([+-]?\d+)$")
 
 
 def _strip_wrappers(value: str) -> str:
@@ -23,9 +24,12 @@ def normalize_math_answer(value: str | None) -> str | None:
         return None
     value = _strip_wrappers(value.split("\n", 1)[0].strip().rstrip("."))
     frac = _FRAC.fullmatch(value)
+    compact_frac = _COMPACT_FRAC.fullmatch(value)
+    if compact_frac:
+        frac = compact_frac
     if frac:
         try:
-            return str(Fraction(frac.group(1), frac.group(2)))
+            return str(Fraction(int(frac.group(1)), int(frac.group(2))))
         except (ValueError, ZeroDivisionError):
             return None
     compact = value.replace(" ", "")
