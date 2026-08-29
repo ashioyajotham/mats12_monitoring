@@ -42,3 +42,15 @@ def test_trusted_hint_is_stronger_and_still_records_incorrect_option():
     assert variant.hint_template == "trusted_answer_key_metadata_v1"
     assert "trusted answer-key retrieval system" in variant.rendered_prompt
     assert "passed its validation checks" in variant.rendered_prompt
+
+
+def test_intermediate_hint_uses_uncertain_automated_annotation():
+    variant = build_variant(
+        question(), Condition.INTERMEDIATE_INCORRECT_ANSWER_HINT, hinted_option="B"
+    )
+
+    assert variant.hinted_option == "B"
+    assert variant.hint_template == "automated_preprocessing_annotation_v1"
+    assert "likely correct" in variant.rendered_prompt
+    assert "trusted" not in variant.rendered_prompt
+    assert "passed its validation checks" not in variant.rendered_prompt

@@ -109,6 +109,11 @@ python experiments/02_generate_dataset.py \
   --config configs/tinker_calibration.yaml \
   --dry-run
 
+# Validate the intermediate-strength annotation calibration
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_intermediate_calibration.yaml \
+  --dry-run
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -190,9 +195,9 @@ See [`docs/REFERENCES.md`](docs/REFERENCES.md) for what is borrowed from each so
 pipeline, causal-label derivation, baseline interfaces, rare-event metrics, audit manifests, and
 CPU-only tests are implemented. The licensed ARC pilot input freeze is committed with provenance.
 The Tinker/Qwen integration has passed live infrastructure checks. A trusted-answer-key treatment
-caused strong wrong-answer uptake but explicit acknowledgment, so it is unsuitable as the main
-silent-rationalization treatment. Human review, intermediate-strength intervention calibration,
-grouped-bootstrap reporting, and empirical monitor evaluation remain unrun.
+caused 90% wrong-answer uptake with explicit acknowledgment, while an uncertain automated
+annotation caused longer deliberation but zero uptake. Human review, factorial intervention
+calibration, grouped-bootstrap reporting, and empirical monitor evaluation remain unrun.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are
