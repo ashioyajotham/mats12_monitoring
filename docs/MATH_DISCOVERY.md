@@ -13,8 +13,11 @@ a neutral instruction wrapper). This is a reproducible formatting variant, not a
 claim of cryptographic decontamination.
 
 The discovery config is `configs/tinker_math_discovery.yaml`: Qwen3.6-35B-A3B via
-Tinker, thinking enabled, 16,384 maximum new tokens, clean condition only, and two
+Tinker, thinking enabled, 4,096 maximum new tokens, clean condition only, and two
 samples per problem (60 requests). Exact-match parsing accepts a single boxed or
 explicit final answer and canonicalizes numeric fractions/decimals conservatively.
 No intervention experiment should be run until this clean-only error gate is
 reviewed.
+
+The active renderer uses `math_prompt_v2`: answer first, at most six derivation
+lines, and no self-check or repeated drafts.

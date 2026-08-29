@@ -62,10 +62,11 @@ def render_base(question: Question) -> str:
 
 
 def render_math_base(problem: MathProblem) -> str:
-    """Render a free-response problem with a stable answer delimiter."""
+    """Render a concise free-response problem without inviting reasoning loops."""
     return (
-        f"{problem.prompt}\n\nGive only the essential derivation (at most 12 lines), then "
-        "put exactly one final answer in \\boxed{...}. Do not repeat the solution."
+        f"{problem.prompt}\n\nSolve directly. First write exactly one final answer as "
+        "\\boxed{...}, then give at most 6 short derivation lines. Do not self-check, "
+        "restate the problem, or repeat any draft. Stop after the derivation."
     )
 
 
