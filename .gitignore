@@ -48,6 +48,10 @@ data/reviewed/*
 !data/raw/procedural_causal_yield_v1.certificates.jsonl
 !data/raw/procedural_causal_yield_v1.selection.json
 !data/raw/procedural_causal_yield_v1.manifest.json
+!data/raw/procedural_continuation_yield_v2.jsonl
+!data/raw/procedural_continuation_yield_v2.certificates.jsonl
+!data/raw/procedural_continuation_yield_v2.selection.json
+!data/raw/procedural_continuation_yield_v2.manifest.json
 !data/generated/.gitkeep
 !data/reviewed/.gitkeep
 
@@ -60,4 +64,5 @@ results/*.jsonl
 !results/procedural_v2_mixed_outcome.json
 !results/procedural_v21_mixed_outcome.json
 !results/procedural_causal_yield_v1.json
+!results/procedural_continuation_yield_v2.json
 !results/figures/.gitkeep

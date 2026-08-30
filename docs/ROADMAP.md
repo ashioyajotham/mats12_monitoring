@@ -36,8 +36,11 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
 - [x] Pass the clean-only mixed-outcome gate on 120 fresh responses with 64 correct, 56 incorrect,
   and zero invalid outputs.
 - [x] Freeze a diagnostic-only, outcome-independent matched partial-solution causal-yield pilot.
-- [ ] Run the 108-request causal-yield pilot and complete manual validity review if its automated
-  gate passes.
+- [x] Run the 108-request answer-bearing causal-yield pilot; record its null causal effect and zero
+  defensible silent-use candidates.
+- [x] Freeze an eight-question exact state-continuation v2 pilot on previously unused questions.
+- [ ] Run the 72-request continuation-yield pilot and manually review candidates only if its
+  automated causal gate passes.
 - [ ] Train monitors only after causal positives also pass validity and diversity gates.
 
 ## Milestone 1: freeze the pilot inputs

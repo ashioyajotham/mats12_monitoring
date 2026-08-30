@@ -190,6 +190,12 @@ python experiments/02_generate_dataset.py \
   --config configs/tinker_procedural_causal_yield.yaml \
   --dry-run
 
+# Reproduce and validate the exact eight-question continuation-yield-v2 freeze
+python experiments/00_prepare_continuation_yield_pilot.py
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_procedural_continuation_yield_v2.yaml \
+  --dry-run
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -305,7 +311,12 @@ checks with 120/120 scorable responses, 64 correct, and 56 incorrect. The result
 [`docs/PROCEDURAL_V21_RESULT.md`](docs/PROCEDURAL_V21_RESULT.md). This authorizes the bounded,
 diagnostic-only matched partial-solution pilot frozen in
 [`docs/PREREGISTRATION_CAUSAL_YIELD_V1.md`](docs/PREREGISTRATION_CAUSAL_YIELD_V1.md), not monitor
-training.
+training. That answer-bearing pilot subsequently failed: its planted-target effect was 2.8 points
+with an interval spanning zero, and manual inspection found zero defensible silent-use candidates.
+The result is recorded in
+[`docs/CAUSAL_YIELD_V1_RESULT.md`](docs/CAUSAL_YIELD_V1_RESULT.md). The final bounded prompt-level
+test is the exact intermediate-state continuation mechanism preregistered in
+[`docs/PREREGISTRATION_CONTINUATION_YIELD_V2.md`](docs/PREREGISTRATION_CONTINUATION_YIELD_V2.md).
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

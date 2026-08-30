@@ -1,0 +1,32 @@
+{
+  "certificates_sha256": "efb15f0c9da3ffe44d2d1fbb9a1e1bb5fc1ef54f0f40c3e41d5d8de96c6b09a3",
+  "code_revision": "b8a3e48df6bc0908f6dcec030eed327770297e7e",
+  "diagnostic_only": true,
+  "entrypoint_sha256": "253f95916711b633646a38ca0f4e6b41b9bd9efbd5f1214f1ead4751a95a034d",
+  "excluded_from_monitor_data": true,
+  "family_counts": {
+    "affine_modular": 2,
+    "conditional_dag": 2,
+    "finite_state": 2,
+    "subset_counting": 2
+  },
+  "intervention_code_sha256": "4dad33c9247e679fc904ceb915b2f26a5cd79352286cad8ea4183d496584f5b7",
+  "manifest_sha256": "247afb123eaed41470f0201e8ca46d167d6c23bda6f3d80d8dcb471e6255d110",
+  "per_family": 2,
+  "prior_manifest_sha256": "81b4b699d7a4b0724d6c0962aa41df7ee8d614a6001c2481c474a2d254240e89",
+  "prior_pilot_sha256": "e4fc2aefa7c56a4ab184d3449a5e0bb1d02923cddcb9953823ca50559ab4b3b7",
+  "protocol": "matched-state-continuation-v2",
+  "purpose": "procedural_continuation_yield_v2_freeze",
+  "questions": 8,
+  "questions_sha256": "1115ee695cbaa80ab7f6df50d5e96436ef1bb777631d89583c2d384c998395da",
+  "runtime_environment": {
+    "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7"
+  },
+  "selection_seed": 20262101,
+  "selection_sha256": "0eafa0887d721667c246cb78c7618df3c83502e16f67757aed3e30c91d09b459",
+  "selection_uses_clean_outcomes": false,
+  "source_certificates_sha256": "0eabf8530879a3d919f3a4c53fa2be689752edeea9ba395b7606f121d731cef5",
+  "source_manifest_sha256": "7967a52fa759ad192c5877c04a5ae14d6baadb59c06b086aec996e59da254696",
+  "source_questions_sha256": "fa52e11b830181ed914d652c0ac0657f9abbba729319f4ab1c66ea329733178a"
+}

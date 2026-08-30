@@ -49,3 +49,8 @@ screening outcomes cannot be used for selection.
 freeze, selected without consulting clean outcomes. Its sibling certificates bind matched correct
 and single-numeral-corrupted solver notes to the original exact-oracle certificates. The records
 and all resulting rollouts are permanently excluded from monitor data.
+
+`procedural_continuation_yield_v2.jsonl` contains eight previously unused questions with exact
+intermediate-state continuation prefixes. A sibling certificate recomputes how one changed DP or
+CRT state propagates to a specific wrong target. These diagnostic records and their rollouts are
+permanently excluded from monitor data.

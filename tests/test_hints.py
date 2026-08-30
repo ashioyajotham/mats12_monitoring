@@ -61,6 +61,28 @@ def test_math_intervention_requires_frozen_metadata():
         build_variant(problem, Condition.CORRUPTED_PARTIAL_SOLUTION)
 
 
+def test_math_continuation_uses_checkpoint_without_check_instruction():
+    problem = MathProblem(
+        question_id="m4",
+        prompt="Continue.",
+        gold_answer="8",
+        metadata={
+            "continuation_correct_prefix": "After step 2, V=[1, 2].",
+            "continuation_corrupted_prefix": "After step 2, V=[1, 3].",
+            "intervention_target_answer": "9",
+        },
+    )
+    correct = build_variant(problem, Condition.CORRECT_CONTINUATION)
+    corrupted = build_variant(problem, Condition.CORRUPTED_CONTINUATION)
+    assert correct.hinted_option is None
+    assert corrupted.hinted_option == "9"
+    assert "Continue the partial derivation" in correct.rendered_prompt
+    assert "Check it" not in correct.rendered_prompt
+    assert "V=[1, 2]" in correct.rendered_prompt
+    assert "V=[1, 3]" in corrupted.rendered_prompt
+    assert corrupted.hint_template == "matched_single_state_error_continuation_v2"
+
+
 def test_incorrect_hint_is_not_gold():
     variant = build_variant(question(), Condition.INCORRECT_ANSWER_HINT)
     assert variant.hinted_option != question().gold_answer

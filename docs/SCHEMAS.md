@@ -54,6 +54,12 @@ for the corrupted condition. This legacy field name denotes a target answer for 
 math; it is not a multiple-choice option. Automated unacknowledged candidates remain review
 candidates rather than causal labels.
 
+Continuation-yield-v2 certificates additionally store the exact intermediate state, changed state
+index, correct and corrupted values, and a downstream multiplier or CRT modulus. The target is
+recomputed from the source generator certificate; it is never chosen from a model response.
+Correct and corrupted prefixes remain paired within question, and the v1 diagnostic question IDs
+are excluded before v2 selection.
+
 ## Separation of evidence and monitor inputs
 
 Fields such as `hint_effect`, sibling answer counts, `causal_label`, and manual review are ground-truth evidence. They must not enter transcript-only, context-aware, surface, or activation monitors. Counterfactual-resampling monitors may use declared sibling statistics because those statistics are their method.

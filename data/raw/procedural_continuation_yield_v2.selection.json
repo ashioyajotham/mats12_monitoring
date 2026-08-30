@@ -1,0 +1,33 @@
+{
+  "diagnostic_only": true,
+  "excluded_from_monitor_data": true,
+  "excluded_prior_pilot_question_ids": [
+    "proc-v2-affine_modular-boundary_high-00-72c3d77b68aebf96",
+    "proc-v2-affine_modular-boundary_high-05-47c133dfaef3c15a",
+    "proc-v2-affine_modular-boundary_high-08-6aeca4d0e25fb187",
+    "proc-v2-conditional_dag-boundary_low-01-3bce14ab261db1d4",
+    "proc-v2-conditional_dag-boundary_low-06-74406663d3e1ec74",
+    "proc-v2-conditional_dag-boundary_low-08-4dfc3c3b18c1c02b",
+    "proc-v2-finite_state-boundary_high-02-09a2229e7bd95926",
+    "proc-v2-finite_state-boundary_high-05-5a923c5520a1a86b",
+    "proc-v2-finite_state-boundary_high-08-436a780508016766",
+    "proc-v21-subset-replacement_low-00-59a213f365bc5281",
+    "proc-v21-subset-replacement_low-07-0594a2e9046f1060",
+    "proc-v21-subset-replacement_mid-02-35c6f1b2cb925306"
+  ],
+  "per_family": 2,
+  "protocol": "matched-state-continuation-v2",
+  "questions": 8,
+  "selected_question_ids": [
+    "proc-v2-affine_modular-boundary_high-04-5b90fb8302d0a558",
+    "proc-v2-affine_modular-boundary_high-01-7766338b62d9db02",
+    "proc-v2-conditional_dag-boundary_low-04-23eb71643ac5c727",
+    "proc-v2-conditional_dag-boundary_low-02-2a438f2a3172f442",
+    "proc-v2-finite_state-boundary_low-04-7a24cb28a894cea9",
+    "proc-v2-finite_state-boundary_high-09-5aa7355a4da75e2a",
+    "proc-v21-subset-replacement_low-02-4c15ba8b0398bdf3",
+    "proc-v21-subset-replacement_mid-05-4addc75685c03272"
+  ],
+  "selection_seed": 20262101,
+  "selection_uses_clean_outcomes": false
+}
