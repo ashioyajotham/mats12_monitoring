@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "mats12-monitoring"
 version = "0.1.0"
-description = "Low-base-rate monitoring of causally hint-influenced chain-of-thought"
+description = "Monitoring ordinary versus causally induced reasoning errors"
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}

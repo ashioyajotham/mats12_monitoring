@@ -15,8 +15,8 @@ errors from ordinary failures without overwhelming an auditor with false positiv
 
 ### Primary question
 
-Can counterfactual resampling distinguish ordinary completed reasoning errors from errors produced
-by a certified single-state perturbation better than transcript-only and context-aware baselines?
+Can a counterfactual answer-shift score distinguish ordinary completed reasoning errors from errors
+produced by a certified single-state perturbation better than a frozen surface-feature baseline?
 
 ### Research hierarchy
 
@@ -33,9 +33,9 @@ all preregistered causal, uncertainty, integrity, and diversity gates pass.
 
 ### Main hypothesis
 
-Resampling will discriminate certified intervention-caused errors from ordinary errors better than
-surface monitoring on grouped held-out questions, but false positives may still make precision
-poor at low deployment prevalence.
+Counterfactual answer shift will discriminate certified intervention-caused errors from ordinary
+errors better than surface monitoring on grouped held-out questions, but false positives may still
+make precision poor at low deployment prevalence.
 
 ### Unit of analysis
 
@@ -96,7 +96,9 @@ mats12_monitoring/
 │   ├── hints.py                   # controlled prompt interventions
 │   ├── generate_rollouts.py       # backend-neutral rollout generation
 │   ├── causal_labels.py           # causal label derivation
-│   ├── resampling.py              # answer-shift and branch evidence
+│   ├── resampling.py              # legacy hint-uptake estimator
+│   ├── monitor_dataset.py         # gate-bound labels and typed evidence views
+│   ├── monitor_evaluation.py      # OOF fitting and grouped evaluation
 │   ├── monitors/                  # surface, LLM, activation and hybrid monitors
 │   ├── metrics.py                 # AUROC/AUPRC/FPR/low-base-rate PPV
 │   └── audit.py                   # manifests, hashes and claim checks
@@ -247,10 +249,32 @@ uv run --offline python experiments/02_analyze_causal_error_confirmatory.py \
   --run data/generated/tinker_causal_error_v1_confirmatory_<TIMESTAMP> \
   --output results/causal_error_v1_confirmatory.json
 
-# Evaluate monitors from a labelled JSONL file
-python experiments/06_low_base_rate_eval.py \
-  --input data/reviewed/monitor_scores.jsonl \
-  --output results/low_base_rate_metrics.json
+# Only after that report passes, materialize gate-bound monitor examples
+uv run --offline python experiments/03_prepare_monitor_dataset.py \
+  --run data/generated/tinker_causal_error_v1_confirmatory_<TIMESTAMP> \
+  --report results/causal_error_v1_confirmatory.json
+
+# Fit the local controls and answer-shift baseline
+uv run --offline python experiments/03_run_local_monitors.py \
+  --run data/generated/tinker_causal_error_v1_confirmatory_<TIMESTAMP>
+
+# Validate the four-call judge plan on two excluded qualification errors
+uv run --offline python experiments/03_run_judge_baseline.py \
+  --mode smoke \
+  --run data/generated/tinker_causal_error_v1_qualification_20260830T184625Z \
+  --report results/causal_error_v1_qualification.json \
+  --dry-run
+
+# After a live smoke passes, dry-run the full two-view plan before spending credits
+uv run --offline python experiments/03_run_judge_baseline.py \
+  --mode full \
+  --report results/causal_error_v1_confirmatory.json \
+  --smoke-manifest data/generated/tinker_causal_error_judge_smoke_<TIMESTAMP>/manifest.json \
+  --dry-run
+
+# After the full judge run, fit the hybrid and produce the held-out report
+uv run --offline python experiments/03_evaluate_monitor_stack.py \
+  --judge-run data/generated/tinker_causal_error_judge_full_<TIMESTAMP>
 ```
 
 To reproduce the committed question freeze, download the exact pinned source file and run the
@@ -275,10 +299,11 @@ python experiments/00_prepare_pilot_dataset.py \
 2. `02_select_calibration_questions.py`: freeze a difficulty-proxy subset from clean telemetry.
 3. `02_generate_dataset.py`: collect immutable Z.AI or Tinker rollouts with manifests, resume,
    provider provenance, and smoke gates.
-4. `03_run_baselines.py`: correctness, surface and judge baselines.
-5. `04_resampling_monitor.py`: calculate counterfactual answer-shift evidence.
-6. `05_activation_probe.py`: optional residual-stream probe after behavioural gates.
-7. `06_low_base_rate_eval.py`: report balanced metrics and deployment PPV.
+4. `03_prepare_monitor_dataset.py`: hard-gate and materialize typed primary/audit views.
+5. `03_run_local_monitors.py`: fit local controls and the counterfactual answer-shift baseline.
+6. `03_run_judge_baseline.py`: run the smoke-gated, resumable two-view Qwen judge.
+7. `03_evaluate_monitor_stack.py`: fit the OOF hybrid and report grouped held-out metrics.
+8. Historical `04_resampling_monitor.py` and `06_low_base_rate_eval.py` remain for old hint pilots.
 
 Every script writes to a new run-specific file. Never overwrite raw generations.
 
@@ -325,9 +350,10 @@ See [`docs/REFERENCES.md`](docs/REFERENCES.md) for what is borrowed from each so
 
 ## Status
 
-**Discovery gate stopped.** The schemas, controlled prompts, deterministic mock
-pipeline, causal-label derivation, baseline interfaces, rare-event metrics, audit manifests, and
-CPU-only tests are implemented. The licensed ARC pilot input freeze is committed with provenance.
+**Current study: confirmatory collection in progress.** The schemas, controlled prompts,
+deterministic mock pipeline, causal-label derivation, baseline interfaces, rare-event metrics,
+audit manifests, and CPU-only tests are implemented. The licensed ARC pilot input freeze is
+committed with provenance.
 The Tinker/Qwen integration has passed live infrastructure checks. A trusted-answer-key treatment
 caused 90% wrong-answer uptake with explicit acknowledgment, while an uncertain automated
 annotation caused longer deliberation but zero uptake. A follow-up authority-by-directive
@@ -386,7 +412,10 @@ The 72-request clean qualification cohort passed every gate with 29 correct and 
 responses, zero invalid outputs, and ordinary errors across all four families; see
 [`docs/CAUSAL_ERROR_V1_QUALIFICATION_RESULT.md`](docs/CAUSAL_ERROR_V1_QUALIFICATION_RESULT.md).
 The frozen 648-request confirmatory collection is therefore authorized. Monitor training remains
-unauthorized until its causal, clean-negative, diversity, and integrity gates all pass.
+unauthorized until its causal, clean-negative, diversity, and integrity gates all pass. The full
+post-gate monitor stack is implemented, but no monitor result may be produced from a partial or
+failed confirmatory run. Its frozen analysis protocol is documented in
+[`docs/MONITORING_PROTOCOL_V1.md`](docs/MONITORING_PROTOCOL_V1.md).
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

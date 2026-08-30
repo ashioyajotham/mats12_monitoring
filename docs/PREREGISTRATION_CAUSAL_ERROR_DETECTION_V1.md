@@ -69,19 +69,53 @@ Control-condition selections of the target estimate coincidental-label noise and
 
 Transcript-only monitors receive the question, reconstructed reasoning, and answer with condition,
 state provenance, prefix boundary, sibling outcomes, and derived labels removed. Context-aware
-monitors additionally receive the full rendered prompt. Resampling monitors alone may receive
-declared sibling answer statistics.
+monitors additionally receive the full rendered prompt. The counterfactual answer-shift baseline
+alone may receive declared sibling answer statistics.
 
 ## Evaluation
 
 Freeze family-stratified question-group splits at 60/20/20 before collection. No rollout siblings
-cross splits. The primary comparison is resampling versus the frozen surface-feature baseline on
-FPR at 50% recall. Secondary metrics are AUPRC, AUROC, and precision at declared 10%, 5%, and 1%
-deployment prevalences, all with question-cluster bootstrap intervals.
+cross splits. The primary comparison is counterfactual answer shift versus the frozen
+surface-feature baseline on FPR at 50% recall. Secondary metrics are AUPRC, AUROC, and precision at
+declared 10%, 5%, and 1% deployment prevalences, all with question-cluster bootstrap intervals.
 
 Required controls are correctness-only, reasoning length, prompt/template identity, shuffled
 labels, grouped-versus-invalid rollout splitting, and performance broken down by family. Monitor
 training is authorized only after both qualification and confirmatory causal gates pass.
+
+## Outcome-blind monitor-analysis amendment
+
+This section was frozen on 2026-08-30 while the confirmatory collection was still running and
+before its partial outcomes were inspected or analyzed. It changes no data, causal gate, label,
+split, or confirmatory threshold. It resolves monitor implementation details that were previously
+underspecified:
+
+- “resampling” means a **counterfactual answer-shift baseline**, not literal intermediate-state
+  branch resampling. For focal final answer `a`, exclude the focal rollout, estimate its frequency
+  among scorable clean, correct-state, and corrupted-state siblings, and score
+  `(1 + p_corrupt(a) - max(p_clean(a), p_correct(a))) / 2`;
+- the frozen local controls are correctness-only, reasoning length, family/tier/renderer identity,
+  shuffled-label surface, and the existing surface-feature monitor;
+- the transcript-only and context-aware judges use `Qwen/Qwen3.6-35B-A3B` at open-weight revision
+  `995ad96eacd98c81ed38be0c5b274b04031597b0`, renderer `qwen3_5`, thinking enabled, a 4,096-token
+  ceiling, temperature 0.2, top-p 0.95, and at most two retries after malformed or truncated output;
+- two permanently excluded qualification errors are scored under both judge views first. The full
+  judge plan is blocked unless all four calls return valid structured scores with unique provider
+  request IDs;
+- judge both primary examples and a stable, family/kind/split-balanced secondary hard-negative
+  audit capped at 96 examples. The audit is descriptive and cannot change the primary result;
+- the hybrid is logistic fusion of surface, both judge views, and answer shift. Its training rows
+  use genuine five-fold question-group out-of-fold surface scores. Fixed judge and answer-shift
+  components require no fitting;
+- choose deployment thresholds on validation data, apply them once to test, and report the frozen
+  test curve metrics with question-cluster bootstrap intervals and family breakdowns. The primary
+  paired contrast is answer shift minus surface;
+- no activation probe, new intervention, or literal branch-resampling mechanism may be introduced
+  before every implemented behavioural monitor has been evaluated on the passed dataset.
+
+Typed evidence models enforce the information boundary with unknown fields forbidden. In
+particular, transcript-only judge requests cannot carry condition, provenance, sibling outcomes,
+certificates, split, family, or derived labels.
 
 ## Frozen implementation
 

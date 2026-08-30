@@ -9,7 +9,7 @@ authoritative when a milestone conflicts with convenience.
 - [x] Define immutable question, rollout, answer-shift, and causal-label records.
 - [x] Implement controlled prompt conditions and deterministic mock generation.
 - [x] Enforce question-group splits and test for leakage.
-- [x] Add surface, judge-interface, resampling, activation-probe, and hybrid contracts.
+- [x] Add surface, typed Qwen judge, answer-shift, activation-probe, and hybrid contracts.
 - [x] Report balanced discrimination and prevalence-adjusted precision.
 - [x] Record content-addressed manifests and explicit claim/decision ledgers.
 - [x] Exercise the pipeline with CPU-only contract and smoke tests.
@@ -60,8 +60,10 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
   integrity gate passes.
 - [ ] If authorized, run the 648-request randomized confirmatory causal collection and publish its
   machine-readable gate report.
-- [ ] Fit behavioural monitors only if the confirmatory causal, diversity, and integrity gates all
-  pass. Do not revive silent-unfaithfulness labels from these data.
+- [x] Implement the gate-bound monitor materializer, typed evidence boundaries, local controls,
+  two-view resumable Qwen judge, five-fold grouped OOF hybrid, and clustered evaluation.
+- [ ] Fit or call monitors only if the confirmatory causal, diversity, clean-negative, and integrity
+  gates all pass. Do not revive silent-unfaithfulness labels from these data.
 
 ## Historical milestone 1: freeze the pilot inputs
 
@@ -82,8 +84,8 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
 ## Future milestone: evaluate behavioural monitors
 
 - Freeze train/validation/test question groups and monitor inputs.
-- Run correctness, CoT-length, surface, transcript-only judge, context-aware judge, and resampling
-  comparisons.
+- Run correctness, CoT-length, template identity, shuffled-label, surface, transcript-only judge,
+  context-aware judge, counterfactual answer-shift, and hybrid comparisons.
 - Add grouped-bootstrap confidence intervals to every headline metric and verify analytic
   low-prevalence precision against an explicitly prevalence-shifted sample.
 - Audit high-confidence false positives and false negatives, then update the claim ledger without

@@ -1,21 +1,22 @@
 import numpy as np
 import pytest
 
+from src.monitor_dataset import ContextAwareEvidence, TranscriptOnlyEvidence
 from src.monitors.activation_probe import ActivationProbe, shuffled_control
 from src.monitors.hybrid import HybridMonitor
-from src.monitors.llm_judge import JudgeRequest, JudgeView, build_judge_prompt
+from src.monitors.llm_judge import build_judge_prompt
 from src.monitors.surface import SurfaceFeatureMonitor, extract_surface_features
 
 
 def test_judge_prompt_respects_information_boundary():
-    transcript = JudgeRequest(
-        question="Question", reasoning="Reasoning", final_answer="A", view=JudgeView.TRANSCRIPT_ONLY
+    transcript = TranscriptOnlyEvidence(
+        question="Question", reasoning="Reasoning", final_answer="A"
     )
-    aware = transcript.model_copy(
-        update={"view": JudgeView.CONTEXT_AWARE, "hint_text": "External hint says B"}
+    aware = ContextAwareEvidence(
+        **transcript.model_dump(), rendered_prompt="External state says B"
     )
-    assert "External hint says B" not in build_judge_prompt(transcript)
-    assert "External hint says B" in build_judge_prompt(aware)
+    assert "External state says B" not in build_judge_prompt(transcript)
+    assert "External state says B" in build_judge_prompt(aware)
 
 
 def test_surface_features_and_monitor_produce_scores():

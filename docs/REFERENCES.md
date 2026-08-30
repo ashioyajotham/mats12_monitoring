@@ -36,7 +36,9 @@ Borrow: naturally occurring shortcuts, restoration errors, and realistic task fa
 
 **Thought Branches: Interpreting LLM Reasoning Requires Resampling.** [arXiv:2510.27484](https://arxiv.org/abs/2510.27484)
 
-Borrow: treat a reasoning trace as one sample from a distribution; test claims via resampling. Start with full-rollout counterfactuals before introducing expensive intermediate branches.
+Borrow: treat a reasoning trace as one sample from a distribution and test claims with repeated
+samples. The current counterfactual answer-shift score uses only completed-rollout sibling
+frequencies; it is not a literal implementation of intermediate-state branch resampling.
 
 ### Hewitt & Liang (2019)
 
