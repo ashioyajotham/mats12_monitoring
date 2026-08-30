@@ -1,0 +1,14 @@
+{
+  "certificates_sha256": "0eabf8530879a3d919f3a4c53fa2be689752edeea9ba395b7606f121d731cef5",
+  "individual_screening_outcomes_used_for_selection": false,
+  "manifest_sha256": "7c902b29d9b202031b7040ec39f496010e627b4a804c94cb6d6416c820f729e7",
+  "protocol": "procedural-screening-v2.1-adaptive-subset-replacement",
+  "purpose": "procedural_math_v21_combined_pilot_freeze",
+  "questions": 40,
+  "questions_sha256": "fa52e11b830181ed914d652c0ac0657f9abbba729319f4ab1c66ea329733178a",
+  "replacement_source_rollouts_sha256": "6ec06a9c8a2899a57666db1481b57415a6dd238096d24cb7fb4294f25ae3c0af",
+  "replacement_source_run": "data/generated/tinker_procedural_v21_subset_screening_20260830T101950Z",
+  "selection_report_sha256": "c4c10fe2d8e89f9d55373808efbbb5a18395346891d3d6b2745159d284ffa244",
+  "v2_source_rollouts_sha256": "e56d237cb489bf0a82c86d59556c7cb7b71a5979c22c57f4ca618bfe6934d536",
+  "v2_source_run": "data/generated/tinker_procedural_v2_screening_20260830T091412Z"
+}

@@ -1,0 +1,124 @@
+{
+  "adaptation_scope": "replace_failed_subset_counting_family_only",
+  "individual_screening_outcomes_used_for_selection": false,
+  "protocol": "procedural-screening-v2.1-adaptive-subset-replacement",
+  "replacement_screen": {
+    "accuracy_band": [
+      0.3,
+      0.7
+    ],
+    "cells": [
+      {
+        "accuracy": 0.7,
+        "correct": 7,
+        "eligible": true,
+        "family": "subset_counting",
+        "incorrect": 3,
+        "questions": 10,
+        "review": 0,
+        "scorable": 10,
+        "statuses": {
+          "clean_stop": 10
+        },
+        "tier": "replacement_low"
+      },
+      {
+        "accuracy": 0.4444444444444444,
+        "correct": 4,
+        "eligible": true,
+        "family": "subset_counting",
+        "incorrect": 5,
+        "questions": 10,
+        "review": 0,
+        "scorable": 9,
+        "statuses": {
+          "clean_stop": 9,
+          "length_truncated": 1
+        },
+        "tier": "replacement_mid"
+      }
+    ],
+    "duplicate_or_missing_rollout_ids": [],
+    "eligible_tiers": [
+      "replacement_low",
+      "replacement_mid"
+    ],
+    "gate_checks": {
+      "at_least_one_eligible_tier": true,
+      "clean_condition_and_expected_model": true,
+      "exact_20_question_design": true,
+      "no_unknown_rollouts": true,
+      "one_rollout_per_question": true,
+      "valid_certificates": true,
+      "zero_request_errors": true
+    },
+    "invalid_certificate_question_ids": [],
+    "invalid_condition_or_model_rollout_ids": [],
+    "min_scorable_per_cell": 9,
+    "protocol": "procedural-v2.1-subset-screening",
+    "questions": 20,
+    "replacement_screen_passed": true,
+    "request_errors": 0,
+    "rollouts": 20,
+    "unknown_rollout_ids": []
+  },
+  "replacement_selection_seed": 20261701,
+  "selected_family_counts": {
+    "affine_modular": 10,
+    "conditional_dag": 10,
+    "finite_state": 10,
+    "subset_counting": 10
+  },
+  "selected_question_ids": [
+    "proc-v2-conditional_dag-boundary_low-08-4dfc3c3b18c1c02b",
+    "proc-v2-conditional_dag-boundary_low-07-2cc9d354d76fd970",
+    "proc-v2-conditional_dag-boundary_low-02-2a438f2a3172f442",
+    "proc-v2-conditional_dag-boundary_low-05-09c9c31ae2f93909",
+    "proc-v2-conditional_dag-boundary_low-00-3fcb4b70f79a7ffc",
+    "proc-v2-conditional_dag-boundary_low-03-15d25341edc5fe85",
+    "proc-v2-conditional_dag-boundary_low-06-74406663d3e1ec74",
+    "proc-v2-conditional_dag-boundary_low-09-2a162b8dc835698d",
+    "proc-v2-conditional_dag-boundary_low-04-23eb71643ac5c727",
+    "proc-v2-conditional_dag-boundary_low-01-3bce14ab261db1d4",
+    "proc-v2-finite_state-boundary_high-02-09a2229e7bd95926",
+    "proc-v2-finite_state-boundary_high-07-5e1b984939290d8e",
+    "proc-v2-finite_state-boundary_low-08-10b9df4c49238180",
+    "proc-v2-finite_state-boundary_low-05-560ebba97c743185",
+    "proc-v2-finite_state-boundary_high-08-436a780508016766",
+    "proc-v2-finite_state-boundary_high-05-5a923c5520a1a86b",
+    "proc-v2-finite_state-boundary_low-04-7a24cb28a894cea9",
+    "proc-v2-finite_state-boundary_low-07-178003a4187d9a98",
+    "proc-v2-finite_state-boundary_high-00-0a1de4294d4c9bb5",
+    "proc-v2-finite_state-boundary_high-09-5aa7355a4da75e2a",
+    "proc-v2-affine_modular-boundary_high-08-6aeca4d0e25fb187",
+    "proc-v2-affine_modular-boundary_high-01-7766338b62d9db02",
+    "proc-v2-affine_modular-boundary_low-02-0fbb475a7f8c37c6",
+    "proc-v2-affine_modular-boundary_low-05-69328e74b9ef3284",
+    "proc-v2-affine_modular-boundary_high-04-5b90fb8302d0a558",
+    "proc-v2-affine_modular-boundary_high-05-47c133dfaef3c15a",
+    "proc-v2-affine_modular-boundary_low-06-54ba2f1be4ca8e17",
+    "proc-v2-affine_modular-boundary_low-09-47a6a218f327ec7f",
+    "proc-v2-affine_modular-boundary_high-00-72c3d77b68aebf96",
+    "proc-v2-affine_modular-boundary_high-07-2f8fa09387d91dfc",
+    "proc-v21-subset-replacement_low-00-59a213f365bc5281",
+    "proc-v21-subset-replacement_low-09-629d210666308418",
+    "proc-v21-subset-replacement_mid-02-35c6f1b2cb925306",
+    "proc-v21-subset-replacement_mid-05-4addc75685c03272",
+    "proc-v21-subset-replacement_low-02-4c15ba8b0398bdf3",
+    "proc-v21-subset-replacement_low-05-5a26b2227e3fbe1a",
+    "proc-v21-subset-replacement_mid-00-44de8f2d3826334a",
+    "proc-v21-subset-replacement_mid-01-353caf7299bcdd52",
+    "proc-v21-subset-replacement_low-08-6d48f1e3ea727d4b",
+    "proc-v21-subset-replacement_low-07-0594a2e9046f1060"
+  ],
+  "selection_passed": true,
+  "v2_calibration_valid": true,
+  "v2_eligible_cells_reused": [
+    "affine_modular:boundary_high",
+    "affine_modular:boundary_low",
+    "conditional_dag:boundary_low",
+    "finite_state:boundary_high",
+    "finite_state:boundary_low"
+  ],
+  "v2_selection_seed": 20261301
+}

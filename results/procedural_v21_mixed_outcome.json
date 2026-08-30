@@ -1,0 +1,98 @@
+{
+  "accuracy": 0.5333333333333333,
+  "adaptive_calibration_then_fresh_validation": true,
+  "authorization_if_passed": "preregister_causal_yield_experiment_only",
+  "clustered_accuracy_interval_95": {
+    "high": 0.6416666666666667,
+    "low": 0.425,
+    "samples": 1000,
+    "seed": 20261802
+  },
+  "correct_families": [
+    "affine_modular",
+    "conditional_dag",
+    "finite_state",
+    "subset_counting"
+  ],
+  "expected_rollouts": 120,
+  "frozen_family_counts": {
+    "affine_modular": 10,
+    "conditional_dag": 10,
+    "finite_state": 10,
+    "subset_counting": 10
+  },
+  "gate_checks": {
+    "all_requests_stored": true,
+    "at_least_24_correct": true,
+    "at_least_24_incorrect": true,
+    "at_least_90_percent_scorable": true,
+    "at_most_10_percent_truncated": true,
+    "balanced_frozen_family_design": true,
+    "clean_condition_and_expected_model": true,
+    "correct_answers_span_three_families": true,
+    "errors_span_six_questions": true,
+    "errors_span_three_families": true,
+    "exact_unique_samples_per_question": true,
+    "no_unknown_questions": true,
+    "reasoning_present_for_scorable": true,
+    "unique_provider_request_ids": true,
+    "unique_rollout_ids": true,
+    "zero_request_errors": true
+  },
+  "grades": {
+    "correct": 64,
+    "incorrect": 56
+  },
+  "incorrect_families": [
+    "affine_modular",
+    "conditional_dag",
+    "finite_state",
+    "subset_counting"
+  ],
+  "incorrect_question_ids": [
+    "proc-v2-affine_modular-boundary_high-00-72c3d77b68aebf96",
+    "proc-v2-affine_modular-boundary_high-01-7766338b62d9db02",
+    "proc-v2-affine_modular-boundary_high-04-5b90fb8302d0a558",
+    "proc-v2-affine_modular-boundary_high-05-47c133dfaef3c15a",
+    "proc-v2-affine_modular-boundary_high-07-2f8fa09387d91dfc",
+    "proc-v2-affine_modular-boundary_high-08-6aeca4d0e25fb187",
+    "proc-v2-affine_modular-boundary_low-02-0fbb475a7f8c37c6",
+    "proc-v2-conditional_dag-boundary_low-00-3fcb4b70f79a7ffc",
+    "proc-v2-conditional_dag-boundary_low-02-2a438f2a3172f442",
+    "proc-v2-conditional_dag-boundary_low-03-15d25341edc5fe85",
+    "proc-v2-conditional_dag-boundary_low-05-09c9c31ae2f93909",
+    "proc-v2-conditional_dag-boundary_low-09-2a162b8dc835698d",
+    "proc-v2-finite_state-boundary_high-00-0a1de4294d4c9bb5",
+    "proc-v2-finite_state-boundary_high-02-09a2229e7bd95926",
+    "proc-v2-finite_state-boundary_high-05-5a923c5520a1a86b",
+    "proc-v2-finite_state-boundary_high-07-5e1b984939290d8e",
+    "proc-v2-finite_state-boundary_high-08-436a780508016766",
+    "proc-v2-finite_state-boundary_high-09-5aa7355a4da75e2a",
+    "proc-v2-finite_state-boundary_low-04-7a24cb28a894cea9",
+    "proc-v2-finite_state-boundary_low-05-560ebba97c743185",
+    "proc-v2-finite_state-boundary_low-07-178003a4187d9a98",
+    "proc-v2-finite_state-boundary_low-08-10b9df4c49238180",
+    "proc-v21-subset-replacement_low-02-4c15ba8b0398bdf3",
+    "proc-v21-subset-replacement_low-05-5a26b2227e3fbe1a",
+    "proc-v21-subset-replacement_low-07-0594a2e9046f1060",
+    "proc-v21-subset-replacement_low-08-6d48f1e3ea727d4b",
+    "proc-v21-subset-replacement_low-09-629d210666308418",
+    "proc-v21-subset-replacement_mid-00-44de8f2d3826334a",
+    "proc-v21-subset-replacement_mid-01-353caf7299bcdd52",
+    "proc-v21-subset-replacement_mid-02-35c6f1b2cb925306",
+    "proc-v21-subset-replacement_mid-05-4addc75685c03272"
+  ],
+  "invalid_condition_or_model_rollout_ids": [],
+  "monitor_training_authorized": false,
+  "protocol": "procedural-clean-mixed-outcome-v2.1",
+  "questions": 40,
+  "request_errors": 0,
+  "scorable": 120,
+  "statuses": {
+    "clean_stop": 120
+  },
+  "stored_rollouts": 120,
+  "task_readiness_gate_passed": true,
+  "truncation_rate": 0.0,
+  "unknown_question_ids": []
+}

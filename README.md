@@ -184,6 +184,12 @@ python experiments/02_generate_dataset.py \
   --config configs/tinker_procedural_v21_discovery.yaml \
   --dry-run
 
+# Reproduce and validate the diagnostic-only 12-question causal-yield freeze
+python experiments/00_prepare_causal_yield_pilot.py
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_procedural_causal_yield.yaml \
+  --dry-run
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -294,8 +300,12 @@ mixture—33 correct and 44 incorrect scorable answers—but formally failed bec
 had no eligible cell. Three other families qualified. The frozen adaptive response is a fresh
 20-question subset replacement under
 [`docs/PREREGISTRATION_PROCEDURAL_V21_AMENDMENT.md`](docs/PREREGISTRATION_PROCEDURAL_V21_AMENDMENT.md).
-Only a passing replacement screen permits an outcome-blind combined 40-question freeze and fresh
-validation. Passing that later gate permits causal-yield work, not monitor training.
+Both replacement tiers passed, and the combined fresh validation then passed all preregistered
+checks with 120/120 scorable responses, 64 correct, and 56 incorrect. The result is bound in
+[`docs/PROCEDURAL_V21_RESULT.md`](docs/PROCEDURAL_V21_RESULT.md). This authorizes the bounded,
+diagnostic-only matched partial-solution pilot frozen in
+[`docs/PREREGISTRATION_CAUSAL_YIELD_V1.md`](docs/PREREGISTRATION_CAUSAL_YIELD_V1.md), not monitor
+training.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

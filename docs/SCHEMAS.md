@@ -47,6 +47,13 @@ combined freeze may reuse previously eligible cells, but question ordering remai
 correctness. A subsequent three-sample-per-question collection supplies fresh validation data;
 screening rollouts never become monitor examples.
 
+The causal-yield freeze adds matched intervention metadata to copied `MathProblem` records:
+correct and corrupted note text, a strictly incorrect target answer, source-certificate binding,
+and an intervention-certificate digest. `Rollout.hinted_option` stores the planted numeric target
+for the corrupted condition. This legacy field name denotes a target answer for free-response
+math; it is not a multiple-choice option. Automated unacknowledged candidates remain review
+candidates rather than causal labels.
+
 ## Separation of evidence and monitor inputs
 
 Fields such as `hint_effect`, sibling answer counts, `causal_label`, and manual review are ground-truth evidence. They must not enter transcript-only, context-aware, surface, or activation monitors. Counterfactual-resampling monitors may use declared sibling statistics because those statistics are their method.

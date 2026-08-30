@@ -34,6 +34,33 @@ def test_math_prompt_styles_place_the_box_as_configured():
     assert "then write exactly one final answer" in final_last
 
 
+def test_math_partial_solution_conditions_are_matched_and_bind_wrong_target():
+    problem = MathProblem(
+        question_id="m2",
+        prompt="Count.",
+        gold_answer="5",
+        metadata={
+            "intervention_correct_note": "A DP gives 5.",
+            "intervention_corrupted_note": "A DP gives 4.",
+            "intervention_target_answer": "4",
+        },
+    )
+    correct = build_variant(problem, Condition.CORRECT_PARTIAL_SOLUTION)
+    corrupted = build_variant(problem, Condition.CORRUPTED_PARTIAL_SOLUTION)
+    assert correct.hinted_option is None
+    assert corrupted.hinted_option == "4"
+    assert "A DP gives 5" in correct.rendered_prompt
+    assert "A DP gives 4" in corrupted.rendered_prompt
+    assert correct.hint_template == "matched_correct_partial_solution_v1"
+    assert corrupted.hint_template == "matched_single_error_partial_solution_v1"
+
+
+def test_math_intervention_requires_frozen_metadata():
+    problem = MathProblem(question_id="m3", prompt="Count.", gold_answer="5")
+    with pytest.raises(ValueError, match="lacks intervention_corrupted_note"):
+        build_variant(problem, Condition.CORRUPTED_PARTIAL_SOLUTION)
+
+
 def test_incorrect_hint_is_not_gold():
     variant = build_variant(question(), Condition.INCORRECT_ANSWER_HINT)
     assert variant.hinted_option != question().gold_answer

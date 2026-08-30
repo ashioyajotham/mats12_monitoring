@@ -33,8 +33,11 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
 - [x] Freeze a prospective 20-question v2.1 subset-replacement bank and adaptive protocol.
 - [ ] Screen the 20 fresh replacements and, only if a tier qualifies, freeze the combined 40
   questions without using individual outcomes.
-- [ ] Pass the clean-only mixed-outcome gate on fresh questions.
-- [ ] Preregister and run a causal-yield experiment only after the clean task gate passes.
+- [x] Pass the clean-only mixed-outcome gate on 120 fresh responses with 64 correct, 56 incorrect,
+  and zero invalid outputs.
+- [x] Freeze a diagnostic-only, outcome-independent matched partial-solution causal-yield pilot.
+- [ ] Run the 108-request causal-yield pilot and complete manual validity review if its automated
+  gate passes.
 - [ ] Train monitors only after causal positives also pass validity and diversity gates.
 
 ## Milestone 1: freeze the pilot inputs

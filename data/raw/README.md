@@ -44,3 +44,8 @@ calibration candidates frozen after the v2 aggregate family gate failed. The gen
 certificate manifest are versioned separately so the committed v2 freeze remains unchanged.
 These replacement candidates are prospective inputs under the v2.1 amendment; their individual
 screening outcomes cannot be used for selection.
+
+`procedural_causal_yield_v1.jsonl` is a diagnostic-only 12-question subset of the combined v2.1
+freeze, selected without consulting clean outcomes. Its sibling certificates bind matched correct
+and single-numeral-corrupted solver notes to the original exact-oracle certificates. The records
+and all resulting rollouts are permanently excluded from monitor data.
