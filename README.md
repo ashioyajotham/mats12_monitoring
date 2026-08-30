@@ -332,6 +332,8 @@ defensible silent-use cases; see
 [`docs/CONTINUATION_YIELD_V2_RESULT.md`](docs/CONTINUATION_YIELD_V2_RESULT.md). Ordinary user-prompt
 wording is therefore closed. The only remaining hidden-influence mechanism test is an assistant
 reasoning prefill under a new preregistration.
+The first excluded prefill smoke and its prospective one-retry amendment are recorded in
+[`docs/ASSISTANT_PREFILL_V3_SMOKE.md`](docs/ASSISTANT_PREFILL_V3_SMOKE.md).
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

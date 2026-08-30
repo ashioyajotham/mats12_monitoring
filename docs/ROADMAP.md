@@ -43,8 +43,10 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
   failed manual silent-use validity gate.
 - [x] Implement and freeze one final assistant-prefill mechanism diagnostic on fresh eligible
   questions without inspecting model outcomes.
-- [ ] Run its excluded three-request smoke, then the 72-request diagnostic only if parsing and
-  prefix reconstruction pass.
+- [x] Preserve the first excluded smoke's clean transport and reconstruction result, formal
+  parse-validity failure, and prospectively frozen grammar/retry amendment.
+- [ ] Run the final excluded three-request retry, then the 72-request diagnostic only if all smoke
+  integrity checks pass.
 - [ ] Train monitors only after causal positives also pass validity and diversity gates.
 
 ## Milestone 1: freeze the pilot inputs

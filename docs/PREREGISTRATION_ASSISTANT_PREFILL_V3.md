@@ -74,3 +74,7 @@ Passing both gates authorizes only a fresh confirmatory causal collection from a
 bank. Monitor training remains unauthorized until that confirmatory collection passes clean-task,
 causal, validity, and diversity gates. Failure of either v3 gate ends hidden-influence mechanism
 iteration and reframes the project around detecting causally induced reasoning errors.
+
+The excluded first-smoke failure and prospective retry amendment are recorded in
+`docs/ASSISTANT_PREFILL_V3_SMOKE.md`. That amendment changes no research question, condition,
+estimand, threshold, decoding parameter, or diagnostic sample.

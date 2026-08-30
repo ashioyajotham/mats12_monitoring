@@ -74,3 +74,4 @@ def test_prefill_pairs_are_token_matched_and_hidden_from_user_prompt():
         assert corrupted.assistant_prefill not in corrupted.rendered_prompt
         assert "checkpoint" not in correct.assistant_prefill.lower()
         assert "continue" not in correct.assistant_prefill.lower()
+        assert "conditions reduce to" not in correct.assistant_prefill.lower()

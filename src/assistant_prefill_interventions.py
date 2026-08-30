@@ -37,7 +37,9 @@ def naturalize_prefix(prefix: str) -> str:
             break
     rendered = rendered.replace("Use D_", "I'll use D_", 1)
     rendered = rendered.replace("Use ", "I'll use ", 1)
-    rendered = rendered.replace("The affine conditions", "I reduce the affine conditions", 1)
+    rendered = rendered.replace(
+        "The affine conditions reduce to", "I reduce the affine conditions to", 1
+    )
     rendered = rendered.replace("The table is complete", "My table is complete", 1)
     rendered = rendered.replace("the checkpoint ", "", 1)
     rendered = rendered.replace("its checkpoint ", "", 1)

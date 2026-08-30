@@ -3,7 +3,7 @@ data:
   problem_type: math
   source: diagnostic-only:matched-assistant-prefill-v3-smoke
   n_questions: 1
-  question_ids: [proc-v2-affine_modular-boundary_high-10-6328292df6650320]
+  question_ids: [proc-v2-finite_state-boundary_low-00-18ee8f5f5d6135c4]
 conditions: [clean, correct_assistant_prefill, corrupted_assistant_prefill]
 labels: {min_target_effect: 0.20, confidence_level: 0.95}
 gates:
