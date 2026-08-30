@@ -57,11 +57,7 @@ def main() -> None:
     args = parser.parse_args()
 
     questions = list(read_jsonl(args.questions, model=MathProblem))
-    rollouts = [
-        Rollout.model_validate_json(line)
-        for line in (args.run / "rollouts.jsonl").read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
+    rollouts = list(read_jsonl(args.run / "rollouts.jsonl", model=Rollout))
     manifest = _validated_manifest(args.run, args.questions)
     request_errors = int(manifest.get("counts", {}).get("request_errors", 0))
     report = analyze_frozen_discovery(

@@ -9,7 +9,7 @@ from pathlib import Path
 from src.audit import canonical_config_hash, load_config, sha256_file
 from src.generate_rollouts import Rollout, write_manifest
 from src.procedural_v21_pilot import select_combined_pilot_v21
-from src.tasks import MathProblem, read_jsonl, write_jsonl
+from src.tasks import MathProblem, read_jsonl, read_jsonl_objects, write_jsonl
 
 FROZEN_V2_RUN = Path("data/generated/tinker_procedural_v2_screening_20260830T091412Z")
 FROZEN_V2_ROLLOUTS_SHA256 = "e56d237cb489bf0a82c86d59556c7cb7b71a5979c22c57f4ca618bfe6934d536"
@@ -18,16 +18,12 @@ FROZEN_V2_REPORT_SHA256 = "50374aece835d499952bd69d46e6d869a1c0b34d524a7109ecc74
 
 def _rollouts(run: Path) -> list[Rollout]:
     """Read immutable rollout records from a run directory."""
-    return [
-        Rollout.model_validate_json(line)
-        for line in (run / "rollouts.jsonl").read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
+    return list(read_jsonl(run / "rollouts.jsonl", model=Rollout))
 
 
 def _certificates(path: Path) -> list[dict[str, object]]:
     """Read JSONL solver certificates."""
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line]
+    return read_jsonl_objects(path)
 
 
 def _validate_v2_evidence(run: Path, questions: Path, report: Path) -> dict:

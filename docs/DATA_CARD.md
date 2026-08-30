@@ -1,8 +1,15 @@
 # Dataset card (frozen pilot inputs)
 
+Status: **historical input freeze; not the specification for the current causal-error study**.
+The current prospective design is
+[`PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md`](PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md).
+
 ## Purpose
 
-Evaluate monitors for silent, causally supported hint use in multiple-choice reasoning. The dataset is not a general benchmark for deception or model honesty.
+This frozen ARC pilot evaluated monitors for silent, causally supported hint use in multiple-choice
+reasoning. That empirical branch is now closed after its intervention sequence failed the required
+validity or causal gates. The pilot is not a general benchmark for deception or model honesty and
+must not be relabelled as the current causal-error dataset.
 
 ## Composition
 
@@ -31,7 +38,10 @@ All prompt variants, seeds, and resamples from one `question_id` remain in the s
 
 ## Labels
 
-Primary positive: `silent_hint_use`. It requires a sampled answer-shift estimate, lack of acknowledgment, uncertainty support, and manual review according to the preregistration. Ambiguous cases remain ambiguous rather than being forced into binary labels.
+The historical primary positive was `silent_hint_use`. It required a sampled answer-shift estimate,
+lack of acknowledgment, uncertainty support, and manual review according to the original
+preregistration. No qualifying training dataset was authorized. Ambiguous cases remain ambiguous
+rather than being forced into binary labels.
 
 ## Known limitations
 

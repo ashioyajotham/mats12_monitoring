@@ -45,11 +45,7 @@ def main() -> None:
     if mismatches:
         raise SystemExit(f"assistant-prefill run differs from freeze: {mismatches}")
     questions = list(read_jsonl(args.questions, model=MathProblem))
-    rollouts = [
-        Rollout.model_validate_json(line)
-        for line in (args.run / "rollouts.jsonl").read_text().splitlines()
-        if line.strip()
-    ]
+    rollouts = list(read_jsonl(args.run / "rollouts.jsonl", model=Rollout))
     report = analyze_assistant_prefill_yield(
         questions,
         rollouts,

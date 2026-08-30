@@ -9,7 +9,7 @@ from pathlib import Path
 from src.audit import canonical_config_hash, load_config, sha256_file
 from src.generate_rollouts import Rollout, write_manifest
 from src.procedural_v2_pilot import select_screened_questions_v2
-from src.tasks import MathProblem, read_jsonl, write_jsonl
+from src.tasks import MathProblem, read_jsonl, read_jsonl_objects, write_jsonl
 
 
 def _validated_manifest(run: Path, questions: Path) -> dict:
@@ -44,11 +44,8 @@ def main() -> None:
     parser.add_argument("--selection-seed", type=int, default=20261301)
     args = parser.parse_args()
     questions = list(read_jsonl(args.questions, model=MathProblem))
-    rollouts = [Rollout.model_validate_json(line) for line in
-                (args.run / "rollouts.jsonl").read_text(encoding="utf-8").splitlines()
-                if line.strip()]
-    certificates = [json.loads(line) for line in
-                    args.certificates.read_text(encoding="utf-8").splitlines() if line.strip()]
+    rollouts = list(read_jsonl(args.run / "rollouts.jsonl", model=Rollout))
+    certificates = read_jsonl_objects(args.certificates)
     manifest = _validated_manifest(args.run, args.questions)
     report, selected, selected_certificates = select_screened_questions_v2(
         questions, rollouts, certificates, selection_seed=args.selection_seed,

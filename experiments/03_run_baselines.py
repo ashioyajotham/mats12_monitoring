@@ -3,18 +3,16 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
 from src.metrics import evaluate_scores
 from src.monitors.surface import SurfaceFeatureMonitor, extract_surface_features
-from src.tasks import assert_no_group_leakage
+from src.tasks import assert_no_group_leakage, read_jsonl_objects
 
 
 def read_rows(path: str) -> list[dict]:
     """Read non-empty dictionary records from a JSONL input."""
-    lines = Path(path).read_text(encoding="utf-8").splitlines()
-    return [json.loads(line) for line in lines if line]
+    return read_jsonl_objects(path)
 
 
 def main() -> None:

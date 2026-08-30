@@ -28,11 +28,7 @@ def main() -> None:
         for row in read_jsonl(args.questions, model=Question)
         if isinstance(row, Question)
     }
-    rollouts = [
-        Rollout.model_validate_json(line)
-        for line in Path(args.rollouts).read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
+    rollouts = list(read_jsonl(Path(args.rollouts), model=Rollout))
     ranking = rank_by_clean_deliberation(rollouts)
     if len(ranking) < args.count:
         raise SystemExit(f"only {len(ranking)} eligible questions; need {args.count}")

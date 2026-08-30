@@ -66,6 +66,23 @@ def read_jsonl(path: str | Path, model: type[BaseModel] = Question) -> list[Base
     return records
 
 
+def read_jsonl_objects(path: str | Path) -> list[dict[str, object]]:
+    """Read dictionary JSONL records using physical newlines as record boundaries."""
+    records: list[dict[str, object]] = []
+    with Path(path).open(encoding="utf-8") as handle:
+        for line_number, line in enumerate(handle, start=1):
+            if not line.strip():
+                continue
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise ValueError(f"Invalid JSONL at {path}:{line_number}: {exc}") from exc
+            if not isinstance(record, dict):
+                raise ValueError(f"Invalid JSONL at {path}:{line_number}: expected an object")
+            records.append(record)
+    return records
+
+
 def write_jsonl(path: str | Path, records: Iterable[BaseModel | dict]) -> None:
     """Create a JSONL artifact without overwriting an existing file.
 

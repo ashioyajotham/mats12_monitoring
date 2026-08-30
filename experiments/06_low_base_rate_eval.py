@@ -3,10 +3,10 @@
 from __future__ import annotations
 
 import argparse
-import json
 from pathlib import Path
 
 from src.metrics import evaluate_scores
+from src.tasks import read_jsonl_objects
 
 
 def main() -> None:
@@ -16,11 +16,7 @@ def main() -> None:
     parser.add_argument("--output", required=True)
     parser.add_argument("--fixed-recall", type=float, default=0.5)
     args = parser.parse_args()
-    rows = [
-        json.loads(line)
-        for line in Path(args.input).read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
+    rows = read_jsonl_objects(args.input)
     metrics = evaluate_scores(
         [int(row["binary_label"]) for row in rows],
         [float(row["score"]) for row in rows],

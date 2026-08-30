@@ -26,6 +26,12 @@ provider request ID, returned provider model, token usage, finish reason, and re
 logical `seed` remains part of stable rollout identity even when the provider does not support
 seeded inference; the run manifest declares that limitation explicitly.
 
+Active JSONL consumers iterate physical newline-delimited records from the file stream. They must
+not use Unicode-aware string splitting: U+2028 and U+2029 are valid characters inside a JSON string
+and do not delimit JSONL records. Archived preparation entrypoints whose bytes are bound by frozen
+manifests retain their original readers; their already frozen certificate inputs contain no such
+characters.
+
 The committed pilot question freeze has a sibling manifest containing the source repository and
 revision, source-file SHA-256, license, normalization and selection rule, selected collection
 counts, code revision, and output SHA-256. Dataset records retain their upstream identifier and

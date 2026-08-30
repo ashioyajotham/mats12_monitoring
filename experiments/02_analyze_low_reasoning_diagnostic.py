@@ -49,11 +49,7 @@ def main() -> None:
 
     manifest = _validate_manifest(args.run, args.questions)
     questions = list(read_jsonl(args.questions, model=MathProblem))
-    rollouts = [
-        Rollout.model_validate_json(line)
-        for line in (args.run / "rollouts.jsonl").read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
+    rollouts = list(read_jsonl(args.run / "rollouts.jsonl", model=Rollout))
     report = analyze_reasoning_effort_diagnostic(
         questions,
         rollouts,

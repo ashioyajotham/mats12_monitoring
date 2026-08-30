@@ -20,7 +20,7 @@ authoritative when a milestone conflicts with convenience.
 
 Mock generations validate plumbing only. They are not evidence for any claim in the claim ledger.
 
-## Current empirical milestone: procedural task construction
+## Completed empirical milestone: task and mechanism discovery
 
 - [x] Freeze and verify the 120-question procedural v1 candidate bank.
 - [x] Screen one clean medium-reasoning rollout per candidate; record the failed mixed-outcome
@@ -31,7 +31,7 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
 - [x] Run the 80-request v2 low-reasoning screen; record that three families qualified while
   subset counting failed its cell gate.
 - [x] Freeze a prospective 20-question v2.1 subset-replacement bank and adaptive protocol.
-- [ ] Screen the 20 fresh replacements and, only if a tier qualifies, freeze the combined 40
+- [x] Screen the 20 fresh replacements and, only if a tier qualifies, freeze the combined 40
   questions without using individual outcomes.
 - [x] Pass the clean-only mixed-outcome gate on 120 fresh responses with 64 correct, 56 incorrect,
   and zero invalid outputs.
@@ -45,18 +45,32 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
   questions without inspecting model outcomes.
 - [x] Preserve the first excluded smoke's clean transport and reconstruction result, formal
   parse-validity failure, and prospectively frozen grammar/retry amendment.
-- [ ] Run the final excluded three-request retry, then the 72-request diagnostic only if all smoke
+- [x] Run the final excluded three-request retry, then the 72-request diagnostic only if all smoke
   integrity checks pass.
-- [ ] Train monitors only after causal positives also pass validity and diversity gates.
+- [x] Record the 72-request assistant-prefill null result and close the silent-unfaithfulness
+  branch under its stopping rule.
 
-## Milestone 1: freeze the pilot inputs
+## Current empirical milestone: causal-error dataset construction
+
+- [x] Freeze the new estimand, prospective partitions, causal gates, labels, monitor views, and
+  grouped evaluation in `docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md`.
+- [ ] Implement and test the fresh 96-question generator, certificates, and deterministic
+  qualification/confirmatory split without consulting model outcomes.
+- [ ] Run the 72-request clean qualification cohort and stop unless every mixed-outcome and
+  integrity gate passes.
+- [ ] If authorized, run the 648-request randomized confirmatory causal collection and publish its
+  machine-readable gate report.
+- [ ] Fit behavioural monitors only if the confirmatory causal, diversity, and integrity gates all
+  pass. Do not revive silent-unfaithfulness labels from these data.
+
+## Historical milestone 1: freeze the pilot inputs
 
 - Pass and manually inspect the nine-request GLM smoke collection.
 - Render and manually inspect every prompt template before collection.
 - Freeze the pilot configuration and preregistration; enable the positive-lower-bound requirement
   for confirmatory data.
 
-## Milestone 2: collect and validate the phenomenon
+## Historical milestone 2: collect and validate the phenomenon
 
 - Collect append-only clean, incorrect-hint, and irrelevant-metadata rollouts with complete
   manifests.
@@ -65,7 +79,7 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
 - Complete blinded and causal-evidence review, including double-review agreement and Cohen's kappa.
 - Publish a machine-readable gate report and stop or pivot when any preregistered gate fails.
 
-## Milestone 3: evaluate behavioural monitors
+## Future milestone: evaluate behavioural monitors
 
 - Freeze train/validation/test question groups and monitor inputs.
 - Run correctness, CoT-length, surface, transcript-only judge, context-aware judge, and resampling
@@ -75,7 +89,7 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
 - Audit high-confidence false positives and false negatives, then update the claim ledger without
   hiding null results.
 
-## Milestone 4: optional internals
+## Optional milestone: internals
 
 Proceed only if the phenomenon, validity, diversity, and feasibility gates all pass. Predeclare the
 model layers, token-position rule, nested selection process, and shuffled-label controls before

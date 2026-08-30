@@ -76,11 +76,7 @@ def load_resume_rollouts(path: Path, *, config_sha256: str) -> list[Rollout]:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if manifest.get("config_sha256") != config_sha256:
         raise ValueError("resume run uses a different configuration hash")
-    return [
-        Rollout.model_validate_json(line)
-        for line in rollouts_path.read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
+    return list(read_jsonl(rollouts_path, model=Rollout))
 
 
 def main() -> None:
