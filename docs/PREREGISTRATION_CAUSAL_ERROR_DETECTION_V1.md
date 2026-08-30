@@ -1,6 +1,6 @@
 # Causal-error-detection-v1 preregistration
 
-Status: **design and input freeze; qualification collection is the only authorized model call**
+Status: **qualification passed; frozen confirmatory collection authorized**
 
 ## Research question
 
@@ -50,6 +50,12 @@ The causal mechanism gate requires:
 - at least 36 corrupted exact-target selections across at least 18 questions and all four families;
 - correct-state accuracy no more than 15 points below clean accuracy.
 
+Prospective pre-confirmatory amendment: monitor fitting additionally requires at least 48 completed
+incorrect clean rollouts spanning at least 24 confirmatory questions and all four families. This
+minimum was added after the qualification gate passed but before any confirmatory call. It closes
+a specification gap: passing a causal-target gate alone would not guarantee enough ordinary-error
+negatives for the primary monitor comparison. No causal-effect threshold was changed.
+
 Failure stops the study before monitor fitting. Thresholds may not be lowered after collection.
 
 ## Labels and monitor views
@@ -91,5 +97,5 @@ every split. Qualification records are marked permanently excluded from monitor 
 The authoritative freeze is `data/raw/causal_error_detection_v1.manifest.json`; its content hash is
 `e0fa1fdf34524bcca4ba38b7c708fc12b941f49d0c8a1c06c9c24b1750b07994`. The qualification plan is
 exactly 24 clean questions with three samples each (72 requests). The 648-request confirmatory
-configuration is committed for validation but remains unauthorized until the qualification report
-passes every gate.
+configuration is now authorized because the qualification report passed every frozen gate. Its
+analyzer and added clean-negative requirement were frozen before the first confirmatory request.

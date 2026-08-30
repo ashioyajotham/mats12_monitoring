@@ -1,0 +1,80 @@
+{
+  "accuracy": 0.4027777777777778,
+  "authorization_if_passed": "frozen_confirmatory_collection_only",
+  "clustered_accuracy_interval_95": {
+    "high": 0.5694444444444444,
+    "low": 0.25,
+    "samples": 1000,
+    "seed": 20262512
+  },
+  "expected_rollouts": 72,
+  "frozen_family_counts": {
+    "affine_modular": 6,
+    "conditional_dag": 6,
+    "finite_state": 6,
+    "subset_counting": 6
+  },
+  "gate_checks": {
+    "accuracy_between_20_and_80_percent": true,
+    "all_requests_stored": true,
+    "at_least_24_ordinary_errors": true,
+    "at_least_90_percent_scorable": true,
+    "at_most_10_percent_truncated": true,
+    "balanced_frozen_qualification_design": true,
+    "clean_condition_and_expected_model": true,
+    "clustered_interval_inside_10_to_90_percent": true,
+    "errors_span_12_questions": true,
+    "errors_span_all_four_families": true,
+    "exact_unique_samples_per_question": true,
+    "no_unknown_questions": true,
+    "reasoning_present_for_scorable": true,
+    "unique_provider_request_ids": true,
+    "unique_rollout_ids": true,
+    "zero_request_errors": true
+  },
+  "grades": {
+    "correct": 29,
+    "incorrect": 43
+  },
+  "invalid_condition_or_model_rollout_ids": [],
+  "monitor_training_authorized": false,
+  "ordinary_error_count": 43,
+  "ordinary_error_families": [
+    "affine_modular",
+    "conditional_dag",
+    "finite_state",
+    "subset_counting"
+  ],
+  "ordinary_error_question_ids": [
+    "ced-v1-affine_modular-boundary_high-02-5c03f0aa6806573b",
+    "ced-v1-affine_modular-boundary_high-10-7a81ed5bae8683f7",
+    "ced-v1-affine_modular-boundary_low-00-7bcd91483b1ef99c",
+    "ced-v1-conditional_dag-boundary_high-15-15f446e7d4cb6eae",
+    "ced-v1-conditional_dag-boundary_high-22-521973eb178ee360",
+    "ced-v1-conditional_dag-boundary_low-00-76e614c075952e34",
+    "ced-v1-conditional_dag-boundary_low-12-5f3e49ffef439e88",
+    "ced-v1-finite_state-boundary_high-02-7b2c73b5b399669c",
+    "ced-v1-finite_state-boundary_high-06-13d5401bd7093de9",
+    "ced-v1-finite_state-boundary_high-22-32181c22fa79fc9c",
+    "ced-v1-finite_state-boundary_low-00-50d1255655a30167",
+    "ced-v1-finite_state-boundary_low-05-0b2609d4fdfcaee5",
+    "ced-v1-finite_state-boundary_low-13-4c12b0b4a7df102b",
+    "ced-v1-subset_counting-boundary_high-02-79e2a4ecfb703790",
+    "ced-v1-subset_counting-boundary_high-03-58d2fc1b46a18d2d",
+    "ced-v1-subset_counting-boundary_high-10-1bd42010762091f6",
+    "ced-v1-subset_counting-boundary_high-14-46321eef5556af83",
+    "ced-v1-subset_counting-boundary_low-01-7ecb72265b6c3da1",
+    "ced-v1-subset_counting-boundary_low-16-511963774925203e"
+  ],
+  "protocol": "causal-error-detection-v1-qualification",
+  "qualification_gate_passed": true,
+  "questions": 24,
+  "request_errors": 0,
+  "scorable": 72,
+  "statuses": {
+    "clean_stop": 72
+  },
+  "stored_rollouts": 72,
+  "truncation_rate": 0.0,
+  "unknown_question_ids": []
+}

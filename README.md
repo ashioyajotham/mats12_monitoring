@@ -238,6 +238,15 @@ uv run --offline python experiments/02_analyze_causal_error_qualification.py \
   --run data/generated/tinker_causal_error_v1_qualification_<TIMESTAMP> \
   --output results/causal_error_v1_qualification.json
 
+# Only after qualification passes, run and analyze the frozen confirmatory collection
+uv run --offline python experiments/02_generate_dataset.py \
+  --config configs/tinker_causal_error_v1_confirmatory.yaml \
+  --continue-on-error \
+  --max-errors 4
+uv run --offline python experiments/02_analyze_causal_error_confirmatory.py \
+  --run data/generated/tinker_causal_error_v1_confirmatory_<TIMESTAMP> \
+  --output results/causal_error_v1_confirmatory.json
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -373,7 +382,11 @@ The current study is prospectively reframed around distinguishing ordinary failu
 caused by certified state perturbations. Its fresh partitions, stopping gates, labels, allowed
 monitor views, and grouped evaluation are frozen in
 [`docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md`](docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md).
-No monitor training is currently authorized.
+The 72-request clean qualification cohort passed every gate with 29 correct and 43 incorrect
+responses, zero invalid outputs, and ordinary errors across all four families; see
+[`docs/CAUSAL_ERROR_V1_QUALIFICATION_RESULT.md`](docs/CAUSAL_ERROR_V1_QUALIFICATION_RESULT.md).
+The frozen 648-request confirmatory collection is therefore authorized. Monitor training remains
+unauthorized until its causal, clean-negative, diversity, and integrity gates all pass.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

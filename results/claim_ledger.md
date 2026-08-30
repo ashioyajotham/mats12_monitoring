@@ -17,7 +17,7 @@ which effects require replication; they are not monitor-performance claims.
 | E6 | Exact intermediate-state corruption causally induces its propagated target | Fresh replication under a hidden-influence mechanism | `results/procedural_continuation_yield_v2.json` | Exploratory: 13/24 corrupted targets versus 0/24 controls; clustered effect interval +33.3 to +75.0 points |
 | E7 | User-prompt state continuation yields silent influence | Manual validity review of every target selection | `results/procedural_continuation_yield_v2_manual_review.json` | Rejected: 11 open uses, two ambiguous recomputations, zero silent uses |
 | E8 | Assistant prefill reliably causes hidden exact-target uptake | Randomized matched prefills, clustered effect interval, and manual validity | `results/procedural_assistant_prefill_v3.json` | Rejected: 1/24 corrupted versus 2/24 correct-prefill targets; effect -4.2 points, interval -16.7 to +8.3 |
-| E9 | Certified user-prompt state perturbations cause exact downstream errors | Fresh prospectively generated replication under the causal-error estimand | `docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md` | Inputs frozen; qualification unrun; prior 13/24 versus 0/24 result is exploratory only |
+| E9 | Certified user-prompt state perturbations cause exact downstream errors | Fresh prospectively generated replication under the causal-error estimand | `docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md` | Qualification passed; confirmatory unrun; prior 13/24 versus 0/24 result is exploratory only |
 
 ## Rules
 

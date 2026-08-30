@@ -56,7 +56,7 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
   grouped evaluation in `docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md`.
 - [x] Implement and test the fresh 96-question generator, certificates, and deterministic
   qualification/confirmatory split without consulting model outcomes.
-- [ ] Run the 72-request clean qualification cohort and stop unless every mixed-outcome and
+- [x] Run the 72-request clean qualification cohort and stop unless every mixed-outcome and
   integrity gate passes.
 - [ ] If authorized, run the 648-request randomized confirmatory causal collection and publish its
   machine-readable gate report.

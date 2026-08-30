@@ -78,4 +78,5 @@ results/*.jsonl
 !results/procedural_continuation_yield_v2_manual_review.json
 !results/procedural_assistant_prefill_v3.json
 !results/causal_error_v1_qualification.json
+!results/causal_error_v1_confirmatory.json
 !results/figures/.gitkeep
