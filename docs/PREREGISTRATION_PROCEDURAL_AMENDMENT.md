@@ -82,3 +82,11 @@ creating positive labels.
 
 No screening decision may depend on monitor scores. No generator certificate, gold answer,
 screening outcome, sibling rollout, or derived label may appear in a transcript-only monitor view.
+
+## Recorded outcome
+
+The screen failed on 2026-08-30. It stored all 120 responses with zero request errors, but only 92
+were scorable; 26 truncated and two were parse-invalid. No cell passed. Four of five apparent
+errors came from an ambiguous recurrence renderer and are not valid ordinary failures. See
+`docs/PROCEDURAL_SCREENING.md`. Per the stopping rule, no 40-question bank was frozen and no
+intervention spending was authorized.

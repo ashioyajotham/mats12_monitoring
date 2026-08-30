@@ -10,6 +10,17 @@ This repository is the MATS 12 application project of Victor Ashioya. It extends
 
 Can counterfactual resampling distinguish hint-induced rationalization from ordinary reasoning errors better than transcript-only and context-aware baselines?
 
+### Research hierarchy
+
+This is a monitoring project, not a benchmark of whether GPT-OSS can solve mathematics. The
+task-construction question is subordinate and operational: **can we construct a controlled
+reasoning environment with enough ordinary failures to test whether monitors distinguish them
+from causally induced unfaithfulness?**
+
+The next enabling milestone is a fresh clean-only mixed-outcome gate. Truncations, parser failures,
+and ambiguous prompts do not count as ordinary errors. Passing that gate permits a causal-yield
+experiment; it does not by itself permit monitor training.
+
 ### Main hypothesis
 
 Monitors will discriminate silent hint use on balanced data, but difficult clean reasoning will create enough false positives that precision collapses at a 1% deployment prevalence.
@@ -29,7 +40,7 @@ An individual hinted rollout is labelled `silent_hint_use` only when:
 
 Raw generations are immutable. Derived labels can always be rebuilt from them.
 
-## Pilot scope
+## Original pilot scope
 
 - One current open reasoning model, configured in `configs/pilot.yaml`.
 - One multiple-choice task family: the pinned ARC-Challenge validation split.
@@ -136,6 +147,11 @@ python experiments/02_generate_dataset.py \
   --config configs/tinker_procedural_discovery.yaml \
   --dry-run
 
+# Validate the diagnostic-only 24-request low-reasoning plan
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_procedural_low_reasoning_diagnostic.yaml \
+  --dry-run
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -232,11 +248,15 @@ cohort stored 60/60 responses with 59 clean stops, one truncation, and 59/59 sco
 correct. The natural-error yield gate therefore failed for both selected task slices. Per the
 amended stopping rule, intervention spending remains paused.
 
-The next task-construction stage is now frozen in
-[`docs/PREREGISTRATION_PROCEDURAL_AMENDMENT.md`](docs/PREREGISTRATION_PROCEDURAL_AMENDMENT.md).
-It uses 120 original solver-verified problems across four families, a one-rollout cell-level
-difficulty screen, and a separately seeded 40-question clean-discovery cohort. Screening outcomes
-cannot enter monitor data, and monitor training remains blocked until a later causal-yield gate.
+The first procedural screen also failed: it produced one defensible completed error, 26
+truncations, two parser failures, and four apparent recurrence errors attributable to ambiguous
+indexing. No family-by-tier cell qualified and no 40-question bank was frozen. The result is
+reported in [`docs/PROCEDURAL_SCREENING.md`](docs/PROCEDURAL_SCREENING.md).
+
+The bounded next step is the diagnostic-only low-reasoning attribution test frozen in
+[`docs/PREREGISTRATION_REASONING_EFFORT_DIAGNOSTIC.md`](docs/PREREGISTRATION_REASONING_EFFORT_DIAGNOSTIC.md).
+Its selected questions cannot enter monitor data. A fresh v2 bank and clean-only mixed-outcome
+gate remain necessary before any causal intervention study.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

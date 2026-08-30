@@ -22,12 +22,15 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
 
 ## Current empirical milestone: procedural task construction
 
-- Freeze and verify the 120-question procedural candidate bank.
-- Screen one clean GPT-OSS rollout per candidate on Tinker.
-- Freeze 40 questions only if all four families contain a 30–70% accuracy cell.
-- Collect three fresh clean rollouts per frozen question and evaluate the preregistered readiness
-  gate.
-- Continue to matched partial-solution interventions only after the clean task gate passes.
+- [x] Freeze and verify the 120-question procedural v1 candidate bank.
+- [x] Screen one clean medium-reasoning rollout per candidate; record the failed mixed-outcome
+  gate and ambiguous recurrence renderer.
+- [ ] Run the 24-request low-reasoning attribution diagnostic; never reuse its selected outputs in
+  monitor data.
+- [ ] If attribution passes, construct and screen a fresh procedural v2 bank using
+  outcome-independent selection.
+- [ ] Pass the clean-only mixed-outcome gate on fresh questions.
+- [ ] Continue to matched partial-solution interventions only after the clean task gate passes.
 
 ## Milestone 1: freeze the pilot inputs
 

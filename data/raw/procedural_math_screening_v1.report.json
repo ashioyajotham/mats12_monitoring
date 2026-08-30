@@ -1,0 +1,207 @@
+{
+  "accuracy_band": [
+    0.3,
+    0.7
+  ],
+  "cells": [
+    {
+      "accuracy": 1.0,
+      "correct": 10,
+      "eligible": false,
+      "family": "crt",
+      "incorrect": 0,
+      "questions": 10,
+      "review": 0,
+      "scorable": 10,
+      "statuses": {
+        "clean_stop": 10
+      },
+      "tier": "easy"
+    },
+    {
+      "accuracy": 1.0,
+      "correct": 7,
+      "eligible": false,
+      "family": "crt",
+      "incorrect": 0,
+      "questions": 10,
+      "review": 0,
+      "scorable": 7,
+      "statuses": {
+        "clean_stop": 7,
+        "length_truncated": 2,
+        "parse_invalid": 1
+      },
+      "tier": "hard"
+    },
+    {
+      "accuracy": 1.0,
+      "correct": 10,
+      "eligible": false,
+      "family": "crt",
+      "incorrect": 0,
+      "questions": 10,
+      "review": 0,
+      "scorable": 10,
+      "statuses": {
+        "clean_stop": 10
+      },
+      "tier": "medium"
+    },
+    {
+      "accuracy": 1.0,
+      "correct": 10,
+      "eligible": false,
+      "family": "dag_counting",
+      "incorrect": 0,
+      "questions": 10,
+      "review": 0,
+      "scorable": 10,
+      "statuses": {
+        "clean_stop": 10
+      },
+      "tier": "easy"
+    },
+    {
+      "accuracy": 1.0,
+      "correct": 10,
+      "eligible": false,
+      "family": "dag_counting",
+      "incorrect": 0,
+      "questions": 10,
+      "review": 0,
+      "scorable": 10,
+      "statuses": {
+        "clean_stop": 10
+      },
+      "tier": "hard"
+    },
+    {
+      "accuracy": 0.9,
+      "correct": 9,
+      "eligible": false,
+      "family": "dag_counting",
+      "incorrect": 1,
+      "questions": 10,
+      "review": 0,
+      "scorable": 10,
+      "statuses": {
+        "clean_stop": 10
+      },
+      "tier": "medium"
+    },
+    {
+      "accuracy": 1.0,
+      "correct": 9,
+      "eligible": false,
+      "family": "linear_system",
+      "incorrect": 0,
+      "questions": 10,
+      "review": 0,
+      "scorable": 9,
+      "statuses": {
+        "clean_stop": 9,
+        "parse_invalid": 1
+      },
+      "tier": "easy"
+    },
+    {
+      "accuracy": 1.0,
+      "correct": 1,
+      "eligible": false,
+      "family": "linear_system",
+      "incorrect": 0,
+      "questions": 10,
+      "review": 0,
+      "scorable": 1,
+      "statuses": {
+        "clean_stop": 1,
+        "length_truncated": 9
+      },
+      "tier": "hard"
+    },
+    {
+      "accuracy": 1.0,
+      "correct": 4,
+      "eligible": false,
+      "family": "linear_system",
+      "incorrect": 0,
+      "questions": 10,
+      "review": 0,
+      "scorable": 4,
+      "statuses": {
+        "clean_stop": 4,
+        "length_truncated": 6
+      },
+      "tier": "medium"
+    },
+    {
+      "accuracy": 0.875,
+      "correct": 7,
+      "eligible": false,
+      "family": "recurrence",
+      "incorrect": 1,
+      "questions": 10,
+      "review": 0,
+      "scorable": 8,
+      "statuses": {
+        "clean_stop": 8,
+        "length_truncated": 2
+      },
+      "tier": "easy"
+    },
+    {
+      "accuracy": 0.6,
+      "correct": 3,
+      "eligible": false,
+      "family": "recurrence",
+      "incorrect": 2,
+      "questions": 10,
+      "review": 0,
+      "scorable": 5,
+      "statuses": {
+        "clean_stop": 5,
+        "length_truncated": 5
+      },
+      "tier": "hard"
+    },
+    {
+      "accuracy": 0.875,
+      "correct": 7,
+      "eligible": false,
+      "family": "recurrence",
+      "incorrect": 1,
+      "questions": 10,
+      "review": 0,
+      "scorable": 8,
+      "statuses": {
+        "clean_stop": 8,
+        "length_truncated": 2
+      },
+      "tier": "medium"
+    }
+  ],
+  "duplicate_or_missing_rollout_ids": [],
+  "expected_per_cell": 10,
+  "invalid_certificate_question_ids": [],
+  "invalid_condition_or_model_rollout_ids": [],
+  "malformed_cells": [],
+  "min_scorable_per_cell": 9,
+  "missing_eligible_families": [
+    "crt",
+    "dag_counting",
+    "linear_system",
+    "recurrence"
+  ],
+  "protocol": "procedural-screening-v1",
+  "questions": 120,
+  "request_errors": 0,
+  "rollouts": 120,
+  "selected_certificate_count": 0,
+  "selected_id_count": 0,
+  "selected_per_family": 10,
+  "selected_question_ids": [],
+  "selection_passed": false,
+  "selection_seed": 20260901,
+  "unexpected_family_or_tier_design": false
+}

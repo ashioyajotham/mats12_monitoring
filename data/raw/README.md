@@ -26,3 +26,8 @@ hash, and verification result are recorded in `procedural_math_candidates_v1.man
 `procedural_math_certificates_v1.jsonl` stores the separate exact-oracle certificates. Generated
 prompts and certificates may be redistributed under the repository's MIT license; model rollouts
 remain excluded from version control.
+
+`procedural_low_reasoning_diagnostic_v1.jsonl` is a diagnostic-only 24-question subset selected
+from the medium-reasoning screen: 12 prior truncations and 12 same-family controls. Its manifest
+pins the source run and selection. Because selection used observed outcomes, neither these
+questions nor their low-reasoning outputs may enter monitor training or evaluation.

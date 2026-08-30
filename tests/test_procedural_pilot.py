@@ -3,7 +3,12 @@ from datetime import UTC, datetime
 from src.datasets.procedural_math import generate_candidate_bank
 from src.generate_rollouts import Rollout, RolloutStatus
 from src.hints import Condition
-from src.procedural_pilot import analyze_frozen_discovery, select_screened_questions
+from src.procedural_pilot import (
+    analyze_frozen_discovery,
+    analyze_reasoning_effort_diagnostic,
+    build_reasoning_effort_diagnostic,
+    select_screened_questions,
+)
 from src.tasks import MathProblem
 
 
@@ -151,3 +156,101 @@ def test_frozen_discovery_rejects_excess_truncation_and_duplicate_provider_ids()
     assert not report["task_readiness_gate_passed"]
     assert not report["gate_checks"]["at_most_10_percent_truncated"]
     assert not report["gate_checks"]["unique_provider_request_ids"]
+
+
+def _diagnostic_source():
+    problems, certificates = generate_candidate_bank(root_seed=22, per_cell=10)
+    rollouts = [_rollout(problem, index=0, correct=True) for problem in problems]
+    by_id = {rollout.question_id: rollout for rollout in rollouts}
+    truncated: list[MathProblem] = []
+    truncated.extend(
+        [
+            problem
+            for problem in problems
+            if problem.metadata["generator_family"] == "crt" and problem.difficulty == "hard"
+        ][:2]
+    )
+    truncated.extend(
+        [
+            problem
+            for problem in problems
+            if problem.metadata["generator_family"] == "linear_system"
+            and problem.difficulty in {"medium", "hard"}
+        ][:6]
+    )
+    truncated.extend(
+        [
+            problem
+            for problem in problems
+            if problem.metadata["generator_family"] == "recurrence"
+            and problem.metadata["renderer_id"] != 1
+        ][:4]
+    )
+    for problem in truncated:
+        by_id[problem.question_id].status = RolloutStatus.LENGTH_TRUNCATED
+        by_id[problem.question_id].finish_reason = "length"
+    return problems, certificates, rollouts
+
+
+def test_low_reasoning_diagnostic_freeze_is_matched_and_excludes_ambiguous_renderer():
+    problems, certificates, screening = _diagnostic_source()
+    first_report, first, first_certificates = build_reasoning_effort_diagnostic(
+        problems, screening, certificates
+    )
+    second_report, second, _ = build_reasoning_effort_diagnostic(
+        problems, screening, certificates
+    )
+
+    assert first_report == second_report
+    assert [problem.question_id for problem in first] == [
+        problem.question_id for problem in second
+    ]
+    assert len(first) == len(first_certificates) == 24
+    assert sum(
+        problem.metadata["diagnostic_stratum"] == "previously_truncated"
+        for problem in first
+    ) == 12
+    assert sum(
+        problem.metadata["diagnostic_stratum"] == "matched_clean_control"
+        for problem in first
+    ) == 12
+    assert all(problem.metadata["excluded_from_monitor_data"] for problem in first)
+    assert all(
+        not (
+            problem.metadata["generator_family"] == "recurrence"
+            and problem.metadata["renderer_id"] == 1
+        )
+        for problem in first
+    )
+    for pair in first_report["pairs"]:
+        assert pair["family"] in pair["previously_truncated_question_id"]
+        assert pair["family"] in pair["matched_control_question_id"]
+
+
+def test_low_reasoning_attribution_gate_requires_completed_diverse_errors():
+    problems, certificates, screening = _diagnostic_source()
+    _, diagnostic, _ = build_reasoning_effort_diagnostic(
+        problems, screening, certificates
+    )
+    families = sorted({problem.metadata["generator_family"] for problem in diagnostic})[:2]
+    wrong_ids = {
+        problem.question_id
+        for family in families
+        for problem in [
+            row for row in diagnostic if row.metadata["generator_family"] == family
+        ][:2]
+    }
+    rollouts = [
+        _rollout(problem, index=1, correct=problem.question_id not in wrong_ids)
+        for problem in diagnostic
+    ]
+    report = analyze_reasoning_effort_diagnostic(diagnostic, rollouts)
+    assert report["diagnostic_gate_passed"]
+    assert report["grades"] == {"correct": 20, "incorrect": 4}
+
+    for rollout in rollouts[:3]:
+        rollout.status = RolloutStatus.LENGTH_TRUNCATED
+        rollout.finish_reason = "length"
+    failed = analyze_reasoning_effort_diagnostic(diagnostic, rollouts)
+    assert not failed["diagnostic_gate_passed"]
+    assert not failed["gate_checks"]["at_most_two_truncated"]

@@ -4,6 +4,22 @@
 
 The ground truth is an intervention-level distributional effect, not an LLM's opinion about whether a single transcript looks suspicious. Monitors receive only the inputs allowed by their declared threat model; labels are derived from separate clean/hinted resamples.
 
+## Research hierarchy
+
+The project asks whether monitors can distinguish ordinary reasoning failures from causally
+induced unfaithfulness in a controlled environment. Mathematics is subordinate to that question:
+it supplies automatically verifiable tasks and controlled difficulty, not a model-capability
+benchmark.
+
+Before any intervention or monitor training, a fresh clean-only cohort must pass the mixed-outcome
+gate. It must contain enough completed correct and completed incorrect reasoning across task
+groups. Length truncations, malformed or ambiguous tasks, parser failures, and transport failures
+are validity outcomes; none may be relabelled as ordinary reasoning errors.
+
+Passing the clean gate authorizes only a separately preregistered causal-yield experiment. Monitor
+training remains blocked until that experiment produces valid unacknowledged, causally shifted
+continuations.
+
 ## Threat models
 
 | Monitor | Inputs available | Question answered |

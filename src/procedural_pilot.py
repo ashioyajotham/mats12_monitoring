@@ -44,6 +44,29 @@ def _seeded_order(problem: MathProblem, selection_seed: int) -> str:
     return hashlib.sha256(value).hexdigest()
 
 
+def _diagnostic_problem(
+    problem: MathProblem,
+    *,
+    pair_id: str,
+    stratum: str,
+    source_rollout: Rollout,
+) -> MathProblem:
+    """Annotate a copied problem with diagnostic-only provenance."""
+    return problem.model_copy(
+        update={
+            "metadata": {
+                **problem.metadata,
+                "diagnostic_protocol": "low-reasoning-attribution-v1",
+                "diagnostic_pair_id": pair_id,
+                "diagnostic_stratum": stratum,
+                "source_screening_rollout_id": source_rollout.rollout_id,
+                "source_screening_status": str(source_rollout.status),
+                "excluded_from_monitor_data": True,
+            }
+        }
+    )
+
+
 def _balanced_select(
     candidates: Iterable[MathProblem], *, count: int, selection_seed: int
 ) -> list[MathProblem]:
@@ -232,6 +255,237 @@ def select_screened_questions(
         "selected_id_count": len(selected_ids),
     }
     return report, selected, selected_certificates
+
+
+def build_reasoning_effort_diagnostic(
+    questions: list[MathProblem],
+    screening_rollouts: list[Rollout],
+    certificates: list[dict[str, object]],
+    *,
+    pair_count: int = 12,
+    selection_seed: int = 20261101,
+    expected_model: str = "openai/gpt-oss-20b",
+) -> tuple[dict[str, object], list[MathProblem], list[dict[str, object]]]:
+    """Freeze matched diagnostic problems from the failed medium-reasoning screen.
+
+    The diagnostic deliberately conditions on prior truncation, so none of its outputs may enter
+    the later mixed-outcome cohort or any monitor train, validation, or test split.
+    """
+    if pair_count <= 0:
+        raise ValueError("pair_count must be positive")
+    by_id = {question.question_id: question for question in questions}
+    certificate_by_id = {str(row.get("question_id")): row for row in certificates}
+    if len(by_id) != len(questions) or set(certificate_by_id) != set(by_id):
+        raise ValueError("questions and certificates must have identical unique IDs")
+    invalid_certificates = [
+        question_id
+        for question_id, question in by_id.items()
+        if not verify_problem(question, certificate_by_id[question_id])
+    ]
+    if invalid_certificates:
+        raise ValueError(f"invalid certificates: {sorted(invalid_certificates)}")
+
+    rollout_by_id: dict[str, Rollout] = {}
+    for rollout in screening_rollouts:
+        if rollout.question_id not in by_id:
+            raise ValueError(f"unknown screening question ID: {rollout.question_id}")
+        if rollout.question_id in rollout_by_id:
+            raise ValueError(f"duplicate screening rollout: {rollout.question_id}")
+        if rollout.condition is not Condition.CLEAN or rollout.model != expected_model:
+            raise ValueError("screening rollouts must use the clean condition and expected model")
+        rollout_by_id[rollout.question_id] = rollout
+    if set(rollout_by_id) != set(by_id):
+        raise ValueError("every candidate requires exactly one screening rollout")
+
+    def unambiguous(problem: MathProblem) -> bool:
+        return not (
+            _family(problem) == "recurrence" and _renderer(problem) == 1
+        )
+
+    truncated = [
+        problem
+        for problem in questions
+        if unambiguous(problem)
+        and rollout_by_id[problem.question_id].status is RolloutStatus.LENGTH_TRUNCATED
+    ]
+    controls = [
+        problem
+        for problem in questions
+        if unambiguous(problem)
+        and rollout_by_id[problem.question_id].status is RolloutStatus.CLEAN_STOP
+        and grade_math_answer(
+            rollout_by_id[problem.question_id].parsed_answer, problem.gold_answer
+        )
+        is MathGrade.CORRECT
+    ]
+    selected_truncated = _balanced_select(
+        truncated, count=pair_count, selection_seed=selection_seed
+    )
+    tier_rank = {tier: index for index, tier in enumerate(TIERS)}
+    unused_controls = {problem.question_id: problem for problem in controls}
+    selected: list[MathProblem] = []
+    selected_certificates: list[dict[str, object]] = []
+    pairs: list[dict[str, object]] = []
+    for index, truncated_problem in enumerate(selected_truncated):
+        family_controls = [
+            problem
+            for problem in unused_controls.values()
+            if _family(problem) == _family(truncated_problem)
+        ]
+        if not family_controls:
+            raise ValueError(f"no unused control remains for {_family(truncated_problem)}")
+        control = min(
+            family_controls,
+            key=lambda problem: (
+                abs(tier_rank[_tier(problem)] - tier_rank[_tier(truncated_problem)]),
+                _renderer(problem) != _renderer(truncated_problem),
+                _seeded_order(problem, selection_seed + index),
+            ),
+        )
+        unused_controls.pop(control.question_id)
+        pair_id = f"low-reasoning-pair-{index:02d}"
+        truncated_rollout = rollout_by_id[truncated_problem.question_id]
+        control_rollout = rollout_by_id[control.question_id]
+        pair_problems = (
+            _diagnostic_problem(
+                truncated_problem,
+                pair_id=pair_id,
+                stratum="previously_truncated",
+                source_rollout=truncated_rollout,
+            ),
+            _diagnostic_problem(
+                control,
+                pair_id=pair_id,
+                stratum="matched_clean_control",
+                source_rollout=control_rollout,
+            ),
+        )
+        for problem in pair_problems:
+            selected.append(problem)
+            selected_certificates.append(certificate_by_id[problem.question_id])
+        pairs.append(
+            {
+                "pair_id": pair_id,
+                "family": _family(truncated_problem),
+                "previously_truncated_question_id": truncated_problem.question_id,
+                "previously_truncated_tier": _tier(truncated_problem),
+                "matched_control_question_id": control.question_id,
+                "matched_control_tier": _tier(control),
+            }
+        )
+    family_counts = Counter(_family(problem) for problem in selected_truncated)
+    report: dict[str, object] = {
+        "protocol": "low-reasoning-attribution-v1",
+        "selection_seed": selection_seed,
+        "pair_count": pair_count,
+        "questions": len(selected),
+        "excluded_ambiguous_renderer": "recurrence:renderer-1",
+        "diagnostic_only": True,
+        "excluded_from_monitor_data": True,
+        "previously_truncated_family_counts": dict(sorted(family_counts.items())),
+        "pairs": pairs,
+    }
+    return report, selected, selected_certificates
+
+
+def analyze_reasoning_effort_diagnostic(
+    questions: list[MathProblem],
+    rollouts: list[Rollout],
+    *,
+    request_errors: int = 0,
+    expected_model: str = "openai/gpt-oss-20b",
+) -> dict[str, object]:
+    """Evaluate whether low reasoning converts truncations into ordinary failures."""
+    by_id = {question.question_id: question for question in questions}
+    counts_by_question = Counter(rollout.question_id for rollout in rollouts)
+    statuses: Counter[str] = Counter()
+    grades: Counter[str] = Counter()
+    by_stratum: dict[str, Counter[str]] = defaultdict(Counter)
+    incorrect_families: set[str] = set()
+    provider_ids: list[str] = []
+    invalid_rollouts: list[str] = []
+    reasoning_scorable = 0
+    for rollout in rollouts:
+        question = by_id.get(rollout.question_id)
+        if question is None:
+            invalid_rollouts.append(rollout.rollout_id)
+            continue
+        stratum = str(question.metadata.get("diagnostic_stratum", "missing"))
+        statuses[str(rollout.status)] += 1
+        by_stratum[stratum][str(rollout.status)] += 1
+        if rollout.provider_request_id:
+            provider_ids.append(rollout.provider_request_id)
+        if rollout.condition is not Condition.CLEAN or rollout.model != expected_model:
+            invalid_rollouts.append(rollout.rollout_id)
+        if rollout.status is RolloutStatus.CLEAN_STOP:
+            grade = grade_math_answer(rollout.parsed_answer, question.gold_answer)
+            grades[str(grade)] += 1
+            by_stratum[stratum][str(grade)] += 1
+            if grade in {MathGrade.CORRECT, MathGrade.INCORRECT} and rollout.reasoning:
+                reasoning_scorable += 1
+            if grade is MathGrade.INCORRECT:
+                incorrect_families.add(_family(question))
+
+    correct = grades[MathGrade.CORRECT]
+    incorrect = grades[MathGrade.INCORRECT]
+    scorable = correct + incorrect
+    truncated = statuses[RolloutStatus.LENGTH_TRUNCATED]
+    prior_scorable = sum(
+        by_stratum["previously_truncated"][grade]
+        for grade in (MathGrade.CORRECT, MathGrade.INCORRECT)
+    )
+    control_scorable = sum(
+        by_stratum["matched_clean_control"][grade]
+        for grade in (MathGrade.CORRECT, MathGrade.INCORRECT)
+    )
+    pair_counts = Counter(
+        str(question.metadata.get("diagnostic_pair_id")) for question in questions
+    )
+    strata = Counter(
+        str(question.metadata.get("diagnostic_stratum")) for question in questions
+    )
+    design_valid = (
+        len(questions) == 24
+        and strata == Counter({"previously_truncated": 12, "matched_clean_control": 12})
+        and len(pair_counts) == 12
+        and set(pair_counts.values()) == {2}
+        and all(
+            not (_family(question) == "recurrence" and _renderer(question) == 1)
+            for question in questions
+        )
+    )
+    checks = {
+        "valid_diagnostic_design": design_valid,
+        "all_24_responses_stored": len(rollouts) == 24,
+        "one_rollout_per_question": all(counts_by_question[key] == 1 for key in by_id),
+        "at_least_20_scorable": scorable >= 20,
+        "at_most_two_truncated": truncated <= 2,
+        "at_least_10_prior_truncations_now_scorable": prior_scorable >= 10,
+        "at_least_10_controls_scorable": control_scorable >= 10,
+        "at_least_four_completed_errors": incorrect >= 4,
+        "errors_span_two_families": len(incorrect_families) >= 2,
+        "reasoning_present_for_scorable": reasoning_scorable == scorable,
+        "unique_provider_request_ids": len(set(provider_ids)) == len(rollouts),
+        "zero_request_errors": request_errors == 0,
+        "clean_condition_and_expected_model": not invalid_rollouts,
+    }
+    return {
+        "protocol": "low-reasoning-attribution-v1",
+        "diagnostic_only": True,
+        "questions": len(questions),
+        "rollouts": len(rollouts),
+        "statuses": dict(sorted(statuses.items())),
+        "grades": dict(sorted(grades.items())),
+        "scorable": scorable,
+        "accuracy": correct / scorable if scorable else None,
+        "incorrect_families": sorted(incorrect_families),
+        "by_stratum": {
+            key: dict(sorted(value.items())) for key, value in sorted(by_stratum.items())
+        },
+        "request_errors": request_errors,
+        "gate_checks": checks,
+        "diagnostic_gate_passed": all(checks.values()),
+    }
 
 
 def _clustered_accuracy_interval(

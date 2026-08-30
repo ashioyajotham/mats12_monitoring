@@ -1,0 +1,130 @@
+{
+  "certificates_path": "data/raw/procedural_low_reasoning_diagnostic_v1.certificates.jsonl",
+  "certificates_sha256": "2c1a5b3941a711d326f0bc34e29a5034e4da7a809f19d6f7ca3b4c9afd05f5b7",
+  "code_revision": "a1d1b86d33fd5f274e9a505351f58445733d0ace",
+  "diagnostic_only": true,
+  "entrypoint_sha256": "86fb976fc91d254f522859efefbe2e1d72afdaf37392c5c4b6006911b6a9c79e",
+  "excluded_ambiguous_renderer": "recurrence:renderer-1",
+  "excluded_from_monitor_data": true,
+  "manifest_sha256": "77a34e9b50432cb51355ff02e685d8c95ab6c9745ab219ac391d641eeef33641",
+  "pair_count": 12,
+  "pairs": [
+    {
+      "family": "recurrence",
+      "matched_control_question_id": "proc-v1-recurrence-easy-09-55374022b832112b",
+      "matched_control_tier": "easy",
+      "pair_id": "low-reasoning-pair-00",
+      "previously_truncated_question_id": "proc-v1-recurrence-easy-03-63d0ae4ff447dd49",
+      "previously_truncated_tier": "easy"
+    },
+    {
+      "family": "recurrence",
+      "matched_control_question_id": "proc-v1-recurrence-easy-08-696b550970957877",
+      "matched_control_tier": "easy",
+      "pair_id": "low-reasoning-pair-01",
+      "previously_truncated_question_id": "proc-v1-recurrence-easy-02-2ae3089ee5863434",
+      "previously_truncated_tier": "easy"
+    },
+    {
+      "family": "linear_system",
+      "matched_control_question_id": "proc-v1-linear_system-hard-05-74616c5bde32e11f",
+      "matched_control_tier": "hard",
+      "pair_id": "low-reasoning-pair-02",
+      "previously_truncated_question_id": "proc-v1-linear_system-hard-03-5a05548176dda74d",
+      "previously_truncated_tier": "hard"
+    },
+    {
+      "family": "crt",
+      "matched_control_question_id": "proc-v1-crt-hard-01-32fcbbd1bc2c1715",
+      "matched_control_tier": "hard",
+      "pair_id": "low-reasoning-pair-03",
+      "previously_truncated_question_id": "proc-v1-crt-hard-07-535d01c5c6c22236",
+      "previously_truncated_tier": "hard"
+    },
+    {
+      "family": "linear_system",
+      "matched_control_question_id": "proc-v1-linear_system-medium-08-3764fe35ec6d1ca1",
+      "matched_control_tier": "medium",
+      "pair_id": "low-reasoning-pair-04",
+      "previously_truncated_question_id": "proc-v1-linear_system-hard-08-7752d8dbb67a6ce2",
+      "previously_truncated_tier": "hard"
+    },
+    {
+      "family": "linear_system",
+      "matched_control_question_id": "proc-v1-linear_system-medium-06-1916a19deca69770",
+      "matched_control_tier": "medium",
+      "pair_id": "low-reasoning-pair-05",
+      "previously_truncated_question_id": "proc-v1-linear_system-medium-03-06a8efc668cb61bb",
+      "previously_truncated_tier": "medium"
+    },
+    {
+      "family": "linear_system",
+      "matched_control_question_id": "proc-v1-linear_system-medium-04-2ce1835be533ec1e",
+      "matched_control_tier": "medium",
+      "pair_id": "low-reasoning-pair-06",
+      "previously_truncated_question_id": "proc-v1-linear_system-medium-01-5d7925af149d5998",
+      "previously_truncated_tier": "medium"
+    },
+    {
+      "family": "recurrence",
+      "matched_control_question_id": "proc-v1-recurrence-medium-05-555a7ebe5a6fb462",
+      "matched_control_tier": "medium",
+      "pair_id": "low-reasoning-pair-07",
+      "previously_truncated_question_id": "proc-v1-recurrence-medium-08-40bbcbda7cb1d3a3",
+      "previously_truncated_tier": "medium"
+    },
+    {
+      "family": "recurrence",
+      "matched_control_question_id": "proc-v1-recurrence-hard-06-140eb720cc1cf0e2",
+      "matched_control_tier": "hard",
+      "pair_id": "low-reasoning-pair-08",
+      "previously_truncated_question_id": "proc-v1-recurrence-hard-03-149258dd9d3ac0c8",
+      "previously_truncated_tier": "hard"
+    },
+    {
+      "family": "linear_system",
+      "matched_control_question_id": "proc-v1-linear_system-medium-02-48dde679041b380e",
+      "matched_control_tier": "medium",
+      "pair_id": "low-reasoning-pair-09",
+      "previously_truncated_question_id": "proc-v1-linear_system-hard-04-002a707cd66a3786",
+      "previously_truncated_tier": "hard"
+    },
+    {
+      "family": "recurrence",
+      "matched_control_question_id": "proc-v1-recurrence-hard-05-4bce967890be3383",
+      "matched_control_tier": "hard",
+      "pair_id": "low-reasoning-pair-10",
+      "previously_truncated_question_id": "proc-v1-recurrence-hard-08-1fce233d663c2f6f",
+      "previously_truncated_tier": "hard"
+    },
+    {
+      "family": "linear_system",
+      "matched_control_question_id": "proc-v1-linear_system-easy-00-12069bb4c0615e6b",
+      "matched_control_tier": "easy",
+      "pair_id": "low-reasoning-pair-11",
+      "previously_truncated_question_id": "proc-v1-linear_system-medium-09-64abf3c7c0380e6f",
+      "previously_truncated_tier": "medium"
+    }
+  ],
+  "previously_truncated_family_counts": {
+    "crt": 1,
+    "linear_system": 6,
+    "recurrence": 5
+  },
+  "protocol": "low-reasoning-attribution-v1",
+  "purpose": "procedural_low_reasoning_diagnostic_freeze",
+  "questions": 24,
+  "questions_path": "data/raw/procedural_low_reasoning_diagnostic_v1.jsonl",
+  "questions_sha256": "1882a424ba93e12fed9295020b81af8509f3a60dbea33cc76ae835536f4923ab",
+  "runtime_environment": {
+    "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7"
+  },
+  "selection_code_sha256": "548ec683f65e26839b47f1b606fdea7abe3d8a49f372c9c1b8a317aaa02b25bd",
+  "selection_seed": 20261101,
+  "source_certificates_sha256": "810d328995bc7b66968852a9ce33592ffb7f8e40dd39adc738fb6ff8af85dada",
+  "source_questions_sha256": "683837f9bc33aba246c7867f824ae76952732a752a9f81e3b2f0a21dd8526379",
+  "source_screening_manifest_sha256": "76f9546777b77f0b3c0b0acbc5862595d96fda8adf7c3b995b9d23adbff6b022",
+  "source_screening_rollouts_sha256": "a838358e2ffb34588115ad2ae451159e74b5f03a86c11164513687c8b83b72e4",
+  "source_screening_run": "data/generated/tinker_procedural_screening_20260830T055054Z"
+}

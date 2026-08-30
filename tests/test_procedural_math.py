@@ -97,3 +97,37 @@ def test_committed_candidate_freeze_matches_generator_and_manifest():
     assert manifest["entrypoint_sha256"] == sha256_file(
         "experiments/00_generate_procedural_math.py"
     )
+
+
+def test_committed_low_reasoning_diagnostic_is_bound_and_monitor_excluded():
+    questions_path = Path("data/raw/procedural_low_reasoning_diagnostic_v1.jsonl")
+    certificates_path = Path(
+        "data/raw/procedural_low_reasoning_diagnostic_v1.certificates.jsonl"
+    )
+    manifest_path = Path("data/raw/procedural_low_reasoning_diagnostic_v1.manifest.json")
+    questions = list(read_jsonl(questions_path, model=MathProblem))
+    certificates = [
+        json.loads(line)
+        for line in certificates_path.read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    assert len(questions) == len(certificates) == 24
+    assert all(question.metadata["excluded_from_monitor_data"] for question in questions)
+    assert Counter(
+        question.metadata["diagnostic_stratum"] for question in questions
+    ) == Counter({"previously_truncated": 12, "matched_clean_control": 12})
+    assert all(
+        verify_problem(question, certificate)
+        for question, certificate in zip(questions, certificates, strict=True)
+    )
+
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    expected_manifest_hash = manifest.pop("manifest_sha256")
+    canonical = json.dumps(manifest, sort_keys=True, separators=(",", ":"))
+    assert expected_manifest_hash == hashlib.sha256(canonical.encode()).hexdigest()
+    assert manifest["questions_sha256"] == sha256_file(questions_path)
+    assert manifest["certificates_sha256"] == sha256_file(certificates_path)
+    assert manifest["selection_code_sha256"] == sha256_file("src/procedural_pilot.py")
+    assert manifest["entrypoint_sha256"] == sha256_file(
+        "experiments/02_prepare_low_reasoning_diagnostic.py"
+    )
