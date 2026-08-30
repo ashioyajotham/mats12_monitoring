@@ -57,6 +57,11 @@ data/reviewed/*
 !data/raw/procedural_assistant_prefill_v3.selection.json
 !data/raw/procedural_assistant_prefill_v3.token_audit.jsonl
 !data/raw/procedural_assistant_prefill_v3.manifest.json
+!data/raw/causal_error_detection_v1.jsonl
+!data/raw/causal_error_detection_v1.qualification.jsonl
+!data/raw/causal_error_detection_v1.confirmatory.jsonl
+!data/raw/causal_error_detection_v1.source_certificates.jsonl
+!data/raw/causal_error_detection_v1.intervention_certificates.jsonl
 !data/generated/.gitkeep
 !data/reviewed/.gitkeep
 
@@ -72,4 +77,5 @@ results/*.jsonl
 !results/procedural_continuation_yield_v2.json
 !results/procedural_continuation_yield_v2_manual_review.json
 !results/procedural_assistant_prefill_v3.json
+!results/causal_error_v1_qualification.json
 !results/figures/.gitkeep

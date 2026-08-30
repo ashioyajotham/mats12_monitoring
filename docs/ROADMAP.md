@@ -54,7 +54,7 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
 
 - [x] Freeze the new estimand, prospective partitions, causal gates, labels, monitor views, and
   grouped evaluation in `docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md`.
-- [ ] Implement and test the fresh 96-question generator, certificates, and deterministic
+- [x] Implement and test the fresh 96-question generator, certificates, and deterministic
   qualification/confirmatory split without consulting model outcomes.
 - [ ] Run the 72-request clean qualification cohort and stop unless every mixed-outcome and
   integrity gate passes.

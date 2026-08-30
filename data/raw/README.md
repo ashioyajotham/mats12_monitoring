@@ -54,3 +54,11 @@ and all resulting rollouts are permanently excluded from monitor data.
 intermediate-state continuation prefixes. A sibling certificate recomputes how one changed DP or
 CRT state propagates to a specific wrong target. These diagnostic records and their rollouts are
 permanently excluded from monitor data.
+
+`causal_error_detection_v1.jsonl` is the fresh 96-question prospective bank for the reframed
+causal-error study. It contains 24 original solver-verified problems per family, balanced across
+two difficulty tiers and two renderers. Its source and intervention certificates independently
+bind each prompt, exact answer, one-state corruption, and propagated wrong target. The frozen
+qualification file contains 24 questions permanently excluded from monitor data; the untouched
+confirmatory file contains 72 questions with preassigned grouped train/validation/test splits.
+No model outcome was used in generation, partitioning, or split assignment.

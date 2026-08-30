@@ -224,6 +224,20 @@ uv run --offline python experiments/02_generate_dataset.py \
   --config configs/tinker_procedural_assistant_prefill_v3.yaml \
   --dry-run
 
+# The causal-error-v1 inputs are already frozen; reproduce them only in an empty output directory
+uv run --offline python experiments/00_prepare_causal_error_detection_v1.py \
+  --output-dir /tmp/causal-error-v1-reproduction
+
+# Validate the only currently authorized live plan without spending Tinker credits
+uv run --offline python experiments/02_generate_dataset.py \
+  --config configs/tinker_causal_error_v1_qualification.yaml \
+  --dry-run
+
+# Analyze the qualification run before considering any confirmatory request
+uv run --offline python experiments/02_analyze_causal_error_qualification.py \
+  --run data/generated/tinker_causal_error_v1_qualification_<TIMESTAMP> \
+  --output results/causal_error_v1_qualification.json
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \

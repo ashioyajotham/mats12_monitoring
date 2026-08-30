@@ -1,0 +1,79 @@
+{
+  "all_certificates_verified": true,
+  "all_partitions_frozen_before_collection": true,
+  "artifact_paths": {
+    "all_questions": "data/raw/causal_error_detection_v1.jsonl",
+    "confirmatory_questions": "data/raw/causal_error_detection_v1.confirmatory.jsonl",
+    "intervention_certificates": "data/raw/causal_error_detection_v1.intervention_certificates.jsonl",
+    "manifest": "data/raw/causal_error_detection_v1.manifest.json",
+    "qualification_questions": "data/raw/causal_error_detection_v1.qualification.jsonl",
+    "selection": "data/raw/causal_error_detection_v1.selection.json",
+    "source_certificates": "data/raw/causal_error_detection_v1.source_certificates.jsonl"
+  },
+  "artifact_sha256": {
+    "all_questions": "c5e17b1ad148c1e4ddd9e0487e26e6f6504515acdf9f51997cf7d9c547ffde94",
+    "confirmatory_questions": "9c05a638e3b6c5a1006a4dccfdad493df391279f8f23a01d31375caa0e92daf8",
+    "intervention_certificates": "9a1a41e044c183d587805eeb06513c9148e490dc9165f53cb6cbc80c11984a3a",
+    "qualification_questions": "93eb19f1f4e94a51c70725a8cb39556df908fe1ad3fe4034b14ff72de124e30f",
+    "selection": "a3b14c26b3400c5be68f3c271e8658ae1f4c1222a2704ebd0df41cd8ef75cca8",
+    "source_certificates": "d615272bae1e3f6267d506ecbaaed45e77db142017d352d8b03c812dfc16fbaa"
+  },
+  "cell_counts": {
+    "affine_modular:boundary_high:renderer-0": 6,
+    "affine_modular:boundary_high:renderer-1": 6,
+    "affine_modular:boundary_low:renderer-0": 6,
+    "affine_modular:boundary_low:renderer-1": 6,
+    "conditional_dag:boundary_high:renderer-0": 6,
+    "conditional_dag:boundary_high:renderer-1": 6,
+    "conditional_dag:boundary_low:renderer-0": 6,
+    "conditional_dag:boundary_low:renderer-1": 6,
+    "finite_state:boundary_high:renderer-0": 6,
+    "finite_state:boundary_high:renderer-1": 6,
+    "finite_state:boundary_low:renderer-0": 6,
+    "finite_state:boundary_low:renderer-1": 6,
+    "subset_counting:boundary_high:renderer-0": 6,
+    "subset_counting:boundary_high:renderer-1": 6,
+    "subset_counting:boundary_low:renderer-0": 6,
+    "subset_counting:boundary_low:renderer-1": 6
+  },
+  "code_revision": "0206b4f1150bc3593ecf265ebbafcb688b09fba3",
+  "confirmatory_questions": 72,
+  "entrypoint_sha256": "d2694f80c95e41d07e5be36381dc000a22ee76e56249f7f0909cc77ef93628b0",
+  "generation_method": "fresh_original_dual_exact_verification",
+  "generator_code_sha256": "837a00e48aee49aecc3c974f14b5ed5576b321e426649878cee1890888318dfd",
+  "license": "MIT",
+  "manifest_sha256": "21333367844a0cd475335db7f62c74195ac75ea3124cdcff3b34c9198f2feea7",
+  "monitor_split_counts": {
+    "test": 15,
+    "train": 43,
+    "validation": 14
+  },
+  "monitor_split_seed": 20262503,
+  "partition_counts": {
+    "confirmatory": 72,
+    "qualification": 24
+  },
+  "partition_seed": 20262502,
+  "per_family": 24,
+  "prior_question_files": {
+    "data/raw/procedural_assistant_prefill_v3.jsonl": "f0fd6dc95341e09b3c491aab3f0918961574052d4ebb9200afae64551f208848",
+    "data/raw/procedural_causal_yield_v1.jsonl": "e4fc2aefa7c56a4ab184d3449a5e0bb1d02923cddcb9953823ca50559ab4b3b7",
+    "data/raw/procedural_continuation_yield_v2.jsonl": "1115ee695cbaa80ab7f6df50d5e96436ef1bb777631d89583c2d384c998395da",
+    "data/raw/procedural_low_reasoning_diagnostic_v1.jsonl": "1882a424ba93e12fed9295020b81af8509f3a60dbea33cc76ae835536f4923ab",
+    "data/raw/procedural_math_candidates_v1.jsonl": "683837f9bc33aba246c7867f824ae76952732a752a9f81e3b2f0a21dd8526379",
+    "data/raw/procedural_math_candidates_v2.jsonl": "07e6ee69edff2cdf06f36aaa7aad4e9bb32d2bd03a20b6d9b532fad9ba727455",
+    "data/raw/procedural_math_pilot_v21.jsonl": "fa52e11b830181ed914d652c0ac0657f9abbba729319f4ab1c66ea329733178a",
+    "data/raw/procedural_math_subset_replacements_v21.jsonl": "6076d224011dedf730e8bc00b300685b73371d4fcc60d3aa8dd4cbd47f96c73a"
+  },
+  "prior_question_ids_excluded": 228,
+  "protocol": "causal-error-detection-v1",
+  "purpose": "causal_error_detection_v1_freeze",
+  "qualification_questions": 24,
+  "questions": 96,
+  "root_seed": 20262501,
+  "runtime_environment": {
+    "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7"
+  },
+  "selection_uses_model_outcomes": false
+}

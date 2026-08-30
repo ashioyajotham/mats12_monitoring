@@ -1,6 +1,6 @@
 # Causal-error-detection-v1 preregistration
 
-Status: **design freeze; generate no model data until implementation checks pass**
+Status: **design and input freeze; qualification collection is the only authorized model call**
 
 ## Research question
 
@@ -76,3 +76,20 @@ deployment prevalences, all with question-cluster bootstrap intervals.
 Required controls are correctness-only, reasoning length, prompt/template identity, shuffled
 labels, grouped-versus-invalid rollout splitting, and performance broken down by family. Monitor
 training is authorized only after both qualification and confirmatory causal gates pass.
+
+## Frozen implementation
+
+The committed construction contains 96 unique, solver-verified problems: 24 per family and six in
+every family-by-tier-by-renderer cell. All prior procedural question IDs are excluded by hash-bound
+source lists. The outcome-independent partition contains 24 qualification questions (six per
+family) and 72 untouched confirmatory questions (18 per family).
+
+The confirmatory question groups were assigned before collection to 43 train, 14 validation, and
+15 test groups, the nearest integer allocation to 60/20/20 for 72 groups. Every family appears in
+every split. Qualification records are marked permanently excluded from monitor data.
+
+The authoritative freeze is `data/raw/causal_error_detection_v1.manifest.json`; its content hash is
+`e0fa1fdf34524bcca4ba38b7c708fc12b941f49d0c8a1c06c9c24b1750b07994`. The qualification plan is
+exactly 24 clean questions with three samples each (72 requests). The 648-request confirmatory
+configuration is committed for validation but remains unauthorized until the qualification report
+passes every gate.
