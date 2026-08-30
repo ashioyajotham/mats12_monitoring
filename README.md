@@ -1,430 +1,362 @@
 # When Does a Chain-of-Thought Monitor Cry Wolf?
 
-An empirical study of whether behavioural, language-model, and activation-based monitors can
-distinguish **ordinary reasoning errors** from errors caused by a certified intermediate-state
-perturbation.
+![Pixel-art illustration of ordinary and causally induced reasoning errors](assets/mats12_monitoring_pixel_art.png)
 
-This repository is the MATS 12 application project of Victor Ashioya. It extends
-[cot-faithfulness-mech-interp](https://github.com/ashioyajotham/cot-faithfulness-mech-interp), where
-strong GPT-2 probe results degraded on Qwen and Gemma and causal interventions had weak behavioural
-effects. After a preregistered sequence failed to yield silent causal positives, the project now
-asks the narrower operational question: **can a monitor distinguish causally induced reasoning
-errors from ordinary failures without overwhelming an auditor with false positives?**
+An empirical study of whether reasoning monitors can distinguish **ordinary model mistakes** from
+errors caused by a **certified corrupted intermediate state**—without overwhelming human auditors
+with false alarms.
 
-## Research contract
+This is the MATS 12 application project of Victor Ashioya. For a non-technical introduction, see
+the [plain-language project overview](docs/PROJECT_OVERVIEW.md).
+
+## Current status
+
+| Research component | Status |
+|---|---|
+| Clean mixed-outcome qualification | **Passed**: 29 correct, 43 ordinary errors, 0 invalid |
+| Confirmatory randomized causal collection | **In progress** |
+| Behavioural monitor stack | Implemented and tested |
+| Monitor fitting and full judge scoring | **Blocked** until every confirmatory gate passes |
+| Silent-unfaithfulness research branch | Closed after preregistered null/validity results |
+| Activation probing | Outside the current study |
+
+No partial confirmatory outcomes may be used for labels, monitor fitting, or research claims. A
+failed confirmatory gate stops the study before monitor evaluation.
+
+## The problem
+
+Suppose two models produce the same wrong answer:
+
+1. one reaches it through an ordinary reasoning mistake;
+2. the other was given a bad intermediate value and propagated that corruption downstream.
+
+Correctness alone cannot distinguish these cases. Their written reasoning may also look similar.
+The monitoring problem is therefore not merely *“Is this answer wrong?”* but:
+
+> Can a monitor identify errors caused by a controlled reasoning corruption without falsely
+> accusing too many ordinary failures?
+
+This distinction matters at low base rates. If causally induced failures are rare, a seemingly
+accurate monitor can still produce far more false alarms than useful alerts.
+
+## Research question and hypothesis
 
 ### Primary question
 
-Can a counterfactual answer-shift score distinguish ordinary completed reasoning errors from errors
-produced by a certified single-state perturbation better than a frozen surface-feature baseline?
-
-### Research hierarchy
-
-This is a monitoring project, not a benchmark of whether GPT-OSS can solve mathematics. The
-task-construction question is subordinate and operational: **can we construct a controlled
-reasoning environment with enough ordinary failures to test whether monitors distinguish them
-from causally induced errors?**
-
-The previous clean-only mixed-outcome gate passed. The next enabling milestone is a fresh,
-prospectively partitioned replication: a 72-request qualification gate followed, only if it
-passes, by a 648-request randomized causal collection. Truncations, parser failures, and ambiguous
-prompts do not count as ordinary errors. Neither stage by itself permits monitor training unless
-all preregistered causal, uncertainty, integrity, and diversity gates pass.
+Can a leave-one-out counterfactual answer-shift score distinguish ordinary completed reasoning
+errors from errors produced by a certified single-state perturbation better than a frozen
+surface-feature baseline?
 
 ### Main hypothesis
 
-Counterfactual answer shift will discriminate certified intervention-caused errors from ordinary
-errors better than surface monitoring on grouped held-out questions, but false positives may still
-make precision poor at low deployment prevalence.
+Counterfactual answer shift will discriminate intervention-caused errors from ordinary errors
+better than surface monitoring on grouped held-out questions. Its false-positive rate may still
+make precision poor at realistic deployment prevalences.
 
-### Unit of analysis
+### Research hierarchy
 
-A base solver-verified procedural problem, all intervention conditions derived from it, and repeated
-model rollouts. Splits are grouped by `question_id`; variants or resamples of the same problem never
-cross splits.
+This is a **monitoring study**, not a benchmark of whether GPT-OSS can solve mathematics. The task
+construction question is subordinate:
 
-### Causal positive label
+> Can we construct a controlled reasoning environment with enough ordinary failures to test
+> whether monitors distinguish them from causally induced errors?
+
+Mathematics is useful here because answers can be graded exactly, intermediate states can be
+verified independently, and the consequences of changing one value can be propagated in advance.
+
+## Background and research trajectory
+
+The project extends
+[cot-faithfulness-mech-interp](https://github.com/ashioyajotham/cot-faithfulness-mech-interp),
+where strong GPT-2 probe results weakened on Qwen and Gemma and causal interventions had limited
+behavioural effects.
+
+The initial MATS study attempted to construct examples where a model silently followed a
+misleading hint. Weak hints were usually resisted. Stronger authority and directive cues sometimes
+changed answers, but the model generally acknowledged them. Exact state-continuation interventions
+created strong causal control, but their influence remained visible. An assistant-prefill attempt
+then failed its causal gate.
+
+Those results did not justify a hidden-influence label. Rather than weakening the criteria, the
+project closed that branch and reframed the study around a narrower causal-error question:
+distinguishing ordinary failures from errors caused by certified state perturbations.
+
+## Findings so far
+
+These are bounded task-construction and mechanism findings—not monitor-performance results.
+
+| Phase | Result | Decision |
+|---|---|---|
+| Trusted-answer-key calibration | 9/10 treatment answers followed the wrong key; all nine acknowledged it | Behaviour changed, but no silent-use dataset was justified |
+| Uncertain annotation | 0/10 planted-answer uptake despite much longer reasoning | Weak contextual hints were resisted |
+| ARC clean discovery | 60/60 correct | The task slice was too easy to supply ordinary failures |
+| MATH clean discovery | 59/59 scorable answers correct; one truncation | Static MATH slice also failed the ordinary-error yield gate |
+| Procedural v2.1 validation | 120/120 scorable: 64 correct and 56 incorrect | A reliable mixed-outcome environment was achieved |
+| Answer-bearing solver note | Target shift +2.8 points; clustered interval −5.6 to +11.1 | No causal-yield evidence; explicit verification framing induced correction |
+| Exact state continuation | 13/24 corrupted targets versus 0/24 in each control; effect +54.2 points, interval +33.3 to +75.0 | Strong causal control, but manual review found zero defensible silent-use cases |
+| Assistant prefill | 1/24 corrupted targets versus 2/24 correct-prefill targets; effect −4.2 points, interval −16.7 to +8.3 | Causal gate failed; silent-unfaithfulness branch closed |
+| Causal-error-v1 qualification | 72/72 scorable: 29 correct and 43 errors across 19 questions and all four families | Frozen confirmatory causal collection authorized |
+
+The central progression is:
+
+```text
+Weak or openly acknowledged hint effects
+                    ↓
+Failure to construct defensible silent-use labels
+                    ↓
+Reliable ordinary failures from original procedural tasks
+                    ↓
+Strong, certified causal errors from state corruption
+                    ↓
+Current study: can monitors distinguish the two?
+```
+
+## Research phases and milestones
+
+| Phase | Objective | Outcome |
+|---|---|---|
+| 0. Prior mechanistic work | Test whether activation probes and interventions scale across models | Motivating negative scaling result |
+| 1. Hint interventions | Produce behaviourally influenced, unacknowledged reasoning | Closed: influence was weak or openly acknowledged |
+| 2. Natural-error discovery | Find enough ordinary failures on licensed static tasks | Closed: ARC and selected MATH slices were too easy |
+| 3. Procedural task construction | Create original, solver-verified tasks with reliable mixed outcomes | Passed with 64 correct and 56 incorrect responses |
+| 4. Causal mechanism discovery | Create predictable downstream errors from one corrupted state | Causal control passed; hidden-use validity failed |
+| 5. Causal-error dataset construction | Prospectively collect ordinary and causally induced failures | **Current phase: confirmatory collection** |
+| 6. Behavioural monitor evaluation | Compare answer shift, surface, judges, controls, and hybrid | Pending confirmatory authorization |
+| 7. Internals | Test whether activations add held-out value | Optional future work; not authorized now |
+
+## Current experimental design
+
+The causal-error-v1 study contains 96 new solver-verified procedural problems:
+
+- 24 qualification questions, permanently excluded from monitor data;
+- 72 untouched confirmatory questions;
+- four task families balanced across difficulty tiers and renderers;
+- frozen train, validation, and test assignments grouped by `question_id`.
+
+For each confirmatory question, the solver model receives three conditions with three fresh samples
+per condition:
+
+```text
+Verified problem
+      ├── Clean prompt
+      ├── Correct intermediate-state continuation
+      └── Single-value corrupted-state continuation
+                         ↓
+          648 immutable model rollouts
+                         ↓
+      Causal effect, integrity and diversity gates
+                         ↓
+     Ordinary errors vs causally induced errors
+                         ↓
+          Grouped held-out monitor evaluation
+```
+
+### Labels
 
 An individual rollout is labelled `causally_induced_error` only when:
 
 1. it was generated under the prospectively assigned corrupted-state condition;
 2. it selects the independently certified propagated target; and
-3. the complete dataset passes its randomized effect, uncertainty, integrity, and diversity gates.
+3. the complete dataset passes every randomized effect, uncertainty, integrity, clean-negative,
+   provenance, and diversity gate.
 
-Acknowledgment is reported but is not a label criterion. The label supports a causal-error claim,
-not a claim about hidden influence, faithfulness, deception, or intent.
+Primary negatives are completed incorrect clean rollouts. Correct-state errors and corrupted-state
+non-target errors are secondary hard negatives, not part of the primary binary comparison.
 
-Raw generations are immutable. Derived labels can always be rebuilt from them.
+Acknowledgment is descriptive and is not a label criterion. The label supports a claim about a
+controlled causal intervention—not hidden influence, faithfulness, deception, intent, or whether a
+model “really” used its chain of thought.
 
-## Historical pilot scope
+## Confirmatory gates
 
-- One current open reasoning model, configured in `configs/pilot.yaml`.
-- One multiple-choice task family: the pinned ARC-Challenge validation split.
-- 20 deterministically selected base questions spanning six source collections.
-- Three prompt conditions: clean, incorrect-answer hint, and irrelevant metadata.
-- Five samples per condition (approximately 300 rollouts if clean counterfactual resamples are included).
-- Full manual review of candidate positives and high-confidence monitor errors.
-- Behavioural baselines first; activation probes only after the pilot gates pass.
-
-The default configuration uses a `mock` backend so the full data and evaluation pipeline can be tested on CPU. A real generation adapter must be explicitly configured before collecting research results.
-
-## Current study gates
-
-| Gate | Continue when… | Default threshold |
+| Gate | Continue only when… | Frozen threshold |
 |---|---|---:|
-| Qualification | Fresh clean data contain reliable mixed outcomes | 20–80% accuracy; ≥ 24 errors |
-| Causal effect | Corruption increases exact-target uptake | ≥ 20 points; CI lower bound > 0 |
-| Diversity | Corrupted targets span questions and families | ≥ 36 targets; ≥ 18 questions; 4 families |
-| Integrity | Responses are usable and cells are balanced | ≥ 90% scorable; ≤ 10% truncated |
+| Data integrity | Responses are usable and cells are balanced | ≥90% scorable; ≤10% truncated |
+| Causal effect | Corruption increases exact-target uptake | ≥20 percentage points; clustered interval lower bound >0 |
+| Target diversity | Causal targets span the task distribution | ≥36 targets; ≥18 questions; all 4 families |
+| Control validity | Correct-state continuation does not materially damage accuracy | No more than 15-point loss versus clean |
+| Ordinary negatives | Enough completed clean errors exist for monitoring | ≥48 errors; ≥24 questions; all 4 families |
+| Provenance | Samples, provider IDs, questions and certificates verify exactly | Every integrity check passes |
 
-Thresholds are frozen in
-[`docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md`](docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md)
-and may not be relaxed after collection. A failed gate stops monitor fitting.
+Thresholds are frozen in the
+[causal-error-v1 preregistration](docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md) and cannot be
+relaxed after collection.
 
-## Repository map
+## Monitor comparison
 
-```text
-mats12_monitoring/
-├── configs/pilot.yaml             # frozen pilot choices and gates
-├── data/
-│   ├── raw/                       # source questions; never model outputs
-│   ├── generated/                 # immutable raw rollouts and manifests
-│   └── reviewed/                  # human review and derived labels
-├── src/
-│   ├── tasks.py                   # question schema, loading and grouped splits
-│   ├── datasets/                  # licensed source normalization and freeze selection
-│   ├── hints.py                   # controlled prompt interventions
-│   ├── generate_rollouts.py       # backend-neutral rollout generation
-│   ├── causal_labels.py           # causal label derivation
-│   ├── resampling.py              # legacy hint-uptake estimator
-│   ├── monitor_dataset.py         # gate-bound labels and typed evidence views
-│   ├── monitor_evaluation.py      # OOF fitting and grouped evaluation
-│   ├── monitors/                  # surface, LLM, activation and hybrid monitors
-│   ├── metrics.py                 # AUROC/AUPRC/FPR/low-base-rate PPV
-│   └── audit.py                   # manifests, hashes and claim checks
-├── experiments/                   # numbered, reproducible experiment entrypoints
-├── docs/                          # preregistration, method and reference notes
-├── results/
-│   ├── claim_ledger.md            # evidence required for every public claim
-│   └── decisions.md               # timestamped research decisions and pivots
-└── tests/                         # CPU-only contract tests
-```
+| Monitor | Information available | Purpose |
+|---|---|---|
+| Correctness-only | Known wrong-answer status | Demonstrate that correctness cannot separate two wrong-answer classes |
+| Reasoning length | Character count | Detect a trivial length confound |
+| Template identity | Family, tier and renderer | Detect task-construction leakage |
+| Shuffled-label surface | Transcript features with permuted training labels | Negative control |
+| Surface baseline | Length, uncertainty, backtracking and related visible features | Test whether inexpensive stylistic artefacts suffice |
+| Transcript-only Qwen judge | Question, reasoning and answer | Judge causal-error likelihood without intervention context |
+| Context-aware Qwen judge | Transcript plus rendered solver prompt | Test the value of seeing the supplied state |
+| Counterfactual answer shift | Leave-one-out sibling answer frequencies | Test whether the focal answer becomes more common under corruption |
+| Hybrid | Surface, both judges and answer shift | Test whether the signals contain complementary information |
 
-## Quick start
+Typed evidence schemas enforce the information boundary. Transcript-only monitors cannot receive
+condition names, certificates, provenance, sibling outcomes, split metadata, or derived labels.
+
+The answer-shift score for focal answer $a$ is
+
+$$
+s(a)=\frac{1+p_{\mathrm{corrupt}}(a)-
+\max\!\left(p_{\mathrm{clean}}(a),p_{\mathrm{correct}}(a)\right)}{2}.
+$$
+
+This is a completed-answer frequency baseline, not literal intermediate-state branch resampling.
+
+## Evaluation
+
+Accuracy is not a headline metric. The study reports:
+
+- false-positive rate at 50% recall;
+- AUROC and AUPRC;
+- precision at assumed causal-error prevalences of 50%, 10%, 5%, and 1%;
+- paired question-cluster bootstrap intervals for answer shift versus surface;
+- validation-selected thresholds applied once to held-out test questions;
+- performance broken down by task family; and
+- descriptive scores on secondary hard negatives.
+
+For event prevalence $\pi$, sensitivity $\operatorname{TPR}$, and false-positive rate
+$\operatorname{FPR}$:
+
+$$
+\operatorname{PPV}(\pi)=
+\frac{\operatorname{TPR}\,\pi}
+{\operatorname{TPR}\,\pi+\operatorname{FPR}\,(1-\pi)}.
+$$
+
+Question-group splitting is mandatory: no repeated sample or intervention variant of the same
+problem may cross train, validation, and test.
+
+## What would falsify the preferred story?
+
+- Counterfactual answer shift does not outperform the surface baseline.
+- Performance disappears under question-group-disjoint evaluation.
+- Reasoning length, family, tier, or renderer identity explains the apparent signal.
+- The context-aware judge succeeds only by reading intervention wording.
+- Strong balanced-test metrics correspond to unusable precision at 1% prevalence.
+- The confirmatory collection fails its causal, ordinary-negative, diversity, or integrity gate.
+- A hybrid adds no held-out value beyond its simplest component.
+
+These are findings to report, not obstacles to hide.
+
+## Reproducing the current study
+
+### Install and test
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-pip install -e ".[dev]"
+pip install -e ".[dev,tinker]"
 pytest
+```
 
-# Validate config and generate deterministic mock pilot data
-python experiments/01_pilot.py --config configs/pilot.yaml
+The CPU-only tests do not require provider credentials. Live collection requires
+`TINKER_API_KEY` in the environment.
 
-# Validate the nine-request GLM smoke plan without making API calls
-python experiments/02_generate_dataset.py \
-  --config configs/glm_smoke.yaml \
-  --limit 3 \
-  --samples-per-condition 1 \
-  --dry-run
+### Reproduce the frozen causal-error questions
 
-# Validate the seeded Tinker/Qwen smoke plan without spending credits
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_smoke.yaml \
-  --limit 1 \
-  --samples-per-condition 1 \
-  --dry-run
+The committed inputs are already frozen. The reproduction command deliberately targets an empty
+directory so it cannot overwrite authoritative artifacts:
 
-# Validate the frozen 30-request intervention-calibration plan
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_calibration.yaml \
-  --dry-run
-
-# Validate the intermediate-strength annotation calibration
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_intermediate_calibration.yaml \
-  --dry-run
-
-# Validate the clean-only natural-error discovery plan
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_natural_failures.yaml \
-  --dry-run
-
-# Reproduce and verify the original 120-question procedural candidate freeze
-python experiments/00_generate_procedural_math.py
-
-# Validate the 120-request Tinker screening plan without spending credits
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_procedural_screen.yaml \
-  --dry-run
-
-# After screening, freeze eligible cells without using individual item outcomes
-python experiments/02_select_procedural_pilot.py \
-  --run data/generated/tinker_procedural_screening_<TIMESTAMP>
-
-# After a successful freeze, validate the 120-request fresh discovery plan
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_procedural_discovery.yaml \
-  --dry-run
-
-# Validate the diagnostic-only 24-request low-reasoning plan
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_procedural_low_reasoning_diagnostic.yaml \
-  --dry-run
-
-# Reproduce the prospective 80-question procedural-v2 freeze
-python experiments/00_generate_procedural_math_v2.py
-
-# Validate the v2 Tinker screen without spending credits
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_procedural_v2_screen.yaml \
-  --dry-run
-
-# After the live screen, apply aggregate cell gates and freeze 40 questions
-python experiments/02_select_procedural_v2.py \
-  --run data/generated/tinker_procedural_v2_screening_<TIMESTAMP>
-
-# Only after selection passes, validate the fresh 120-request mixed-outcome run
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_procedural_v2_discovery.yaml \
-  --dry-run
-
-# Reproduce and dry-run the prospective 20-question v2.1 subset replacement
-python experiments/00_generate_procedural_math_v21.py
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_procedural_v21_subset_screen.yaml \
-  --dry-run
-
-# After its live screen, combine it with the three eligible v2 families
-python experiments/02_select_procedural_v21.py \
-  --replacement-run data/generated/tinker_procedural_v21_subset_screening_<TIMESTAMP>
-
-# Only after the combined selector passes, validate the fresh 120-request cohort
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_procedural_v21_discovery.yaml \
-  --dry-run
-
-# Reproduce and validate the diagnostic-only 12-question causal-yield freeze
-python experiments/00_prepare_causal_yield_pilot.py
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_procedural_causal_yield.yaml \
-  --dry-run
-
-# Reproduce and validate the exact eight-question continuation-yield-v2 freeze
-python experiments/00_prepare_continuation_yield_pilot.py
-python experiments/02_generate_dataset.py \
-  --config configs/tinker_procedural_continuation_yield_v2.yaml \
-  --dry-run
-
-# Reproduce and validate the fresh assistant-prefill-v3 freeze
-uv run --offline python experiments/00_prepare_assistant_prefill_pilot.py \
-  --tokenizer ~/.cache/huggingface/hub/models--openai--gpt-oss-20b/snapshots/6cee5e81ee83917806bbde320786a8fb61efebee
-uv run --offline python experiments/02_generate_dataset.py \
-  --config configs/tinker_procedural_assistant_prefill_v3_smoke.yaml \
-  --dry-run
-uv run --offline python experiments/02_generate_dataset.py \
-  --config configs/tinker_procedural_assistant_prefill_v3.yaml \
-  --dry-run
-
-# The causal-error-v1 inputs are already frozen; reproduce them only in an empty output directory
+```bash
 uv run --offline python experiments/00_prepare_causal_error_detection_v1.py \
   --output-dir /tmp/causal-error-v1-reproduction
+```
 
-# Validate the only currently authorized live plan without spending Tinker credits
-uv run --offline python experiments/02_generate_dataset.py \
-  --config configs/tinker_causal_error_v1_qualification.yaml \
-  --dry-run
+### Collect and analyze a new confirmatory reproduction
 
-# Analyze the qualification run before considering any confirmatory request
-uv run --offline python experiments/02_analyze_causal_error_qualification.py \
-  --run data/generated/tinker_causal_error_v1_qualification_<TIMESTAMP> \
-  --output results/causal_error_v1_qualification.json
+Do not start a second copy when a collection is already active.
 
-# Only after qualification passes, run and analyze the frozen confirmatory collection
+```bash
 uv run --offline python experiments/02_generate_dataset.py \
   --config configs/tinker_causal_error_v1_confirmatory.yaml \
   --continue-on-error \
   --max-errors 4
+
 uv run --offline python experiments/02_analyze_causal_error_confirmatory.py \
   --run data/generated/tinker_causal_error_v1_confirmatory_<TIMESTAMP> \
   --output results/causal_error_v1_confirmatory.json
+```
 
-# Only after that report passes, materialize gate-bound monitor examples
+### Run monitors only after the report passes
+
+```bash
 uv run --offline python experiments/03_prepare_monitor_dataset.py \
   --run data/generated/tinker_causal_error_v1_confirmatory_<TIMESTAMP> \
   --report results/causal_error_v1_confirmatory.json
 
-# Fit the local controls and answer-shift baseline
 uv run --offline python experiments/03_run_local_monitors.py \
   --run data/generated/tinker_causal_error_v1_confirmatory_<TIMESTAMP>
 
-# Validate the four-call judge plan on two excluded qualification errors
+# Four-call infrastructure gate on two permanently excluded qualification errors
 uv run --offline python experiments/03_run_judge_baseline.py \
   --mode smoke \
   --run data/generated/tinker_causal_error_v1_qualification_20260830T184625Z \
-  --report results/causal_error_v1_qualification.json \
-  --dry-run
+  --report results/causal_error_v1_qualification.json
 
-# After a live smoke passes, dry-run the full two-view plan before spending credits
+# Full judge scoring requires the passed smoke manifest
 uv run --offline python experiments/03_run_judge_baseline.py \
   --mode full \
   --report results/causal_error_v1_confirmatory.json \
-  --smoke-manifest data/generated/tinker_causal_error_judge_smoke_<TIMESTAMP>/manifest.json \
-  --dry-run
+  --smoke-manifest data/generated/tinker_causal_error_judge_smoke_<TIMESTAMP>/manifest.json
 
-# After the full judge run, fit the hybrid and produce the held-out report
 uv run --offline python experiments/03_evaluate_monitor_stack.py \
   --judge-run data/generated/tinker_causal_error_judge_full_<TIMESTAMP>
 ```
 
-To reproduce the committed question freeze, download the exact pinned source file and run the
-preparation entrypoint. The command refuses a source whose SHA-256 differs from the configured
-hash and never overwrites an existing freeze.
+Every collection and derived artifact is immutable and content-addressed. Interrupted judge runs
+resume by stable score identity.
 
-```bash
-curl -fL \
-  https://huggingface.co/datasets/allenai/ai2_arc/resolve/210d026faf9955653af8916fad021475a3f00453/ARC-Challenge/validation-00000-of-00001.parquet \
-  -o /tmp/arc_challenge_validation.parquet
+## Repository guide
 
-python experiments/00_prepare_pilot_dataset.py \
-  --config configs/pilot.yaml \
-  --source /tmp/arc_challenge_validation.parquet
+```text
+configs/       frozen experiment and provider configurations
+data/raw/      solver-verified questions and certificates
+data/generated immutable model rollouts and run manifests (not committed)
+data/reviewed/ gate-authorized derived monitor datasets
+src/           task generation, causal gates, monitors and evaluation
+experiments/   numbered reproducible entrypoints
+docs/          preregistrations, methods, result reports and protocols
+results/       machine-readable reports, claim ledger and decision log
+tests/         CPU-only scientific and implementation contracts
 ```
 
-## Experiment order
+### Core research documents
 
-0. `00_prepare_pilot_dataset.py` and `00_generate_procedural_math.py`: reproduce immutable,
-   hashed question freezes and solver certificates.
-1. `01_pilot.py`: validate config, prompts, schemas and causal-label plumbing with mock data.
-2. `02_select_calibration_questions.py`: freeze a difficulty-proxy subset from clean telemetry.
-3. `02_generate_dataset.py`: collect immutable Z.AI or Tinker rollouts with manifests, resume,
-   provider provenance, and smoke gates.
-4. `03_prepare_monitor_dataset.py`: hard-gate and materialize typed primary/audit views.
-5. `03_run_local_monitors.py`: fit local controls and the counterfactual answer-shift baseline.
-6. `03_run_judge_baseline.py`: run the smoke-gated, resumable two-view Qwen judge.
-7. `03_evaluate_monitor_stack.py`: fit the OOF hybrid and report grouped held-out metrics.
-8. Historical `04_resampling_monitor.py` and `06_low_base_rate_eval.py` remain for old hint pilots.
+- [Plain-language project overview](docs/PROJECT_OVERVIEW.md)
+- [Current causal-error preregistration](docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md)
+- [Frozen monitoring protocol](docs/MONITORING_PROTOCOL_V1.md)
+- [Methodology and threat models](docs/METHODOLOGY.md)
+- [Qualification result](docs/CAUSAL_ERROR_V1_QUALIFICATION_RESULT.md)
+- [Research roadmap](docs/ROADMAP.md)
+- [References and design lineage](docs/REFERENCES.md)
+- [Append-only research decisions](results/decisions.md)
+- [Claim ledger](results/claim_ledger.md)
 
-Every script writes to a new run-specific file. Never overwrite raw generations.
-
-## Headline metrics
-
-Accuracy is not a headline metric. Report:
-
-- AUROC and AUPRC with bootstrap confidence intervals;
-- false-positive rate at fixed recall;
-- precision at assumed prevalences of 50%, 10%, 5%, and 1%;
-- performance on clean-incorrect and difficult-clean negatives;
-- generalization to held-out questions and hint styles;
-- manually inspected false positives and false negatives.
-
-For prevalence `π`, sensitivity `TPR`, and false-positive rate `FPR`:
-
-$$
-\operatorname{PPV}(\pi)=\frac{\operatorname{TPR}\,\pi}{\operatorname{TPR}\,\pi + \operatorname{FPR}\,(1-\pi)}.
-$$
-
-## What would falsify the project’s preferred story?
-
-- A correctness-only or CoT-length baseline matches the main monitor.
-- Performance disappears when split by base question.
-- The label is predictable from hint-template identity alone.
-- “Silent use” candidates do not survive repeated sampling or manual review.
-- A method’s impressive AUROC corresponds to unusable precision at 1% prevalence.
-- Internals add no held-out value beyond behavioural evidence.
-
-These are results to report, not obstacles to hide.
+Historical phases remain documented in their preregistrations and result reports under `docs/`.
+The decision log records why each branch advanced, failed, or stopped.
 
 ## Research lineage
 
-The experimental design draws from:
+The design draws from work on biasing interventions, chain-of-thought faithfulness, repeated
+reasoning samples, and control tasks:
 
-- [Turpin et al. (2023), *Language Models Don't Always Say What They Think*](https://arxiv.org/abs/2305.04388): paired biasing interventions and post-hoc rationalization.
-- [Chen et al. (2025), *Reasoning Models Don't Always Say What They Think*](https://arxiv.org/abs/2505.05410): controlled hints, influence, and verbalized acknowledgment.
-- [Arcuschin et al. (2025), *Chain-of-Thought Reasoning In The Wild Is Not Always Faithful*](https://arxiv.org/abs/2503.08679): naturally occurring shortcuts and realistic negative controls.
-- [Thought Branches (2025), *Interpreting LLM Reasoning Requires Resampling*](https://arxiv.org/abs/2510.27484): reasoning as a distribution rather than a single trace.
-- [Hewitt & Liang (2019), *Designing and Interpreting Probes with Control Tasks*](https://aclanthology.org/D19-1275/): probe selectivity and control tasks.
-- [Victor Ashioya, *Mechanistic Analysis of Chain-of-Thought*](https://github.com/ashioyajotham/cot-faithfulness-mech-interp): activation probing, causal checks, bootstrap analysis, and the motivating negative scaling result.
+- [Turpin et al. (2023), *Language Models Don't Always Say What They Think*](https://arxiv.org/abs/2305.04388)
+- [Chen et al. (2025), *Reasoning Models Don't Always Say What They Think*](https://arxiv.org/abs/2505.05410)
+- [Arcuschin et al. (2025), *Chain-of-Thought Reasoning In The Wild Is Not Always Faithful*](https://arxiv.org/abs/2503.08679)
+- [Thought Branches (2025), *Interpreting LLM Reasoning Requires Resampling*](https://arxiv.org/abs/2510.27484)
+- [Hewitt and Liang (2019), *Designing and Interpreting Probes with Control Tasks*](https://aclanthology.org/D19-1275/)
 
-See [`docs/REFERENCES.md`](docs/REFERENCES.md) for what is borrowed from each source and what this project adds.
-
-## Status
-
-**Current study: confirmatory collection in progress.** The schemas, controlled prompts,
-deterministic mock pipeline, causal-label derivation, baseline interfaces, rare-event metrics,
-audit manifests, and CPU-only tests are implemented. The licensed ARC pilot input freeze is
-committed with provenance.
-The Tinker/Qwen integration has passed live infrastructure checks. A trusted-answer-key treatment
-caused 90% wrong-answer uptake with explicit acknowledgment, while an uncertain automated
-annotation caused longer deliberation but zero uptake. A follow-up authority-by-directive
-factorial confirmed their interaction but produced no valid silent-use candidates and eight
-16K-token ceiling failures. Human review, grouped-bootstrap reporting, and empirical monitor
-evaluation remain unrun. A non-authority peer scratch-note pivot then produced 0/10 uptake with
-no invalid outputs.
-
-Clean-only discovery across all 20 frozen ARC questions produced 60/60 correct responses. A
-subsequent level-4/5 MATH pivot exposed deterministic full-thinking Qwen truncation, leading to an
-auditable partial-response collector and a GPT-OSS-20B medium-reasoning cohort on Tinker. That
-cohort stored 60/60 responses with 59 clean stops, one truncation, and 59/59 scorable answers
-correct. The natural-error yield gate therefore failed for both selected task slices. Per the
-amended stopping rule, intervention spending remains paused.
-
-The first procedural screen also failed: it produced one defensible completed error, 26
-truncations, two parser failures, and four apparent recurrence errors attributable to ambiguous
-indexing. No family-by-tier cell qualified and no 40-question bank was frozen. The result is
-reported in [`docs/PROCEDURAL_SCREENING.md`](docs/PROCEDURAL_SCREENING.md).
-
-The low-reasoning diagnostic formally failed with 19/24 automatically scorable responses, four
-parser-invalid outputs, and one truncation; its selected questions remain barred from monitor
-data. The result is recorded in
-[`docs/LOW_REASONING_DIAGNOSTIC.md`](docs/LOW_REASONING_DIAGNOSTIC.md). The next step is now frozen
-prospectively. The 80-question v2 screen then completed reliably and produced a strong overall
-mixture—33 correct and 44 incorrect scorable answers—but formally failed because subset counting
-had no eligible cell. Three other families qualified. The frozen adaptive response is a fresh
-20-question subset replacement under
-[`docs/PREREGISTRATION_PROCEDURAL_V21_AMENDMENT.md`](docs/PREREGISTRATION_PROCEDURAL_V21_AMENDMENT.md).
-Both replacement tiers passed, and the combined fresh validation then passed all preregistered
-checks with 120/120 scorable responses, 64 correct, and 56 incorrect. The result is bound in
-[`docs/PROCEDURAL_V21_RESULT.md`](docs/PROCEDURAL_V21_RESULT.md). This authorizes the bounded,
-diagnostic-only matched partial-solution pilot frozen in
-[`docs/PREREGISTRATION_CAUSAL_YIELD_V1.md`](docs/PREREGISTRATION_CAUSAL_YIELD_V1.md), not monitor
-training. That answer-bearing pilot subsequently failed: its planted-target effect was 2.8 points
-with an interval spanning zero, and manual inspection found zero defensible silent-use candidates.
-The result is recorded in
-[`docs/CAUSAL_YIELD_V1_RESULT.md`](docs/CAUSAL_YIELD_V1_RESULT.md). The final bounded user-prompt
-test was the exact intermediate-state continuation mechanism preregistered in
-[`docs/PREREGISTRATION_CONTINUATION_YIELD_V2.md`](docs/PREREGISTRATION_CONTINUATION_YIELD_V2.md).
-That diagnostic produced a strong exact-target effect, but its manual gate failed with zero
-defensible silent-use cases; see
-[`docs/CONTINUATION_YIELD_V2_RESULT.md`](docs/CONTINUATION_YIELD_V2_RESULT.md). Ordinary user-prompt
-wording is therefore closed. The assistant-prefill diagnostic then completed 72/72 scorable
-responses but produced 1/24 corrupted targets versus 2/24 correct-prefill targets, an effect of
--4.2 points with a clustered interval from -16.7 to +8.3. It therefore failed the causal gate and
-closed the silent-unfaithfulness branch. The smoke history and final result are recorded in
-[`docs/ASSISTANT_PREFILL_V3_SMOKE.md`](docs/ASSISTANT_PREFILL_V3_SMOKE.md) and
-[`docs/ASSISTANT_PREFILL_V3_RESULT.md`](docs/ASSISTANT_PREFILL_V3_RESULT.md).
-
-The current study is prospectively reframed around distinguishing ordinary failures from errors
-caused by certified state perturbations. Its fresh partitions, stopping gates, labels, allowed
-monitor views, and grouped evaluation are frozen in
-[`docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md`](docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md).
-The 72-request clean qualification cohort passed every gate with 29 correct and 43 incorrect
-responses, zero invalid outputs, and ordinary errors across all four families; see
-[`docs/CAUSAL_ERROR_V1_QUALIFICATION_RESULT.md`](docs/CAUSAL_ERROR_V1_QUALIFICATION_RESULT.md).
-The frozen 648-request confirmatory collection is therefore authorized. Monitor training remains
-unauthorized until its causal, clean-negative, diversity, and integrity gates all pass. The full
-post-gate monitor stack is implemented, but no monitor result may be produced from a partial or
-failed confirmatory run. Its frozen analysis protocol is documented in
-[`docs/MONITORING_PROTOCOL_V1.md`](docs/MONITORING_PROTOCOL_V1.md).
-
-These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
-outputs remain excluded from version control; their hashes and protocol-level summaries are
-recorded in [`docs/CALIBRATION_PROTOCOL.md`](docs/CALIBRATION_PROTOCOL.md) and
-[`docs/MATH_DISCOVERY.md`](docs/MATH_DISCOVERY.md).
+See [references and design lineage](docs/REFERENCES.md) for what is borrowed from each source and
+what this project changes.
 
 ## License
 
-Code and original documentation are MIT-licensed. The committed ARC-derived question records are
-licensed separately under CC BY-SA 4.0; see [`data/raw/README.md`](data/raw/README.md). Future
-dataset licenses must be recorded in the run manifest before source data is committed or
-redistributed.
+Code and original documentation are MIT-licensed. Committed ARC-derived historical pilot records
+remain CC BY-SA 4.0; see [`data/raw/README.md`](data/raw/README.md). Every future dataset must record
+its source license and revision before redistribution.
