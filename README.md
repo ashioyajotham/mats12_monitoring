@@ -169,6 +169,21 @@ python experiments/02_generate_dataset.py \
   --config configs/tinker_procedural_v2_discovery.yaml \
   --dry-run
 
+# Reproduce and dry-run the prospective 20-question v2.1 subset replacement
+python experiments/00_generate_procedural_math_v21.py
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_procedural_v21_subset_screen.yaml \
+  --dry-run
+
+# After its live screen, combine it with the three eligible v2 families
+python experiments/02_select_procedural_v21.py \
+  --replacement-run data/generated/tinker_procedural_v21_subset_screening_<TIMESTAMP>
+
+# Only after the combined selector passes, validate the fresh 120-request cohort
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_procedural_v21_discovery.yaml \
+  --dry-run
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -274,10 +289,13 @@ The low-reasoning diagnostic formally failed with 19/24 automatically scorable r
 parser-invalid outputs, and one truncation; its selected questions remain barred from monitor
 data. The result is recorded in
 [`docs/LOW_REASONING_DIAGNOSTIC.md`](docs/LOW_REASONING_DIAGNOSTIC.md). The next step is now frozen
-prospectively: screen the new 80-question v2 bank under
-[`docs/PREREGISTRATION_PROCEDURAL_V2.md`](docs/PREREGISTRATION_PROCEDURAL_V2.md), then collect a
-fresh clean-only 40-question cohort only if every family has an eligible aggregate cell. Passing
-that later gate permits causal-yield work, not monitor training.
+prospectively. The 80-question v2 screen then completed reliably and produced a strong overall
+mixture—33 correct and 44 incorrect scorable answers—but formally failed because subset counting
+had no eligible cell. Three other families qualified. The frozen adaptive response is a fresh
+20-question subset replacement under
+[`docs/PREREGISTRATION_PROCEDURAL_V21_AMENDMENT.md`](docs/PREREGISTRATION_PROCEDURAL_V21_AMENDMENT.md).
+Only a passing replacement screen permits an outcome-blind combined 40-question freeze and fresh
+validation. Passing that later gate permits causal-yield work, not monitor training.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

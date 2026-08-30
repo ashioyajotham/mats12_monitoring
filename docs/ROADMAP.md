@@ -28,7 +28,10 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
 - [x] Run the 24-request low-reasoning attribution diagnostic; record its formal failure and never
   reuse its selected outputs in monitor data.
 - [x] Freeze a fresh 80-question procedural v2 bank and its outcome-independent screening rule.
-- [ ] Run the 80-request v2 low-reasoning screen and, only if all families qualify, freeze 40
+- [x] Run the 80-request v2 low-reasoning screen; record that three families qualified while
+  subset counting failed its cell gate.
+- [x] Freeze a prospective 20-question v2.1 subset-replacement bank and adaptive protocol.
+- [ ] Screen the 20 fresh replacements and, only if a tier qualifies, freeze the combined 40
   questions without using individual outcomes.
 - [ ] Pass the clean-only mixed-outcome gate on fresh questions.
 - [ ] Preregister and run a causal-yield experiment only after the clean task gate passes.

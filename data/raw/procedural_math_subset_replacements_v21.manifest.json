@@ -1,0 +1,34 @@
+{
+  "all_certificates_verified": true,
+  "certificates": 20,
+  "certificates_path": "data/raw/procedural_math_subset_replacements_v21.certificates.jsonl",
+  "certificates_sha256": "8e1ff139c2b95bee890512c0e29f39ae8c9ff96a7f4eb748f484de9d7a926bb3",
+  "code_revision": "e82f361880162ced65641fbeaeffee68c4e42d0a",
+  "entrypoint_sha256": "73ff4b9bfec4f3d6b17b0a866330ec042fbb95dd36e2bc95ea4fedc36baeb2f0",
+  "family": "subset_counting",
+  "generation_method": "deterministic_original_dual_exact_verification",
+  "generator_code_sha256": "bbb953644f29c0429c6eae0544125772976f02e1ac38b661a7b6c2b0217ff732",
+  "generator_version": "procedural-math-v2.1-subset-replacement",
+  "license": "MIT",
+  "manifest_sha256": "03e3aef84d455d49721d4061cb9d704f21d9173854769c3a405f4731206ed6af",
+  "per_tier": 10,
+  "purpose": "procedural_math_v21_subset_replacement_freeze",
+  "questions": 20,
+  "questions_path": "data/raw/procedural_math_subset_replacements_v21.jsonl",
+  "questions_sha256": "6076d224011dedf730e8bc00b300685b73371d4fcc60d3aa8dd4cbd47f96c73a",
+  "root_seed": 20261501,
+  "runtime_environment": {
+    "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7"
+  },
+  "tier_counts": {
+    "replacement_low": 10,
+    "replacement_mid": 10
+  },
+  "tiers": [
+    "replacement_low",
+    "replacement_mid"
+  ],
+  "unique_prompts": 20,
+  "unique_question_ids": 20
+}

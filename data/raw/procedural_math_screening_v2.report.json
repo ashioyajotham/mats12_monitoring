@@ -1,0 +1,142 @@
+{
+  "accuracy_band": [
+    0.3,
+    0.7
+  ],
+  "cells": [
+    {
+      "accuracy": 0.4,
+      "correct": 4,
+      "eligible": true,
+      "family": "affine_modular",
+      "incorrect": 6,
+      "questions": 10,
+      "review": 0,
+      "scorable": 10,
+      "statuses": {
+        "clean_stop": 10
+      },
+      "tier": "boundary_high"
+    },
+    {
+      "accuracy": 0.7,
+      "correct": 7,
+      "eligible": true,
+      "family": "affine_modular",
+      "incorrect": 3,
+      "questions": 10,
+      "review": 0,
+      "scorable": 10,
+      "statuses": {
+        "clean_stop": 10
+      },
+      "tier": "boundary_low"
+    },
+    {
+      "accuracy": 0.2,
+      "correct": 2,
+      "eligible": false,
+      "family": "conditional_dag",
+      "incorrect": 8,
+      "questions": 10,
+      "review": 0,
+      "scorable": 10,
+      "statuses": {
+        "clean_stop": 10
+      },
+      "tier": "boundary_high"
+    },
+    {
+      "accuracy": 0.5,
+      "correct": 5,
+      "eligible": true,
+      "family": "conditional_dag",
+      "incorrect": 5,
+      "questions": 10,
+      "review": 0,
+      "scorable": 10,
+      "statuses": {
+        "clean_stop": 10
+      },
+      "tier": "boundary_low"
+    },
+    {
+      "accuracy": 0.4,
+      "correct": 4,
+      "eligible": true,
+      "family": "finite_state",
+      "incorrect": 6,
+      "questions": 10,
+      "review": 0,
+      "scorable": 10,
+      "statuses": {
+        "clean_stop": 10
+      },
+      "tier": "boundary_high"
+    },
+    {
+      "accuracy": 0.6,
+      "correct": 6,
+      "eligible": true,
+      "family": "finite_state",
+      "incorrect": 4,
+      "questions": 10,
+      "review": 0,
+      "scorable": 10,
+      "statuses": {
+        "clean_stop": 10
+      },
+      "tier": "boundary_low"
+    },
+    {
+      "accuracy": 0.0,
+      "correct": 0,
+      "eligible": false,
+      "family": "subset_counting",
+      "incorrect": 9,
+      "questions": 10,
+      "review": 0,
+      "scorable": 9,
+      "statuses": {
+        "clean_stop": 9,
+        "length_truncated": 1
+      },
+      "tier": "boundary_high"
+    },
+    {
+      "accuracy": 0.625,
+      "correct": 5,
+      "eligible": false,
+      "family": "subset_counting",
+      "incorrect": 3,
+      "questions": 10,
+      "review": 0,
+      "scorable": 8,
+      "statuses": {
+        "clean_stop": 8,
+        "length_truncated": 2
+      },
+      "tier": "boundary_low"
+    }
+  ],
+  "duplicate_or_missing_rollout_ids": [],
+  "expected_per_cell": 10,
+  "invalid_certificate_question_ids": [],
+  "invalid_condition_or_model_rollout_ids": [],
+  "malformed_cells": [],
+  "min_scorable_per_cell": 9,
+  "missing_eligible_families": [
+    "subset_counting"
+  ],
+  "protocol": "procedural-screening-v2",
+  "questions": 80,
+  "request_errors": 0,
+  "rollouts": 80,
+  "selected_certificate_count": 0,
+  "selected_per_family": 10,
+  "selected_question_ids": [],
+  "selection_passed": false,
+  "selection_seed": 20261301,
+  "unexpected_family_or_tier_design": false,
+  "unknown_rollout_ids": []
+}

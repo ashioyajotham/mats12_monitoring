@@ -38,3 +38,9 @@ cells. `procedural_math_certificates_v2.jsonl` binds every prompt and answer to 
 verified exact-oracle parameters. Its manifest records the seed, code hashes, cell balance, and
 content hashes. These are prospective screening inputs; no model outcome was used to construct or
 select them.
+
+`procedural_math_subset_replacements_v21.jsonl` contains 20 fresh, solver-verified subset-counting
+calibration candidates frozen after the v2 aggregate family gate failed. The generator and
+certificate manifest are versioned separately so the committed v2 freeze remains unchanged.
+These replacement candidates are prospective inputs under the v2.1 amendment; their individual
+screening outcomes cannot be used for selection.

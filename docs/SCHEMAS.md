@@ -42,6 +42,11 @@ make a cell eligible from aggregate accuracy, but the deterministic within-cell 
 see individual outcomes. A v2 clean mixed-outcome report may authorize causal-yield design only;
 it is not a label file and cannot authorize monitor training.
 
+The v2.1 amendment permits aggregate task-level adaptation after the failed v2 screen. The
+combined freeze may reuse previously eligible cells, but question ordering remains blind to item
+correctness. A subsequent three-sample-per-question collection supplies fresh validation data;
+screening rollouts never become monitor examples.
+
 ## Separation of evidence and monitor inputs
 
 Fields such as `hint_effect`, sibling answer counts, `causal_label`, and manual review are ground-truth evidence. They must not enter transcript-only, context-aware, surface, or activation monitors. Counterfactual-resampling monitors may use declared sibling statistics because those statistics are their method.
