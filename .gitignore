@@ -20,6 +20,13 @@ data/reviewed/*
 !data/raw/math_questions.manifest.json
 !data/raw/math_questions_v2.jsonl
 !data/raw/math_questions_v2.manifest.json
+!data/raw/procedural_math_candidates_v1.jsonl
+!data/raw/procedural_math_certificates_v1.jsonl
+!data/raw/procedural_math_candidates_v1.manifest.json
+!data/raw/procedural_math_pilot_v1.jsonl
+!data/raw/procedural_math_pilot_v1.certificates.jsonl
+!data/raw/procedural_math_pilot_v1.manifest.json
+!data/raw/procedural_math_screening_v1.report.json
 !data/generated/.gitkeep
 !data/reviewed/.gitkeep
 

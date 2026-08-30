@@ -44,6 +44,27 @@ Borrow: treat a reasoning trace as one sample from a distribution; test claims v
 
 Borrow: selectivity and control tasks for probes. The project additionally requires grouped splits and incremental value over behavioural monitors.
 
+### Saxton et al. (2019) — Mathematics Dataset
+
+**Analysing Mathematical Reasoning Abilities of Neural Models.**
+[Generator](https://github.com/google-deepmind/mathematics_dataset) ·
+[arXiv:1904.01557](https://arxiv.org/abs/1904.01557)
+
+Borrow: deterministic parameterized task generation, structural difficulty tiers, and exact
+answers. Improve for this project: use harder multi-constraint families, retain per-instance
+certificates, and calibrate cells with a target model before freezing a clean-discovery bank.
+
+### Tsoukalas et al. (2024) — PutnamBench
+
+**PutnamBench: Evaluating Neural Theorem-Provers on the Putnam Mathematical Competition.**
+[Repository](https://github.com/trishullab/PutnamBench) ·
+[arXiv:2407.11214](https://arxiv.org/abs/2407.11214)
+
+Use as a possible static hardness comparison because its formalizations are machine-checkable and
+its informal statements are available with permission. Do not use it as the primary pilot: proof
+grading changes the response modality, and a fixed public benchmark does not remove contamination
+risk.
+
 ## Prior project
 
 ### Ashioya — cot-faithfulness-mech-interp

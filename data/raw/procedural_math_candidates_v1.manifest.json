@@ -1,0 +1,50 @@
+{
+  "all_certificates_verified": true,
+  "cell_counts": {
+    "crt:easy": 10,
+    "crt:hard": 10,
+    "crt:medium": 10,
+    "dag_counting:easy": 10,
+    "dag_counting:hard": 10,
+    "dag_counting:medium": 10,
+    "linear_system:easy": 10,
+    "linear_system:hard": 10,
+    "linear_system:medium": 10,
+    "recurrence:easy": 10,
+    "recurrence:hard": 10,
+    "recurrence:medium": 10
+  },
+  "certificates": 120,
+  "certificates_path": "data/raw/procedural_math_certificates_v1.jsonl",
+  "certificates_sha256": "810d328995bc7b66968852a9ce33592ffb7f8e40dd39adc738fb6ff8af85dada",
+  "code_revision": "f9c615e8692b611fd07bea98d8f98214dd9257be",
+  "entrypoint_sha256": "373f1877f8917dff33788e09703d17802ab24af46486e233e7cf6114806d37ba",
+  "families": [
+    "crt",
+    "linear_system",
+    "dag_counting",
+    "recurrence"
+  ],
+  "generator_version": "procedural-math-v1",
+  "generation_method": "deterministic_original_solver_verified",
+  "generator_code_sha256": "82111fa0b52d9a0e6793e46524bd4066f2e379a8358ecc126c694602db3fd3c7",
+  "license": "MIT",
+  "manifest_sha256": "3ede34984ec6b97d23b833eb5c1974617c104da28d87406a0a88fe4145c42009",
+  "per_cell": 10,
+  "purpose": "procedural_math_candidate_freeze",
+  "questions": 120,
+  "questions_path": "data/raw/procedural_math_candidates_v1.jsonl",
+  "questions_sha256": "683837f9bc33aba246c7867f824ae76952732a752a9f81e3b2f0a21dd8526379",
+  "root_seed": 20260830,
+  "runtime_environment": {
+    "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7"
+  },
+  "tiers": [
+    "easy",
+    "medium",
+    "hard"
+  ],
+  "unique_prompts": 120,
+  "unique_question_ids": 120
+}

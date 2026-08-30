@@ -15,8 +15,19 @@ authoritative when a milestone conflicts with convenience.
 - [x] Exercise the pipeline with CPU-only contract and smoke tests.
 - [x] Freeze a licensed, version-pinned 20-question ARC-Challenge pilot input set.
 - [x] Implement and contract-test the Z.AI GLM-4.7-Flash generation adapter.
+- [x] Implement deterministic, solver-verified procedural task generation and adaptive cell
+  selection without item-level outcome leakage.
 
 Mock generations validate plumbing only. They are not evidence for any claim in the claim ledger.
+
+## Current empirical milestone: procedural task construction
+
+- Freeze and verify the 120-question procedural candidate bank.
+- Screen one clean GPT-OSS rollout per candidate on Tinker.
+- Freeze 40 questions only if all four families contain a 30–70% accuracy cell.
+- Collect three fresh clean rollouts per frozen question and evaluate the preregistered readiness
+  gate.
+- Continue to matched partial-solution interventions only after the clean task gate passes.
 
 ## Milestone 1: freeze the pilot inputs
 

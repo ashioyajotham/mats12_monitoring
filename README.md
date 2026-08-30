@@ -119,6 +119,23 @@ python experiments/02_generate_dataset.py \
   --config configs/tinker_natural_failures.yaml \
   --dry-run
 
+# Reproduce and verify the original 120-question procedural candidate freeze
+python experiments/00_generate_procedural_math.py
+
+# Validate the 120-request Tinker screening plan without spending credits
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_procedural_screen.yaml \
+  --dry-run
+
+# After screening, freeze eligible cells without using individual item outcomes
+python experiments/02_select_procedural_pilot.py \
+  --run data/generated/tinker_procedural_screening_<TIMESTAMP>
+
+# After a successful freeze, validate the 120-request fresh discovery plan
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_procedural_discovery.yaml \
+  --dry-run
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -141,7 +158,8 @@ python experiments/00_prepare_pilot_dataset.py \
 
 ## Experiment order
 
-0. `00_prepare_pilot_dataset.py`: reproduce the licensed, hashed ARC question freeze.
+0. `00_prepare_pilot_dataset.py` and `00_generate_procedural_math.py`: reproduce immutable,
+   hashed question freezes and solver certificates.
 1. `01_pilot.py`: validate config, prompts, schemas and causal-label plumbing with mock data.
 2. `02_select_calibration_questions.py`: freeze a difficulty-proxy subset from clean telemetry.
 3. `02_generate_dataset.py`: collect immutable Z.AI or Tinker rollouts with manifests, resume,
@@ -212,8 +230,13 @@ subsequent level-4/5 MATH pivot exposed deterministic full-thinking Qwen truncat
 auditable partial-response collector and a GPT-OSS-20B medium-reasoning cohort on Tinker. That
 cohort stored 60/60 responses with 59 clean stops, one truncation, and 59/59 scorable answers
 correct. The natural-error yield gate therefore failed for both selected task slices. Per the
-amended stopping rule, intervention spending is paused while the next task-construction decision
-is made.
+amended stopping rule, intervention spending remains paused.
+
+The next task-construction stage is now frozen in
+[`docs/PREREGISTRATION_PROCEDURAL_AMENDMENT.md`](docs/PREREGISTRATION_PROCEDURAL_AMENDMENT.md).
+It uses 120 original solver-verified problems across four families, a one-rollout cell-level
+difficulty screen, and a separately seeded 40-question clean-discovery cohort. Screening outcomes
+cannot enter monitor data, and monitor training remains blocked until a later causal-yield gate.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

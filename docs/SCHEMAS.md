@@ -5,6 +5,8 @@ Pydantic models in `src/` are authoritative. This document explains their relati
 | Record | Stable key | Created from | Mutable? |
 |---|---|---|---:|
 | `Question` | `question_id` | licensed source data | no after run starts |
+| `MathProblem` | `question_id` | licensed or procedural free-response task | no after run starts |
+| Procedural certificate | `question_id` + certificate digest | generator parameters and exact oracle | no |
 | `PromptVariant` | question + condition + template | question and hint constructor | no |
 | `Rollout` | `rollout_id` | prompt, model, seed, generation config | append-only |
 | `AnswerShift` | question + hinted option | sibling clean/hinted rollouts | reproducible |
@@ -28,6 +30,12 @@ The committed pilot question freeze has a sibling manifest containing the source
 revision, source-file SHA-256, license, normalization and selection rule, selected collection
 counts, code revision, and output SHA-256. Dataset records retain their upstream identifier and
 original choice labels in `metadata`.
+
+Procedural `MathProblem` records retain generator version, family, difficulty tier, renderer,
+instance seed, lineage ID, structural parameters, oracle kind, and certificate digest in
+`metadata`. The matching certificate is an audit artifact, not a prompt field or permitted monitor
+input. Screening selection is performed at the family-by-tier cell level; screening correctness
+is not copied into the frozen question record.
 
 ## Separation of evidence and monitor inputs
 
