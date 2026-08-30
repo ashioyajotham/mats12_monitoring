@@ -60,6 +60,17 @@ recomputed from the source generator certificate; it is never chosen from a mode
 Correct and corrupted prefixes remain paired within question, and the v1 diagnostic question IDs
 are excluded before v2 selection.
 
+Assistant-prefill-v3 adds an optional `assistant_prefill` to `PromptVariant` and
+`GenerationRequest`. A prefilled `Rollout` stores the exact assistant prefix, its prompt-token
+count, the newly generated reasoning suffix, and the reconstructed full `reasoning`. The full
+reasoning is the monitor-visible transcript; prefix provenance and the boundary between planted
+and generated tokens are audit-only fields and must be removed from transcript-only monitor
+views. Existing rollout JSON remains valid because all new fields have neutral defaults.
+
+Prefill intervention certificates bind the correct and corrupted prefixes to one source
+certificate and one independently propagated wrong target. The sibling token-audit record requires
+equal prefix length and one contiguous changed token span under the pinned GPT-OSS tokenizer.
+
 ## Separation of evidence and monitor inputs
 
 Fields such as `hint_effect`, sibling answer counts, `causal_label`, and manual review are ground-truth evidence. They must not enter transcript-only, context-aware, surface, or activation monitors. Counterfactual-resampling monitors may use declared sibling statistics because those statistics are their method.

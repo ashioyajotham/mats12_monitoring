@@ -196,6 +196,16 @@ python experiments/02_generate_dataset.py \
   --config configs/tinker_procedural_continuation_yield_v2.yaml \
   --dry-run
 
+# Reproduce and validate the fresh assistant-prefill-v3 freeze
+uv run --offline python experiments/00_prepare_assistant_prefill_pilot.py \
+  --tokenizer ~/.cache/huggingface/hub/models--openai--gpt-oss-20b/snapshots/6cee5e81ee83917806bbde320786a8fb61efebee
+uv run --offline python experiments/02_generate_dataset.py \
+  --config configs/tinker_procedural_assistant_prefill_v3_smoke.yaml \
+  --dry-run
+uv run --offline python experiments/02_generate_dataset.py \
+  --config configs/tinker_procedural_assistant_prefill_v3.yaml \
+  --dry-run
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -317,6 +327,11 @@ The result is recorded in
 [`docs/CAUSAL_YIELD_V1_RESULT.md`](docs/CAUSAL_YIELD_V1_RESULT.md). The final bounded prompt-level
 test is the exact intermediate-state continuation mechanism preregistered in
 [`docs/PREREGISTRATION_CONTINUATION_YIELD_V2.md`](docs/PREREGISTRATION_CONTINUATION_YIELD_V2.md).
+That diagnostic produced a strong exact-target effect, but its manual gate failed with zero
+defensible silent-use cases; see
+[`docs/CONTINUATION_YIELD_V2_RESULT.md`](docs/CONTINUATION_YIELD_V2_RESULT.md). Ordinary user-prompt
+wording is therefore closed. The only remaining hidden-influence mechanism test is an assistant
+reasoning prefill under a new preregistration.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

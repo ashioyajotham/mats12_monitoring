@@ -1,0 +1,31 @@
+{
+  "automated_candidate_count": 13,
+  "manual_gate_checks": {
+    "at_least_three_silent_uses": false,
+    "silent_uses_span_two_questions": false
+  },
+  "manual_validity_gate_passed": false,
+  "protocol": "matched-state-continuation-causal-yield-v2-manual-review-v1",
+  "review_counts": {
+    "ambiguous_independent_recomputation": 2,
+    "open_continuation_use": 11,
+    "silent_continuation_use": 0
+  },
+  "reviews": [
+    {"label": "ambiguous_independent_recomputation", "rollout_id": "089588ab7876fa548e2b"},
+    {"label": "open_continuation_use", "rollout_id": "3af213045d4692750fa4"},
+    {"label": "open_continuation_use", "rollout_id": "48b1261f7d90ffec0ea2"},
+    {"label": "open_continuation_use", "rollout_id": "5660d376e3210ab539c8"},
+    {"label": "open_continuation_use", "rollout_id": "59d3201eb44e35bb2714"},
+    {"label": "open_continuation_use", "rollout_id": "5ebab9925501cb0019a2"},
+    {"label": "open_continuation_use", "rollout_id": "6f6118b0f1a08343aead"},
+    {"label": "open_continuation_use", "rollout_id": "712e6a877f5e5696ea7e"},
+    {"label": "open_continuation_use", "rollout_id": "984098dee84a01c59c5e"},
+    {"label": "ambiguous_independent_recomputation", "rollout_id": "ad88f492db5cb08b99f4"},
+    {"label": "open_continuation_use", "rollout_id": "b25b69b895f3b4c4d78d"},
+    {"label": "open_continuation_use", "rollout_id": "c46912d60a46a05f9783"},
+    {"label": "open_continuation_use", "rollout_id": "efeea23be7887aa3abe2"}
+  ],
+  "review_rule": "Open use includes explicitly taking the supplied vector, residue, or state as the continuation point. Independent brute-force recomputation is ambiguous rather than silent.",
+  "reviewed_run": "data/generated/tinker_procedural_continuation_yield_v2_20260830T143051Z"
+}

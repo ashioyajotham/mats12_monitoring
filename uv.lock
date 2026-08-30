@@ -1158,8 +1158,8 @@ requires-dist = [
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.6,<1" },
     { name = "scikit-learn", specifier = ">=1.4,<2" },
     { name = "sympy", specifier = ">=1.13,<2" },
-    { name = "tinker", marker = "extra == 'tinker'", specifier = ">=0.22.3,<1" },
-    { name = "tinker-cookbook", marker = "extra == 'tinker'", specifier = ">=0.1,<1" },
+    { name = "tinker", marker = "extra == 'tinker'", specifier = ">=0.26.1,<1" },
+    { name = "tinker-cookbook", marker = "extra == 'tinker'", specifier = ">=0.5.5,<1" },
     { name = "torch", marker = "extra == 'probe'", specifier = ">=2.2,<3" },
     { name = "transformers", marker = "extra == 'probe'", specifier = ">=4.45,<6" },
 ]

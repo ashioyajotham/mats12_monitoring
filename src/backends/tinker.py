@@ -58,8 +58,14 @@ class TinkerBackend:
             )
         started = time.monotonic()
         try:
+            prefill = request.assistant_prefill
+            rendered_prefill = (
+                f"<|channel|>analysis<|message|>{prefill}" if prefill else None
+            )
             prompt = self.renderer.build_generation_prompt(
-                [{"role": "user", "content": request.prompt}]
+                [{"role": "user", "content": request.prompt}],
+                role="assistant",
+                prefill=rendered_prefill,
             )
             params = self.types.SamplingParams(
                 max_tokens=request.max_new_tokens,
@@ -72,7 +78,17 @@ class TinkerBackend:
                 prompt=prompt, sampling_params=params, num_samples=1
             ).result()
             sequence = result.sequences[0]
-            message, termination = self.renderer.parse_response(sequence.tokens)
+            parse_tokens = list(sequence.tokens)
+            prefill_tokens: list[int] = []
+            if rendered_prefill:
+                tokenizer = getattr(self.renderer, "tokenizer", None) or self.tokenizer
+                if tokenizer is None:
+                    raise TinkerBackendError("renderer tokenizer is unavailable for prefill")
+                prefill_tokens = tokenizer.encode(
+                    rendered_prefill, add_special_tokens=False
+                )
+                parse_tokens = [*prefill_tokens, *parse_tokens]
+            message, termination = self.renderer.parse_response(parse_tokens)
             try:
                 normalized = self.renderer.to_openai_message(message)
             except Exception:
@@ -100,7 +116,10 @@ class TinkerBackend:
         if reasoning is not None and not isinstance(reasoning, str):
             raise TinkerBackendError("Tinker returned non-text reasoning content")
         if not termination_clean and not reasoning and raw_response:
-            reasoning = raw_response
+            reasoning = f"{prefill or ''}{raw_response}"
+        generated_reasoning = reasoning
+        if prefill and reasoning and reasoning.startswith(prefill):
+            generated_reasoning = reasoning[len(prefill):].lstrip()
         prompt_tokens = len(prompt.to_ints())
         completion_tokens = len(sequence.tokens)
         usage = {
@@ -122,4 +141,11 @@ class TinkerBackend:
             termination_clean=termination_clean,
             parse_termination=str(termination),
             raw_response=raw_response,
+            generated_reasoning=(
+                generated_reasoning.strip()
+                if generated_reasoning and generated_reasoning.strip()
+                else None
+            ),
+            assistant_prefill=prefill,
+            prefill_tokens=len(prefill_tokens),
         )

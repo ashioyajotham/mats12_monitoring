@@ -354,6 +354,7 @@ def main() -> None:
             "seed_supported": generation["provider_seed_supported"],
             "open_weights": generation["open_weights"],
             "open_weights_revision": generation["open_weights_revision"],
+            "assistant_prefill": generation.get("assistant_prefill", "disabled"),
         },
         "source_questions": {
             "path": config["paths"]["raw_questions"],
@@ -368,6 +369,7 @@ def main() -> None:
             "continue_on_error": args.continue_on_error,
             "max_errors": args.max_errors,
             "retry_truncated": args.retry_truncated,
+            "assistant_prefill": generation.get("assistant_prefill", "disabled"),
         },
         "resume": {
             "source": str(args.resume_from) if args.resume_from else None,

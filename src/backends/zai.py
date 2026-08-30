@@ -99,6 +99,8 @@ class ZAIBackend:
         The Z.AI API does not document deterministic seeds, so ``request.seed`` is deliberately
         not sent. Temperature and nucleus sampling remain active to obtain repeated samples.
         """
+        if request.assistant_prefill:
+            raise ZAIBackendError("assistant prefills are unsupported by the Z.AI backend")
         payload = {
             "model": request.model,
             "messages": [{"role": "user", "content": request.prompt}],

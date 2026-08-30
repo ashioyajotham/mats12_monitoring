@@ -20,8 +20,10 @@ class FakeFuture:
 
 
 class FakeRenderer:
-    def build_generation_prompt(self, messages):
+    def build_generation_prompt(self, messages, *, role="assistant", prefill=None):
         assert messages == [{"role": "user", "content": "Question"}]
+        assert role == "assistant"
+        assert prefill is None
         return FakePrompt()
 
     def get_stop_sequences(self):
@@ -101,6 +103,57 @@ def test_tinker_backend_rejects_model_mismatch():
     )
     with pytest.raises(TinkerBackendError, match="does not match"):
         backend.generate(request(model="different"))
+
+
+def test_tinker_backend_reconstructs_prefilled_reasoning_and_tracks_boundary():
+    prefill = "I have reached V_4=[0, 1, 3]. "
+    rendered = f"<|channel|>analysis<|message|>{prefill}"
+
+    class Tokenizer:
+        def encode(self, text, *, add_special_tokens):
+            assert text == rendered
+            assert add_special_tokens is False
+            return [7, 8]
+
+    class PrefillRenderer(FakeRenderer):
+        tokenizer = Tokenizer()
+
+        def build_generation_prompt(self, messages, *, role="assistant", prefill=None):
+            assert messages == [{"role": "user", "content": "Question"}]
+            assert role == "assistant"
+            assert prefill == rendered
+            return FakePrompt()
+
+        def parse_response(self, tokens):
+            assert tokens == [7, 8, 4, 5]
+            return {"role": "assistant", "content": []}, SimpleNamespace(is_clean=True)
+
+        def to_openai_message(self, message):
+            return {
+                "role": "assistant",
+                "reasoning_content": prefill + "Then V_5=[1, 3, 4].",
+                "content": "Final answer: 4",
+            }
+
+    class SamplingClient:
+        def sample(self, *, prompt, sampling_params, num_samples):
+            sequence = SimpleNamespace(
+                tokens=[4, 5], stop_reason="stop", sequence_id="sequence-prefill"
+            )
+            return FakeFuture(SimpleNamespace(sequences=[sequence], prompt_cache_hit_tokens=0))
+
+    result = TinkerBackend(
+        "Qwen/Qwen3.6-35B-A3B",
+        sampling_client=SamplingClient(),
+        renderer=PrefillRenderer(),
+        types_module=FakeTypes,
+    ).generate(request().model_copy(update={"assistant_prefill": prefill}))
+    assert result.assistant_prefill == prefill
+    assert result.prefill_tokens == 2
+    assert result.reasoning == prefill + "Then V_5=[1, 3, 4]."
+    assert result.generated_reasoning == "Then V_5=[1, 3, 4]."
+    assert result.usage["prompt_tokens"] == 3
+    assert result.usage["completion_tokens"] == 2
 
 
 def test_tinker_backend_preserves_length_truncated_response():

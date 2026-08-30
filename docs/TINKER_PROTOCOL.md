@@ -42,3 +42,14 @@ collection without revising and separately piloting the intervention or task dif
 
 The collector supports `--continue-on-error` for bounded provider/model failures. Such failures are
 written to `request_errors.jsonl`, counted as invalid in the manifest, and never silently omitted.
+
+## Assistant-prefill extension
+
+The v3 diagnostic requires Tinker `>=0.26.1` and Tinker Cookbook `>=0.5.5`. It calls the official
+renderer's `build_generation_prompt` with an assistant-role prefill that opens GPT-OSS's Harmony
+`analysis` channel. Parsing prepends the exact intervention tokens to the sampled suffix so the
+stored full reasoning is faithful to the model context. Prompt usage includes the prefix; completion
+usage and `generated_reasoning` include only newly sampled tokens.
+
+The Z.AI adapter rejects this field explicitly because equivalent continuation semantics have not
+been established there.

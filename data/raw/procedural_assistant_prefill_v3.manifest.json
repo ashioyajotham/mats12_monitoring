@@ -1,0 +1,32 @@
+{
+  "all_certificates_verified": true,
+  "all_token_pairs_equal_length": true,
+  "certificates_sha256": "adff564c9bc424410b3de91a2343837c5f466c6fed750ec8e04803becb4f0712",
+  "code_revision": "b78d3a60185757a5190aae77f58e97fb5a1e066c",
+  "diagnostic_only": true,
+  "entrypoint_sha256": "ccf8cdabc93467effd1ddbef7e2448d84febb555dc60e6d2170dd2926453f3ef",
+  "excluded_from_monitor_data": true,
+  "family_counts": {
+    "affine_modular": 2,
+    "conditional_dag": 2,
+    "finite_state": 2,
+    "subset_counting": 2
+  },
+  "intervention_code_sha256": "3e5bd3bd3017d7d7cb4f7eed0ce7494a8e6f8540a4634d062b6c3cfabdbe9605",
+  "manifest_sha256": "a486dde429847fcbb4c47829a9ef8697a10f50b56b194e445964884fd8b04990",
+  "protocol": "matched-assistant-prefill-v3",
+  "purpose": "procedural_assistant_prefill_v3_freeze",
+  "questions": 8,
+  "questions_sha256": "8a6aff4e680c2117a77fe2301a752d40d80dc1da3b870ade20e85ad346018624",
+  "runtime_environment": {
+    "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7"
+  },
+  "selection_seed": 20262303,
+  "selection_sha256": "f3b93cc12edc07a8daaefc8fc1fa46e1fc9f7c2af182472f346e6f0cf2c6a8f3",
+  "selection_uses_model_outcomes": false,
+  "token_audit_sha256": "cfd92dc2aca4122acef180cb7ceaed596f0a397a3017cda2dd677a2c65f44c54",
+  "tokenizer": "/Users/ashioyajotham/.cache/huggingface/hub/models--openai--gpt-oss-20b/snapshots/6cee5e81ee83917806bbde320786a8fb61efebee",
+  "v21_root_seed": 20262302,
+  "v2_root_seed": 20262301
+}

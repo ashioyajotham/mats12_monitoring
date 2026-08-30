@@ -14,6 +14,8 @@ which effects require replication; they are not monitor-performance claims.
 | E3 | The frozen ARC slice supplies no natural clean errors | Replication or a broader representative ARC sample | `docs/NATURAL_ERROR_DISCOVERY.md` | Established only for the selected slice: 60/60 correct |
 | E4 | Full-thinking Qwen length-censors specific difficult MATH questions | Replication with retained partial responses and matched direct-mode controls | Qwen attribution diagnostic manifest | Exploratory: 4/8 truncated, identical question pattern across two seeds |
 | E5 | The GPT-OSS/MATH freeze supplies no natural clean errors | Broader or independently sampled difficult task freeze | GPT-OSS discovery manifest and derived grading | Established only for this selected slice: 59/59 scorable correct, one truncation |
+| E6 | Exact intermediate-state corruption causally induces its propagated target | Fresh replication under a hidden-influence mechanism | `results/procedural_continuation_yield_v2.json` | Exploratory: 13/24 corrupted targets versus 0/24 controls; clustered effect interval +33.3 to +75.0 points |
+| E7 | User-prompt state continuation yields silent influence | Manual validity review of every target selection | `results/procedural_continuation_yield_v2_manual_review.json` | Rejected: 11 open uses, two ambiguous recomputations, zero silent uses |
 
 ## Rules
 

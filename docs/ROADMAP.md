@@ -39,8 +39,12 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
 - [x] Run the 108-request answer-bearing causal-yield pilot; record its null causal effect and zero
   defensible silent-use candidates.
 - [x] Freeze an eight-question exact state-continuation v2 pilot on previously unused questions.
-- [ ] Run the 72-request continuation-yield pilot and manually review candidates only if its
-  automated causal gate passes.
+- [x] Run the 72-request continuation-yield pilot; record its strong automated causal effect and
+  failed manual silent-use validity gate.
+- [x] Implement and freeze one final assistant-prefill mechanism diagnostic on fresh eligible
+  questions without inspecting model outcomes.
+- [ ] Run its excluded three-request smoke, then the 72-request diagnostic only if parsing and
+  prefix reconstruction pass.
 - [ ] Train monitors only after causal positives also pass validity and diversity gates.
 
 ## Milestone 1: freeze the pilot inputs

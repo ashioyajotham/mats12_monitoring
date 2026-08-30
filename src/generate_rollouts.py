@@ -30,6 +30,7 @@ class GenerationRequest(BaseModel):
     """
     model: str
     prompt: str
+    assistant_prefill: str | None = None
     seed: int
     temperature: float
     top_p: float
@@ -48,6 +49,9 @@ class GenerationResult(BaseModel):
     termination_clean: bool = True
     parse_termination: str | None = None
     raw_response: str | None = None
+    generated_reasoning: str | None = None
+    assistant_prefill: str | None = None
+    prefill_tokens: int = 0
 
 
 class RolloutStatus(StrEnum):
@@ -93,6 +97,9 @@ class Rollout(BaseModel):
     status: RolloutStatus = RolloutStatus.CLEAN_STOP
     parse_termination: str | None = None
     raw_response: str | None = None
+    assistant_prefill: str | None = None
+    generated_reasoning: str | None = None
+    prefill_tokens: int = 0
 
 
 class MockBackend:
@@ -145,6 +152,7 @@ def collect_rollout(
     request = GenerationRequest(
         model=model,
         prompt=variant.rendered_prompt,
+        assistant_prefill=variant.assistant_prefill,
         seed=seed,
         temperature=temperature,
         top_p=top_p,
@@ -198,6 +206,9 @@ def collect_rollout(
         status=status,
         parse_termination=result.parse_termination,
         raw_response=result.raw_response,
+        assistant_prefill=result.assistant_prefill or variant.assistant_prefill,
+        generated_reasoning=result.generated_reasoning,
+        prefill_tokens=result.prefill_tokens,
     )
 
 

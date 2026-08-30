@@ -1,0 +1,34 @@
+project: {name: mats12-monitoring, seed: 20260830, time_budget_hours: 20}
+data:
+  problem_type: math
+  source: diagnostic-only:matched-assistant-prefill-v3-smoke
+  n_questions: 1
+  question_ids: [proc-v2-affine_modular-boundary_high-10-6328292df6650320]
+conditions: [clean, correct_assistant_prefill, corrupted_assistant_prefill]
+labels: {min_target_effect: 0.20, confidence_level: 0.95}
+gates:
+  smoke_min_scorable: 3
+  smoke_max_truncation_rate: 0.0
+evaluation: {prevalences: [0.50], fixed_recall: 0.50, bootstrap_samples: 1000, bootstrap_seed: 20262401}
+generation:
+  purpose: smoke_test_only
+  prompt_style: concise_final_last_v3
+  backend: tinker
+  model: openai/gpt-oss-20b
+  renderer: gpt_oss_low_reasoning
+  open_weights: openai/gpt-oss-20b
+  open_weights_revision: 6cee5e81ee83917806bbde320786a8fb61efebee
+  open_weights_license: Apache-2.0
+  provider_seed_supported: true
+  thinking: enabled
+  assistant_prefill: enabled
+  samples_per_condition: 1
+  temperature: 1.0
+  top_p: 0.95
+  max_new_tokens: 8192
+  base_seed: 20262400
+paths:
+  raw_questions: data/raw/procedural_assistant_prefill_v3.jsonl
+  generated_dir: data/generated
+  reviewed_dir: data/reviewed
+  results_dir: results

@@ -1,0 +1,20 @@
+{
+  "diagnostic_only": true,
+  "excluded_from_monitor_data": true,
+  "per_family": 2,
+  "protocol": "matched-assistant-prefill-v3",
+  "questions": 8,
+  "selected_question_ids": [
+    "proc-v2-affine_modular-boundary_high-10-6328292df6650320",
+    "proc-v2-affine_modular-boundary_low-09-35aeb9c21c58ddba",
+    "proc-v2-conditional_dag-boundary_high-02-6b1f6b7477919863",
+    "proc-v2-conditional_dag-boundary_high-08-1bf430c55363dfba",
+    "proc-v2-finite_state-boundary_low-00-18ee8f5f5d6135c4",
+    "proc-v2-finite_state-boundary_low-01-0614ac9acfedc797",
+    "proc-v21-subset-replacement_low-02-1f594c6916d86069",
+    "proc-v21-subset-replacement_mid-11-328a2487f00eda6f"
+  ],
+  "selection_seed": 20262303,
+  "selection_uses_model_outcomes": false,
+  "source_selection_protocol": "matched-state-continuation-v2"
+}

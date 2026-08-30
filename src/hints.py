@@ -24,6 +24,8 @@ class Condition(StrEnum):
     CORRUPTED_PARTIAL_SOLUTION = "corrupted_partial_solution"
     CORRECT_CONTINUATION = "correct_continuation"
     CORRUPTED_CONTINUATION = "corrupted_continuation"
+    CORRECT_ASSISTANT_PREFILL = "correct_assistant_prefill"
+    CORRUPTED_ASSISTANT_PREFILL = "corrupted_assistant_prefill"
 
 
 HINT_CONDITIONS = frozenset(
@@ -37,6 +39,7 @@ HINT_CONDITIONS = frozenset(
         Condition.TRUSTED_INCORRECT_ANSWER_HINT,
         Condition.CORRUPTED_PARTIAL_SOLUTION,
         Condition.CORRUPTED_CONTINUATION,
+        Condition.CORRUPTED_ASSISTANT_PREFILL,
     }
 )
 
@@ -48,6 +51,7 @@ class PromptVariant(BaseModel):
     rendered_prompt: str
     hinted_option: str | None = None
     hint_template: str | None = None
+    assistant_prefill: str | None = None
 
 
 def select_incorrect_option(question: Question, variant_index: int = 0) -> str:
@@ -117,6 +121,8 @@ def build_variant(
             Condition.CORRUPTED_PARTIAL_SOLUTION: "intervention_corrupted_note",
             Condition.CORRECT_CONTINUATION: "continuation_correct_prefix",
             Condition.CORRUPTED_CONTINUATION: "continuation_corrupted_prefix",
+            Condition.CORRECT_ASSISTANT_PREFILL: "assistant_prefill_correct",
+            Condition.CORRUPTED_ASSISTANT_PREFILL: "assistant_prefill_corrupted",
         }
         if condition not in intervention_fields:
             raise ValueError(f"unsupported math condition: {condition}")
@@ -128,11 +134,17 @@ def build_variant(
         corrupted_conditions = {
             Condition.CORRUPTED_PARTIAL_SOLUTION,
             Condition.CORRUPTED_CONTINUATION,
+            Condition.CORRUPTED_ASSISTANT_PREFILL,
         }
         if condition in corrupted_conditions:
             if not isinstance(target, str) or not target or target == question.gold_answer:
                 raise ValueError("math problem lacks a valid corrupted target answer")
         if condition in {
+            Condition.CORRECT_ASSISTANT_PREFILL,
+            Condition.CORRUPTED_ASSISTANT_PREFILL,
+        }:
+            prefix = ""
+        elif condition in {
             Condition.CORRECT_CONTINUATION,
             Condition.CORRUPTED_CONTINUATION,
         }:
@@ -157,6 +169,18 @@ def build_variant(
                 else "matched_correct_continuation_v2"
                 if condition is Condition.CORRECT_CONTINUATION
                 else "matched_single_state_error_continuation_v2"
+                if condition is Condition.CORRUPTED_CONTINUATION
+                else "matched_correct_assistant_prefill_v3"
+                if condition is Condition.CORRECT_ASSISTANT_PREFILL
+                else "matched_single_state_error_assistant_prefill_v3"
+            ),
+            assistant_prefill=(
+                note
+                if condition in {
+                    Condition.CORRECT_ASSISTANT_PREFILL,
+                    Condition.CORRUPTED_ASSISTANT_PREFILL,
+                }
+                else None
             ),
         )
     base = render_base(question)
