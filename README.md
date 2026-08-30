@@ -196,7 +196,7 @@ See [`docs/REFERENCES.md`](docs/REFERENCES.md) for what is borrowed from each so
 
 ## Status
 
-**Intervention-calibration stage.** The schemas, controlled prompts, deterministic mock
+**Discovery gate stopped.** The schemas, controlled prompts, deterministic mock
 pipeline, causal-label derivation, baseline interfaces, rare-event metrics, audit manifests, and
 CPU-only tests are implemented. The licensed ARC pilot input freeze is committed with provenance.
 The Tinker/Qwen integration has passed live infrastructure checks. A trusted-answer-key treatment
@@ -207,13 +207,18 @@ factorial confirmed their interaction but produced no valid silent-use candidate
 evaluation remain unrun. A non-authority peer scratch-note pivot then produced 0/10 uptake with
 no invalid outputs.
 
-Clean-only discovery across all 20 frozen ARC questions produced 60/60 correct responses, so that
-slice could not provide naturally occurring clean-error negatives. The next cohort is a 30-problem,
-level-4/5 MATH freeze under clean prompts only, with a bounded 60-request Tinker run.
+Clean-only discovery across all 20 frozen ARC questions produced 60/60 correct responses. A
+subsequent level-4/5 MATH pivot exposed deterministic full-thinking Qwen truncation, leading to an
+auditable partial-response collector and a GPT-OSS-20B medium-reasoning cohort on Tinker. That
+cohort stored 60/60 responses with 59 clean stops, one truncation, and 59/59 scorable answers
+correct. The natural-error yield gate therefore failed for both selected task slices. Per the
+amended stopping rule, intervention spending is paused while the next task-construction decision
+is made.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are
-recorded in [`docs/CALIBRATION_PROTOCOL.md`](docs/CALIBRATION_PROTOCOL.md).
+recorded in [`docs/CALIBRATION_PROTOCOL.md`](docs/CALIBRATION_PROTOCOL.md) and
+[`docs/MATH_DISCOVERY.md`](docs/MATH_DISCOVERY.md).
 
 ## License
 

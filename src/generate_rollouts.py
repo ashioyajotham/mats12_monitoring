@@ -9,6 +9,7 @@ import re
 from collections import Counter
 from collections.abc import Iterable
 from datetime import UTC, datetime
+from enum import StrEnum
 from pathlib import Path
 from typing import Protocol
 
@@ -44,6 +45,18 @@ class GenerationResult(BaseModel):
     provider_request_id: str | None = None
     provider_model: str | None = None
     latency_seconds: float | None = Field(default=None, ge=0.0)
+    termination_clean: bool = True
+    parse_termination: str | None = None
+    raw_response: str | None = None
+
+
+class RolloutStatus(StrEnum):
+    """Whether a provider response is suitable for experimental scoring."""
+
+    CLEAN_STOP = "clean_stop"
+    PARSE_INVALID = "parse_invalid"
+    LENGTH_TRUNCATED = "length_truncated"
+    MALFORMED = "malformed"
 
 
 class GenerationBackend(Protocol):
@@ -77,6 +90,9 @@ class Rollout(BaseModel):
     provider_request_id: str | None = None
     provider_model: str | None = None
     latency_seconds: float | None = Field(default=None, ge=0.0)
+    status: RolloutStatus = RolloutStatus.CLEAN_STOP
+    parse_termination: str | None = None
+    raw_response: str | None = None
 
 
 class MockBackend:
@@ -138,6 +154,21 @@ def collect_rollout(
     transcript = result.text
     if result.reasoning:
         transcript = f"{result.reasoning.rstrip()}\n\n{result.text.lstrip()}"
+    parsed_answer = (
+        parse_answer(result.text, question.options)
+        if isinstance(question, Question)
+        else extract_math_answer(result.text)
+    )
+    if not result.termination_clean:
+        status = (
+            RolloutStatus.LENGTH_TRUNCATED
+            if result.finish_reason == "length"
+            else RolloutStatus.MALFORMED
+        )
+    elif parsed_answer is None:
+        status = RolloutStatus.PARSE_INVALID
+    else:
+        status = RolloutStatus.CLEAN_STOP
     return Rollout(
         rollout_id=rollout_id(question.question_id, variant.condition, seed, model),
         question_id=question.question_id,
@@ -149,11 +180,7 @@ def collect_rollout(
         response=transcript,
         reasoning=result.reasoning,
         final_response=result.text,
-        parsed_answer=(
-            parse_answer(result.text, question.options)
-            if isinstance(question, Question)
-            else extract_math_answer(result.text)
-        ),
+        parsed_answer=parsed_answer,
         gold_answer=question.gold_answer,
         seed=seed,
         model=model,
@@ -168,6 +195,9 @@ def collect_rollout(
         provider_request_id=result.provider_request_id,
         provider_model=result.provider_model,
         latency_seconds=result.latency_seconds,
+        status=status,
+        parse_termination=result.parse_termination,
+        raw_response=result.raw_response,
     )
 
 
@@ -199,6 +229,10 @@ def summarize_rollouts(rollouts: Iterable[Rollout]) -> dict:
     return {
         "completed": len(rows),
         "invalid": sum(item.parsed_answer is None for item in rows),
+        "scorable": sum(item.status is RolloutStatus.CLEAN_STOP for item in rows),
+        "truncated": sum(item.status is RolloutStatus.LENGTH_TRUNCATED for item in rows),
+        "malformed": sum(item.status is RolloutStatus.MALFORMED for item in rows),
+        "parse_invalid": sum(item.status is RolloutStatus.PARSE_INVALID for item in rows),
         "reasoning_present": sum(bool(item.reasoning) for item in rows),
         "unique_provider_request_ids": len(set(request_ids)),
         "finish_reasons": dict(sorted(Counter(item.finish_reason for item in rows).items())),

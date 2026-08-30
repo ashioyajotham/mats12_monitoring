@@ -29,6 +29,7 @@ class TinkerBackend:
     ):
         """Create or inject the native sampling client and chat renderer."""
         self.model = model
+        self.tokenizer: Any | None = None
         if sampling_client is not None and renderer is not None and types_module is not None:
             self.sampling_client = sampling_client
             self.renderer = renderer
@@ -43,6 +44,7 @@ class TinkerBackend:
             service_client = tinker.ServiceClient()
             self.sampling_client = service_client.create_sampling_client(base_model=model)
             tokenizer = self.sampling_client.get_tokenizer()
+            self.tokenizer = tokenizer
             self.renderer = renderers.get_renderer(renderer_name, tokenizer, model_name=model)
             self.types = tinker
         except (ImportError, RuntimeError, ValueError) as exc:
@@ -71,24 +73,34 @@ class TinkerBackend:
             ).result()
             sequence = result.sequences[0]
             message, termination = self.renderer.parse_response(sequence.tokens)
-            if not getattr(termination, "is_clean", bool(termination)):
-                raise TinkerBackendError(
-                    "Tinker renderer stopped uncleanly: "
-                    f"{termination}; provider_stop={sequence.stop_reason}; "
-                    f"completion_tokens={len(sequence.tokens)}"
-                )
-            normalized = self.renderer.to_openai_message(message)
+            try:
+                normalized = self.renderer.to_openai_message(message)
+            except Exception:
+                if getattr(termination, "is_clean", bool(termination)):
+                    raise
+                normalized = {"content": "", "reasoning_content": None}
         except TinkerBackendError:
             raise
         except Exception as exc:
             raise TinkerBackendError(f"Tinker sampling failed: {exc}") from exc
 
+        termination_clean = getattr(termination, "is_clean", bool(termination))
+        raw_response = None
+        if self.tokenizer is not None:
+            try:
+                raw_response = self.tokenizer.decode(sequence.tokens)
+            except Exception:
+                raw_response = None
         content = normalized.get("content")
         reasoning = normalized.get("reasoning_content")
-        if not isinstance(content, str) or not content.strip():
+        if termination_clean and (not isinstance(content, str) or not content.strip()):
             raise TinkerBackendError("Tinker returned empty final response content")
+        if not isinstance(content, str):
+            content = ""
         if reasoning is not None and not isinstance(reasoning, str):
             raise TinkerBackendError("Tinker returned non-text reasoning content")
+        if not termination_clean and not reasoning and raw_response:
+            reasoning = raw_response
         prompt_tokens = len(prompt.to_ints())
         completion_tokens = len(sequence.tokens)
         usage = {
@@ -107,4 +119,7 @@ class TinkerBackend:
             provider_request_id=str(sequence.sequence_id),
             provider_model=self.model,
             latency_seconds=time.monotonic() - started,
+            termination_clean=termination_clean,
+            parse_termination=str(termination),
+            raw_response=raw_response,
         )

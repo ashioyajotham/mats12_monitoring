@@ -5,6 +5,7 @@ from __future__ import annotations
 import argparse
 import json
 import time
+from collections import defaultdict, deque
 from collections.abc import Iterator
 from datetime import UTC, datetime
 from pathlib import Path
@@ -21,6 +22,7 @@ from src.backends.tinker import TinkerBackend, TinkerBackendError
 from src.backends.zai import ZAIBackend, ZAIBackendError
 from src.generate_rollouts import (
     Rollout,
+    RolloutStatus,
     collect_rollout,
     rollout_id,
     summarize_rollouts,
@@ -36,18 +38,29 @@ def collection_plan(
     *,
     samples_per_condition: int,
     base_seed: int,
-) -> Iterator[tuple[Question, Condition, str, int]]:
+) -> Iterator[tuple[Question | MathProblem, Condition, str | None, int]]:
     """Yield a stable question, condition, hint, and logical sample identifier plan."""
     if samples_per_condition <= 0:
         raise ValueError("samples_per_condition must be positive")
-    for question_index, question in enumerate(questions):
-        hinted_option = (
-            select_incorrect_option(question, variant_index=question_index)
-            if isinstance(question, Question)
-            else None
-        )
-        for condition_index, condition in enumerate(conditions):
-            for sample_index in range(samples_per_condition):
+    indexed_questions = list(enumerate(questions))
+    if questions and all(isinstance(question, MathProblem) for question in questions):
+        groups: dict[str, deque[tuple[int, Question | MathProblem]]] = defaultdict(deque)
+        for question_index, question in indexed_questions:
+            groups[question.template_group or "unknown"].append((question_index, question))
+        indexed_questions = []
+        while any(groups.values()):
+            for group in sorted(groups):
+                if groups[group]:
+                    indexed_questions.append(groups[group].popleft())
+
+    for sample_index in range(samples_per_condition):
+        for question_index, question in indexed_questions:
+            hinted_option = (
+                select_incorrect_option(question, variant_index=question_index)
+                if isinstance(question, Question)
+                else None
+            )
+            for condition_index, condition in enumerate(conditions):
                 logical_seed = (
                     base_seed + question_index * 1000 + condition_index * 100 + sample_index
                 )
@@ -105,6 +118,11 @@ def main() -> None:
         default=10,
         help="Abort after this many recorded request failures",
     )
+    parser.add_argument(
+        "--retry-truncated",
+        action="store_true",
+        help="Retry compatible resumed responses that ended at the token limit",
+    )
     args = parser.parse_args()
 
     config = load_config(args.config)
@@ -120,6 +138,13 @@ def main() -> None:
 
     model = MathProblem if config.get("data", {}).get("problem_type") == "math" else Question
     questions = list(read_jsonl(config["paths"]["raw_questions"], model=model))
+    requested_question_ids = config.get("data", {}).get("question_ids")
+    if requested_question_ids:
+        by_id = {question.question_id: question for question in questions}
+        missing = sorted(set(requested_question_ids) - set(by_id))
+        if missing:
+            raise SystemExit(f"configured question_ids are missing: {missing}")
+        questions = [by_id[question_id] for question_id in requested_question_ids]
     if args.limit is not None:
         questions = questions[: args.limit]
     samples = args.samples_per_condition or generation["samples_per_condition"]
@@ -132,7 +157,7 @@ def main() -> None:
             base_seed=generation["base_seed"],
         )
     )
-    purpose = (
+    purpose = generation.get("purpose") or (
         "pilot"
         if args.limit is None and args.samples_per_condition is None
         else "smoke_test_only"
@@ -163,15 +188,17 @@ def main() -> None:
         (question.question_id, condition, logical_seed)
         for question, condition, _, logical_seed in plan
     }
-    imported = [
+    compatible = [
         rollout
         for rollout in loaded_resume
         if (rollout.question_id, rollout.condition, rollout.seed) in planned_ids
         and rollout.model == generation["model"]
-        and rollout.parsed_answer is not None
-        and bool(rollout.reasoning)
         and bool(rollout.provider_request_id)
-        and rollout.finish_reason == "stop"
+    ]
+    imported = [
+        rollout
+        for rollout in compatible
+        if not args.retry_truncated or rollout.status is not RolloutStatus.LENGTH_TRUNCATED
     ]
     completed_ids = {rollout.rollout_id for rollout in imported}
 
@@ -221,7 +248,14 @@ def main() -> None:
                 if request_index and args.request_delay_seconds:
                     time.sleep(args.request_delay_seconds)
                 try:
-                    variant = build_variant(question, condition, hinted_option=hinted_option)
+                    variant = build_variant(
+                        question,
+                        condition,
+                        hinted_option=hinted_option,
+                        math_prompt_style=generation.get(
+                            "prompt_style", "concise_final_last_v3"
+                        ),
+                    )
                     rollout = collect_rollout(
                         question,
                         variant,
@@ -259,18 +293,37 @@ def main() -> None:
             failure = f"{type(exc).__name__}: {exc}"
 
     quality = summarize_rollouts(completed)
+    smoke_min_scorable = config.get("gates", {}).get("smoke_min_scorable", len(plan))
+    smoke_max_truncation_rate = config.get("gates", {}).get(
+        "smoke_max_truncation_rate", 0.0
+    )
+    truncation_rate = quality["truncated"] / quality["completed"] if completed else 0.0
     smoke_gate_passed = (
         purpose != "smoke_test_only"
         or (
             not failure
             and quality["completed"] == len(plan)
-            and quality["invalid"] == 0
-            and quality["reasoning_present"] == len(completed)
+            and quality["scorable"] >= smoke_min_scorable
+            and truncation_rate <= smoke_max_truncation_rate
+            and quality["parse_invalid"] == 0
+            and quality["malformed"] == 0
+            and (
+                generation.get("thinking") != "enabled"
+                or quality["reasoning_present"] == len(completed)
+            )
             and quality["unique_provider_request_ids"] == len(completed)
-            and set(quality["finish_reasons"]) == {"stop"}
+            and not request_errors
         )
     )
-    status = "failed" if failure else "complete_with_errors" if request_errors else "complete"
+    status = (
+        "failed"
+        if failure
+        else "complete_with_errors"
+        if request_errors
+        else "complete_with_invalid"
+        if quality["invalid"]
+        else "complete"
+    )
     if purpose == "smoke_test_only" and not failure and not smoke_gate_passed:
         status = "quality_failed"
     manifest_payload = {
@@ -278,6 +331,15 @@ def main() -> None:
         "status": status,
         "failure": failure,
         "smoke_gate_passed": smoke_gate_passed if purpose == "smoke_test_only" else None,
+        "smoke_gate": (
+            {
+                "min_scorable": smoke_min_scorable,
+                "max_truncation_rate": smoke_max_truncation_rate,
+                "observed_truncation_rate": truncation_rate,
+            }
+            if purpose == "smoke_test_only"
+            else None
+        ),
         "config_path": str(Path(args.config)),
         "config_sha256": config_sha256,
         "code_revision": git_revision(),
@@ -288,7 +350,7 @@ def main() -> None:
             "name": generation["backend"],
             "base_url": generation.get("base_url"),
             "renderer": generation.get("renderer"),
-            "thinking": "enabled",
+            "thinking": generation.get("thinking", "enabled"),
             "seed_supported": generation["provider_seed_supported"],
             "open_weights": generation["open_weights"],
             "open_weights_revision": generation["open_weights_revision"],
@@ -305,6 +367,7 @@ def main() -> None:
             "request_delay_seconds": args.request_delay_seconds,
             "continue_on_error": args.continue_on_error,
             "max_errors": args.max_errors,
+            "retry_truncated": args.retry_truncated,
         },
         "resume": {
             "source": str(args.resume_from) if args.resume_from else None,
@@ -315,6 +378,10 @@ def main() -> None:
         "counts": {
             "requested": len(plan),
             "completed": quality["completed"],
+            "scorable": quality["scorable"],
+            "truncated": quality["truncated"],
+            "malformed": quality["malformed"],
+            "parse_invalid": quality["parse_invalid"],
             "invalid": quality["invalid"] + len(request_errors),
             "request_errors": len(request_errors),
             "reasoning_present": quality["reasoning_present"],

@@ -8,6 +8,8 @@ import pytest
 import yaml
 
 from src.audit import canonical_config_hash
+from src.hints import Condition
+from src.tasks import MathProblem
 
 
 def test_mock_pilot_writes_complete_manifest(tmp_path):
@@ -119,3 +121,29 @@ def test_resume_loader_accepts_only_matching_config(tmp_path):
     assert load_resume_rollouts(run, config_sha256=canonical_config_hash(config)) == []
     with pytest.raises(ValueError, match="different configuration hash"):
         load_resume_rollouts(run, config_sha256="different")
+
+
+def test_math_collection_plan_is_subject_balanced_and_sample_round_first():
+    repo = Path(__file__).resolve().parents[1]
+    collection_plan = runpy.run_path(repo / "experiments/02_generate_dataset.py")[
+        "collection_plan"
+    ]
+    questions = [
+        MathProblem(
+            question_id=question_id,
+            prompt="Solve.",
+            gold_answer="1",
+            template_group=group,
+        )
+        for question_id, group in (("a1", "A"), ("a2", "A"), ("b1", "B"))
+    ]
+    plan = list(
+        collection_plan(
+            questions,
+            [Condition.CLEAN],
+            samples_per_condition=2,
+            base_seed=100,
+        )
+    )
+    assert [item[0].question_id for item in plan] == ["a1", "b1", "a2", "a1", "b1", "a2"]
+    assert [item[3] for item in plan[:3]] == [100, 2100, 1100]

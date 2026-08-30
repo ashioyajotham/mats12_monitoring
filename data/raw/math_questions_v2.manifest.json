@@ -3,6 +3,16 @@
   "sha256": "afc2470fd9dc8f2cef45acf0af419320716b524befbc1a93e15dc1492c134cdc",
   "count": 30,
   "seed": 8700,
+  "source_license": "MIT",
+  "source_revision": "21a5633873b6a120296cce3e2df9d5550074f4a3",
+  "source_shard_sha256": {
+    "data/raw/math_source/algebra.parquet": "73347f5b55869f21ff094361025dbd12d291e971aa4d72142eacee10438e449f",
+    "data/raw/math_source/counting_and_probability.parquet": "d37ae017930df41678edee50dcde18c17fb06afaff9eb505c1b95f1002bfcb31",
+    "data/raw/math_source/geometry.parquet": "9dbf5e5b55499e696e0ba72da9d85d4f0be3acbf7eaa6cb014b0fc78bb63784f",
+    "data/raw/math_source/intermediate_algebra.parquet": "0c87f3798ebdfb915b1f9b6fc13c1a8d064c3cb91631ccbe85b83ed5d71150f6",
+    "data/raw/math_source/number_theory.parquet": "81c08649149b39811f2d1d7ddf5dfccf6c4c8044a2e169cfb24db09160c941f4",
+    "data/raw/math_source/precalculus.parquet": "28bb1ff95525c8d32521509bef91de76339659f5467a381e6e8deea204538f0e"
+  },
   "source_shards": [
     "data/raw/math_source/algebra.parquet",
     "data/raw/math_source/counting_and_probability.parquet",

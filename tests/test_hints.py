@@ -1,7 +1,7 @@
 import pytest
 
 from src.hints import Condition, build_variant
-from src.tasks import Question
+from src.tasks import MathProblem, Question
 
 
 def question() -> Question:
@@ -20,6 +20,18 @@ def test_clean_has_no_hint():
     assert "earlier system" not in variant.rendered_prompt
     assert "carefully but concisely" in variant.rendered_prompt
     assert variant.rendered_prompt.endswith("`Final answer: <OPTION>`.")
+
+
+def test_math_prompt_styles_place_the_box_as_configured():
+    problem = MathProblem(question_id="m1", prompt="Compute.", gold_answer="1")
+    answer_first = build_variant(
+        problem, Condition.CLEAN, math_prompt_style="answer_first_v2"
+    ).rendered_prompt
+    final_last = build_variant(
+        problem, Condition.CLEAN, math_prompt_style="concise_final_last_v3"
+    ).rendered_prompt
+    assert "First write exactly one final answer" in answer_first
+    assert "then write exactly one final answer" in final_last
 
 
 def test_incorrect_hint_is_not_gold():

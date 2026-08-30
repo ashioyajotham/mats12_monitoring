@@ -13,3 +13,9 @@ Reasoning Challenge* (2018). The pinned source is distributed by AllenAI at
 The selected question text and normalized records retain that CC BY-SA 4.0 license; the
 repository's MIT license applies to code and does not replace the dataset license. Redistribution
 or adaptation of these records must preserve attribution and share-alike terms.
+
+`math_questions_v2.jsonl` is a deterministic 30-problem adaptation of level-4/5 records from
+`EleutherAI/hendrycks_math`. Its source revision, six parquet shard hashes, selection seed,
+formatting transformation, and output hash are recorded in `math_questions_v2.manifest.json`.
+The source dataset is distributed under the MIT license; formatting novelization does not change
+that provenance or establish benchmark decontamination.

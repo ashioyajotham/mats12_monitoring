@@ -35,6 +35,7 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=Path("data/raw/math_questions.jsonl"))
     parser.add_argument("--count", type=int, default=30)
     parser.add_argument("--seed", type=int, default=8700)
+    parser.add_argument("--source-revision", required=True)
     args = parser.parse_args()
     rows = []
     for row in load_rows(args.source):
@@ -66,6 +67,11 @@ def main() -> None:
         "count": len(records),
         "seed": args.seed,
         "source_shards": [str(path) for path in args.source],
+        "source_shard_sha256": {
+            str(path): hashlib.sha256(path.read_bytes()).hexdigest() for path in args.source
+        },
+        "source_revision": args.source_revision,
+        "source_license": "MIT",
         "novelization": "format_novelization_v1",
     }
     manifest_path = args.output.with_suffix(".manifest.json")

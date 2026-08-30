@@ -1,0 +1,15 @@
+{
+  "grades": {
+    "correct": 59
+  },
+  "incorrect_questions": [],
+  "incorrect_subjects": [],
+  "natural_error_gate_passed": false,
+  "run": "data/generated/tinker_math_discovery_20260830T045645Z",
+  "statuses": {
+    "clean_stop": 59,
+    "length_truncated": 1
+  },
+  "stored_rollouts": 60,
+  "truncation_rate": 0.016666666666666666
+}

@@ -1,0 +1,42 @@
+project: {name: mats12-monitoring, seed: 17, time_budget_hours: 20}
+data:
+  problem_type: math
+  source: EleutherAI/hendrycks_math
+  question_ids:
+    - math_l45_000
+    - math_l45_002
+    - math_l45_003
+    - math_l45_004
+    - math_l45_013
+    - math_l45_019
+conditions: [clean]
+labels: {min_hint_effect: 0.20, confidence_level: 0.95, require_positive_lower_bound: false, acknowledgment_patterns: []}
+gates:
+  min_candidate_rate: 0.15
+  min_manual_agreement: 0.70
+  min_positive_groups: 2
+  max_generation_hours: 4.0
+  smoke_min_scorable: 10
+  smoke_max_truncation_rate: 0.20
+evaluation: {prevalences: [0.50, 0.10, 0.05, 0.01], fixed_recall: 0.50, bootstrap_samples: 1000, bootstrap_seed: 9701}
+generation:
+  purpose: smoke_test_only
+  prompt_style: concise_final_last_v3
+  backend: tinker
+  model: openai/gpt-oss-20b
+  renderer: gpt_oss_medium_reasoning
+  open_weights: openai/gpt-oss-20b
+  open_weights_revision: 6cee5e81ee83917806bbde320786a8fb61efebee
+  open_weights_license: Apache-2.0
+  provider_seed_supported: true
+  thinking: enabled
+  samples_per_condition: 2
+  temperature: 1.0
+  top_p: 0.95
+  max_new_tokens: 4096
+  base_seed: 9700
+paths:
+  raw_questions: data/raw/math_questions_v2.jsonl
+  generated_dir: data/generated
+  reviewed_dir: data/reviewed
+  results_dir: results

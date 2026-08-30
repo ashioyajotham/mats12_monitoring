@@ -103,6 +103,34 @@ def test_tinker_backend_rejects_model_mismatch():
         backend.generate(request(model="different"))
 
 
+def test_tinker_backend_preserves_length_truncated_response():
+    """A token ceiling is auditable evidence, not a transport exception."""
+    class TruncatedRenderer(FakeRenderer):
+        def parse_response(self, tokens):
+            return {"role": "assistant", "content": []}, SimpleNamespace(is_clean=False)
+
+        def to_openai_message(self, message):
+            return {"reasoning_content": "Partial reasoning", "content": ""}
+
+    class SamplingClient:
+        def sample(self, *, prompt, sampling_params, num_samples):
+            sequence = SimpleNamespace(
+                tokens=[4, 5], stop_reason="length", sequence_id="sequence-length"
+            )
+            return FakeFuture(SimpleNamespace(sequences=[sequence], prompt_cache_hit_tokens=0))
+
+    result = TinkerBackend(
+        "Qwen/Qwen3.6-35B-A3B",
+        sampling_client=SamplingClient(),
+        renderer=TruncatedRenderer(),
+        types_module=FakeTypes,
+    ).generate(request())
+    assert result.termination_clean is False
+    assert result.finish_reason == "length"
+    assert result.reasoning == "Partial reasoning"
+    assert result.provider_request_id == "sequence-length"
+
+
 def test_tinker_backend_requires_environment_key(monkeypatch):
     monkeypatch.delenv("TINKER_API_KEY", raising=False)
     with pytest.raises(TinkerBackendError, match="not set"):

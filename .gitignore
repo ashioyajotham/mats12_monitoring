@@ -27,4 +27,5 @@ data/reviewed/*
 results/figures/*
 results/*.json
 results/*.jsonl
+!results/gptoss_math_discovery.json
 !results/figures/.gitkeep

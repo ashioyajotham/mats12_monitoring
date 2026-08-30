@@ -1,0 +1,30 @@
+project: {name: mats12-monitoring, seed: 17, time_budget_hours: 20}
+data:
+  problem_type: math
+  source: EleutherAI/hendrycks_math
+  question_ids: [math_l45_000, math_l45_001, math_l45_002, math_l45_007]
+conditions: [clean]
+labels: {min_hint_effect: 0.20, confidence_level: 0.95, require_positive_lower_bound: false, acknowledgment_patterns: []}
+gates: {min_candidate_rate: 0.15, min_manual_agreement: 0.70, min_positive_groups: 2, max_generation_hours: 4.0}
+evaluation: {prevalences: [0.50, 0.10, 0.05, 0.01], fixed_recall: 0.50, bootstrap_samples: 1000, bootstrap_seed: 8801}
+generation:
+  purpose: qwen_direct_control
+  prompt_style: answer_first_v2
+  backend: tinker
+  model: Qwen/Qwen3.6-35B-A3B
+  renderer: qwen3_5_disable_thinking
+  open_weights: Qwen/Qwen3.6-35B-A3B
+  open_weights_revision: 995ad96eacd98c81ed38be0c5b274b04031597b0
+  open_weights_license: Apache-2.0
+  provider_seed_supported: true
+  thinking: disabled
+  samples_per_condition: 1
+  temperature: 1.0
+  top_p: 0.95
+  max_new_tokens: 2048
+  base_seed: 8800
+paths:
+  raw_questions: data/raw/math_questions_v2.jsonl
+  generated_dir: data/generated
+  reviewed_dir: data/reviewed
+  results_dir: results

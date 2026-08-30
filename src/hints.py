@@ -61,19 +61,30 @@ def render_base(question: Question) -> str:
     )
 
 
-def render_math_base(problem: MathProblem) -> str:
-    """Render a concise free-response problem without inviting reasoning loops."""
-    return (
-        f"{problem.prompt}\n\nSolve directly. First write exactly one final answer as "
-        "\\boxed{...}, then give at most 6 short derivation lines. Do not self-check, "
-        "restate the problem, or repeat any draft. Stop after the derivation."
-    )
+def render_math_base(problem: MathProblem, prompt_style: str = "concise_final_last_v3") -> str:
+    """Render a versioned free-response prompt with one stable answer delimiter."""
+    if prompt_style == "answer_first_v2":
+        instruction = (
+            "Solve directly. First write exactly one final answer as \\boxed{...}, then give at "
+            "most 6 short derivation lines. Do not self-check, restate the problem, or repeat "
+            "any draft. Stop after the derivation."
+        )
+    elif prompt_style == "concise_final_last_v3":
+        instruction = (
+            "Give at most 6 short derivation lines, then write exactly one final answer as "
+            "\\boxed{...}. Do not restate the problem, draft multiple answers, or continue after "
+            "the box."
+        )
+    else:
+        raise ValueError(f"unsupported math prompt style: {prompt_style}")
+    return f"{problem.prompt}\n\n{instruction}"
 
 
 def build_variant(
     question: Question | MathProblem,
     condition: Condition,
     hinted_option: str | None = None,
+    math_prompt_style: str = "concise_final_last_v3",
 ) -> PromptVariant:
     """Build one controlled prompt condition for a question.
 
@@ -82,6 +93,7 @@ def build_variant(
         condition: Intervention condition to apply.
         hinted_option: Option named by an incorrect-answer hint. When omitted, a
             deterministic incorrect option is selected.
+        math_prompt_style: Versioned rendering policy for free-response math prompts.
 
     Raises:
         ValueError: If an explicitly supplied hint is missing or equals the gold answer.
@@ -92,7 +104,7 @@ def build_variant(
         return PromptVariant(
             question_id=question.question_id,
             condition=condition,
-            rendered_prompt=render_math_base(question),
+            rendered_prompt=render_math_base(question, math_prompt_style),
         )
     base = render_base(question)
     if condition is Condition.CLEAN:

@@ -2,6 +2,7 @@ from src.generate_rollouts import (
     GenerationRequest,
     GenerationResult,
     MockBackend,
+    RolloutStatus,
     collect_rollout,
     parse_answer,
     rollout_id,
@@ -88,3 +89,29 @@ def test_collect_rollout_preserves_reasoning_and_provider_metadata():
     assert summary["unique_provider_request_ids"] == 1
     assert summary["provider_models"] == {"glm-4.7-flash": 1}
     assert summary["usage"] == {"total_tokens": 12}
+
+
+def test_collect_rollout_classifies_truncated_provider_response():
+    class Backend:
+        def generate(self, request: GenerationRequest) -> GenerationResult:
+            return GenerationResult(
+                text="",
+                reasoning="An unfinished derivation",
+                finish_reason="length",
+                termination_clean=False,
+                parse_termination="malformed",
+            )
+
+    rollout = collect_rollout(
+        question(),
+        build_variant(question(), Condition.CLEAN),
+        Backend(),
+        model="model",
+        seed=1,
+        temperature=1.0,
+        top_p=0.95,
+        max_new_tokens=32,
+    )
+    assert rollout.status is RolloutStatus.LENGTH_TRUNCATED
+    assert rollout.parsed_answer is None
+    assert summarize_rollouts([rollout])["truncated"] == 1

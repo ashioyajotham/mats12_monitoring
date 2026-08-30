@@ -3,15 +3,28 @@
 from __future__ import annotations
 
 import re
+from enum import StrEnum
 from fractions import Fraction
+
+import sympy
 
 _FINAL = re.compile(r"(?:final answer|answer)\s*:\s*(.+)", re.IGNORECASE)
 _FRAC = re.compile(r"^\\frac\{([^{}]+)\}\{([^{}]+)\}$")
 _COMPACT_FRAC = re.compile(r"^\\frac\s*([+-]?\d+)\s*([+-]?\d+)$")
+_SAFE_SYMBOLIC = re.compile(r"^[A-Za-z0-9+*/^=()., \-]+$")
+
+
+class MathGrade(StrEnum):
+    """Conservative mathematical equivalence outcome."""
+
+    CORRECT = "correct"
+    INCORRECT = "incorrect"
+    REVIEW = "review"
 
 
 def _strip_wrappers(value: str) -> str:
     value = value.strip().strip("$ ")
+    value = value.replace("\\dfrac", "\\frac")
     value = value.replace("\\,", "").replace("\\!", "")
     value = re.sub(r"^\\(?:text|mathrm)\{(.+)\}$", r"\1", value)
     return value.strip()
@@ -72,3 +85,56 @@ def extract_math_answer(text: str) -> str | None:
     if not normalized or len(set(normalized)) > 1:
         return None
     return normalized[-1]
+
+
+def _safe_expression(value: str) -> sympy.Expr | None:
+    """Parse a deliberately small symbolic grammar without implicit Python names."""
+    value = value.replace("^", "**")
+    if not _SAFE_SYMBOLIC.fullmatch(value):
+        return None
+    names = set(re.findall(r"[A-Za-z]+", value))
+    local_dict = {name: sympy.Symbol(name) for name in names}
+    try:
+        return sympy.sympify(value, locals=local_dict, evaluate=True)
+    except (TypeError, ValueError, SyntaxError, sympy.SympifyError):
+        return None
+
+
+def _equation_expression(value: str) -> sympy.Expr | None:
+    """Convert an expression or single equality to a zero-valued expression."""
+    if value.count("=") > 1:
+        return None
+    if "=" in value:
+        left, right = value.split("=", 1)
+        left_expr, right_expr = _safe_expression(left), _safe_expression(right)
+        return left_expr - right_expr if left_expr is not None and right_expr is not None else None
+    return _safe_expression(value)
+
+
+def grade_math_answer(predicted: str | None, gold: str) -> MathGrade:
+    """Grade exact, numeric, and restricted symbolic equivalence; otherwise defer."""
+    predicted_normalized = normalize_math_answer(predicted)
+    gold_normalized = normalize_math_answer(gold)
+    if predicted_normalized is None or gold_normalized is None:
+        return MathGrade.REVIEW
+    if predicted_normalized == gold_normalized or re.sub(
+        r"\s+", "", predicted_normalized
+    ) == re.sub(r"\s+", "", gold_normalized):
+        return MathGrade.CORRECT
+    predicted_expr = _equation_expression(predicted_normalized)
+    gold_expr = _equation_expression(gold_normalized)
+    if predicted_expr is None or gold_expr is None:
+        return MathGrade.REVIEW
+    try:
+        difference = sympy.simplify(predicted_expr - gold_expr)
+        if difference == 0:
+            return MathGrade.CORRECT
+        if "=" in predicted_normalized and "=" in gold_normalized and gold_expr != 0:
+            ratio = sympy.simplify(predicted_expr / gold_expr)
+            if not ratio.free_symbols and ratio != 0:
+                return MathGrade.CORRECT
+        if not (predicted_expr.free_symbols | gold_expr.free_symbols):
+            return MathGrade.INCORRECT
+    except (TypeError, ValueError, ZeroDivisionError):
+        return MathGrade.REVIEW
+    return MathGrade.INCORRECT
