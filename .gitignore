@@ -30,6 +30,13 @@ data/reviewed/*
 !data/raw/procedural_low_reasoning_diagnostic_v1.jsonl
 !data/raw/procedural_low_reasoning_diagnostic_v1.certificates.jsonl
 !data/raw/procedural_low_reasoning_diagnostic_v1.manifest.json
+!data/raw/procedural_math_candidates_v2.jsonl
+!data/raw/procedural_math_certificates_v2.jsonl
+!data/raw/procedural_math_candidates_v2.manifest.json
+!data/raw/procedural_math_pilot_v2.jsonl
+!data/raw/procedural_math_pilot_v2.certificates.jsonl
+!data/raw/procedural_math_pilot_v2.manifest.json
+!data/raw/procedural_math_screening_v2.report.json
 !data/generated/.gitkeep
 !data/reviewed/.gitkeep
 
@@ -39,4 +46,5 @@ results/*.json
 results/*.jsonl
 !results/gptoss_math_discovery.json
 !results/procedural_low_reasoning_diagnostic.json
+!results/procedural_v2_mixed_outcome.json
 !results/figures/.gitkeep

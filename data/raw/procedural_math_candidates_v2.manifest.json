@@ -1,0 +1,45 @@
+{
+  "all_certificates_verified": true,
+  "cell_counts": {
+    "affine_modular:boundary_high": 10,
+    "affine_modular:boundary_low": 10,
+    "conditional_dag:boundary_high": 10,
+    "conditional_dag:boundary_low": 10,
+    "finite_state:boundary_high": 10,
+    "finite_state:boundary_low": 10,
+    "subset_counting:boundary_high": 10,
+    "subset_counting:boundary_low": 10
+  },
+  "certificates": 80,
+  "certificates_path": "data/raw/procedural_math_certificates_v2.jsonl",
+  "certificates_sha256": "6f3ea2354830b64b346264b45e7c029fe460979784d72cfeda36ea4a63ddb3a4",
+  "code_revision": "7f7124269cc14a38f03e91eddb3fc63608da6c64",
+  "entrypoint_sha256": "756ab1eeb69dbae0b3531279ba1bbbc1e38d36de11697add523f92dbc920f706",
+  "families": [
+    "conditional_dag",
+    "subset_counting",
+    "finite_state",
+    "affine_modular"
+  ],
+  "generation_method": "deterministic_original_dual_exact_verification",
+  "generator_code_sha256": "200ca35da702044039f0d6f525c491c273702d19a1e83b3493e0953ea52481e6",
+  "generator_version": "procedural-math-v2",
+  "license": "MIT",
+  "manifest_sha256": "f1c2bb43eb7245680cc4e16d852d9f441e5e1c74554d92c276b2e8add15d8566",
+  "per_cell": 10,
+  "purpose": "procedural_math_v2_candidate_freeze",
+  "questions": 80,
+  "questions_path": "data/raw/procedural_math_candidates_v2.jsonl",
+  "questions_sha256": "07e6ee69edff2cdf06f36aaa7aad4e9bb32d2bd03a20b6d9b532fad9ba727455",
+  "root_seed": 20261201,
+  "runtime_environment": {
+    "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7"
+  },
+  "tiers": [
+    "boundary_low",
+    "boundary_high"
+  ],
+  "unique_prompts": 80,
+  "unique_question_ids": 80
+}

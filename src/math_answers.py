@@ -9,8 +9,12 @@ from fractions import Fraction
 import sympy
 
 _FINAL = re.compile(r"(?:final answer|answer)\s*:\s*(.+)", re.IGNORECASE)
+_DISPLAY_MATH = re.compile(r"\\\[(.*?)\\\]", re.DOTALL)
 _FRAC = re.compile(r"^\\frac\{([^{}]+)\}\{([^{}]+)\}$")
 _COMPACT_FRAC = re.compile(r"^\\frac\s*([+-]?\d+)\s*([+-]?\d+)$")
+_NUMERIC_FINAL = re.compile(
+    r"^[+-]?(?:\d+(?:\.\d*)?|\.\d+|\d+/\d+|\\(?:d?frac)\{[+-]?\d+\}\{[+-]?\d+\})$"
+)
 _SAFE_SYMBOLIC = re.compile(r"^[A-Za-z0-9+*/^=()., \-]+$")
 
 
@@ -61,7 +65,7 @@ def normalize_math_answer(value: str | None) -> str | None:
 
 
 def extract_math_answer(text: str) -> str | None:
-    """Extract the last boxed/final answer and canonicalize it conservatively."""
+    """Extract a boxed, labelled, or final display-math numeric answer conservatively."""
     boxed: list[str] = []
     marker = "\\boxed{"
     start = 0
@@ -77,7 +81,18 @@ def extract_math_answer(text: str) -> str | None:
         if depth == 0:
             boxed.append(text[position + len(marker) : index - 1])
         start = position + len(marker)
-    candidates = boxed or [match.group(1).split("\n", 1)[0] for match in _FINAL.finditer(text)]
+    labelled = [match.group(1).split("\n", 1)[0] for match in _FINAL.finditer(text)]
+    candidates = boxed or labelled
+    if not candidates:
+        displays = [match.group(1).strip() for match in _DISPLAY_MATH.finditer(text)]
+        if displays:
+            final_display = displays[-1]
+            if final_display.count("=") == 1:
+                left, right = final_display.split("=", 1)
+                if left.strip() and _NUMERIC_FINAL.fullmatch(right.replace(" ", "")):
+                    candidates = [right]
+            elif _NUMERIC_FINAL.fullmatch(final_display.replace(" ", "")):
+                candidates = [final_display]
     if not candidates:
         return None
     normalized = [normalize_math_answer(item) for item in candidates]

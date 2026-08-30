@@ -24,6 +24,19 @@ def test_nested_boxed_fraction_is_extracted() -> None:
     assert extract_math_answer(r"Therefore, \boxed{\frac{5}{3}}") == "5/3"
 
 
+def test_final_display_equation_extracts_numeric_right_hand_side() -> None:
+    assert extract_math_answer("Reasoning.\\n\\[a_{8}=7194\\]") == "7194"
+    assert extract_math_answer("Reasoning.\\n\\[-3a-c = 1\\]") == "1"
+    assert extract_math_answer(r"Reasoning.\[x=\frac{5}{3}\]") == "5/3"
+
+
+def test_display_fallback_rejects_ambiguous_or_symbolic_finals() -> None:
+    assert extract_math_answer(r"\[x=2, y=3\]") is None
+    assert extract_math_answer(r"\[x=y+1\]") is None
+    assert extract_math_answer(r"\[x=2=2\]") is None
+    assert extract_math_answer(r"\[x+1\]") is None
+
+
 def test_math_grader_handles_numeric_and_equivalent_equations() -> None:
     assert grade_math_answer("0.5", "1/2") is MathGrade.CORRECT
     assert grade_math_answer(r"\dfrac{5}{3}", "5/3") is MathGrade.CORRECT

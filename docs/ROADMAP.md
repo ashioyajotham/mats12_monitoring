@@ -25,12 +25,14 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
 - [x] Freeze and verify the 120-question procedural v1 candidate bank.
 - [x] Screen one clean medium-reasoning rollout per candidate; record the failed mixed-outcome
   gate and ambiguous recurrence renderer.
-- [ ] Run the 24-request low-reasoning attribution diagnostic; never reuse its selected outputs in
-  monitor data.
-- [ ] If attribution passes, construct and screen a fresh procedural v2 bank using
-  outcome-independent selection.
+- [x] Run the 24-request low-reasoning attribution diagnostic; record its formal failure and never
+  reuse its selected outputs in monitor data.
+- [x] Freeze a fresh 80-question procedural v2 bank and its outcome-independent screening rule.
+- [ ] Run the 80-request v2 low-reasoning screen and, only if all families qualify, freeze 40
+  questions without using individual outcomes.
 - [ ] Pass the clean-only mixed-outcome gate on fresh questions.
-- [ ] Continue to matched partial-solution interventions only after the clean task gate passes.
+- [ ] Preregister and run a causal-yield experiment only after the clean task gate passes.
+- [ ] Train monitors only after causal positives also pass validity and diversity gates.
 
 ## Milestone 1: freeze the pilot inputs
 

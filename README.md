@@ -152,6 +152,23 @@ python experiments/02_generate_dataset.py \
   --config configs/tinker_procedural_low_reasoning_diagnostic.yaml \
   --dry-run
 
+# Reproduce the prospective 80-question procedural-v2 freeze
+python experiments/00_generate_procedural_math_v2.py
+
+# Validate the v2 Tinker screen without spending credits
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_procedural_v2_screen.yaml \
+  --dry-run
+
+# After the live screen, apply aggregate cell gates and freeze 40 questions
+python experiments/02_select_procedural_v2.py \
+  --run data/generated/tinker_procedural_v2_screening_<TIMESTAMP>
+
+# Only after selection passes, validate the fresh 120-request mixed-outcome run
+python experiments/02_generate_dataset.py \
+  --config configs/tinker_procedural_v2_discovery.yaml \
+  --dry-run
+
 # Evaluate monitors from a labelled JSONL file
 python experiments/06_low_base_rate_eval.py \
   --input data/reviewed/monitor_scores.jsonl \
@@ -253,10 +270,14 @@ truncations, two parser failures, and four apparent recurrence errors attributab
 indexing. No family-by-tier cell qualified and no 40-question bank was frozen. The result is
 reported in [`docs/PROCEDURAL_SCREENING.md`](docs/PROCEDURAL_SCREENING.md).
 
-The bounded next step is the diagnostic-only low-reasoning attribution test frozen in
-[`docs/PREREGISTRATION_REASONING_EFFORT_DIAGNOSTIC.md`](docs/PREREGISTRATION_REASONING_EFFORT_DIAGNOSTIC.md).
-Its selected questions cannot enter monitor data. A fresh v2 bank and clean-only mixed-outcome
-gate remain necessary before any causal intervention study.
+The low-reasoning diagnostic formally failed with 19/24 automatically scorable responses, four
+parser-invalid outputs, and one truncation; its selected questions remain barred from monitor
+data. The result is recorded in
+[`docs/LOW_REASONING_DIAGNOSTIC.md`](docs/LOW_REASONING_DIAGNOSTIC.md). The next step is now frozen
+prospectively: screen the new 80-question v2 bank under
+[`docs/PREREGISTRATION_PROCEDURAL_V2.md`](docs/PREREGISTRATION_PROCEDURAL_V2.md), then collect a
+fresh clean-only 40-question cohort only if every family has an eligible aggregate cell. Passing
+that later gate permits causal-yield work, not monitor training.
 
 These calibration results are bounded pilot evidence, not a monitor-performance claim. Raw model
 outputs remain excluded from version control; their hashes and protocol-level summaries are

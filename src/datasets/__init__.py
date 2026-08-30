@@ -7,6 +7,7 @@ from src.datasets.arc import (
     validate_pilot_questions,
 )
 from src.datasets.procedural_math import generate_candidate_bank, verify_problem
+from src.datasets.procedural_math_v2 import generate_candidate_bank_v2, verify_problem_v2
 
 __all__ = [
     "normalize_arc_row",
@@ -15,4 +16,6 @@ __all__ = [
     "select_arc_questions",
     "validate_pilot_questions",
     "verify_problem",
+    "generate_candidate_bank_v2",
+    "verify_problem_v2",
 ]

@@ -37,6 +37,11 @@ instance seed, lineage ID, structural parameters, oracle kind, and certificate d
 input. Screening selection is performed at the family-by-tier cell level; screening correctness
 is not copied into the frozen question record.
 
+Procedural v2 uses the same separation with a new generator namespace. Its candidate screen may
+make a cell eligible from aggregate accuracy, but the deterministic within-cell hash order cannot
+see individual outcomes. A v2 clean mixed-outcome report may authorize causal-yield design only;
+it is not a label file and cannot authorize monitor training.
+
 ## Separation of evidence and monitor inputs
 
 Fields such as `hint_effect`, sibling answer counts, `causal_label`, and manual review are ground-truth evidence. They must not enter transcript-only, context-aware, surface, or activation monitors. Counterfactual-resampling monitors may use declared sibling statistics because those statistics are their method.

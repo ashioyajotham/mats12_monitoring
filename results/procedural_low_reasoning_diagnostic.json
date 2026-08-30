@@ -1,0 +1,54 @@
+{
+  "accuracy": 0.5789473684210527,
+  "by_stratum": {
+    "matched_clean_control": {
+      "clean_stop": 9,
+      "correct": 6,
+      "incorrect": 3,
+      "parse_invalid": 3
+    },
+    "previously_truncated": {
+      "clean_stop": 10,
+      "correct": 5,
+      "incorrect": 5,
+      "length_truncated": 1,
+      "parse_invalid": 1
+    }
+  },
+  "diagnostic_gate_passed": false,
+  "diagnostic_only": true,
+  "gate_checks": {
+    "all_24_responses_stored": true,
+    "at_least_10_controls_scorable": false,
+    "at_least_10_prior_truncations_now_scorable": true,
+    "at_least_20_scorable": false,
+    "at_least_four_completed_errors": true,
+    "at_most_two_truncated": true,
+    "clean_condition_and_expected_model": true,
+    "errors_span_two_families": true,
+    "one_rollout_per_question": true,
+    "reasoning_present_for_scorable": true,
+    "unique_provider_request_ids": true,
+    "valid_diagnostic_design": true,
+    "zero_request_errors": true
+  },
+  "grades": {
+    "correct": 11,
+    "incorrect": 8
+  },
+  "incorrect_families": [
+    "crt",
+    "linear_system",
+    "recurrence"
+  ],
+  "protocol": "low-reasoning-attribution-v1",
+  "questions": 24,
+  "request_errors": 0,
+  "rollouts": 24,
+  "scorable": 19,
+  "statuses": {
+    "clean_stop": 19,
+    "length_truncated": 1,
+    "parse_invalid": 4
+  }
+}
