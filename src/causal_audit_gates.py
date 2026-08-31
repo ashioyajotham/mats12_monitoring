@@ -73,6 +73,9 @@ def analyze_causal_audit_v2(
     statuses: Counter[str] = Counter()
     grades: dict[Condition, Counter[str]] = defaultdict(Counter)
     targets: dict[Condition, list[bool]] = defaultdict(list)
+    targets_by_cell: dict[tuple[str, str], dict[Condition, list[bool]]] = defaultdict(
+        lambda: defaultdict(list)
+    )
     target_by_question: dict[str, dict[Condition, list[bool]]] = defaultdict(
         lambda: defaultdict(list)
     )
@@ -113,6 +116,7 @@ def analyze_causal_audit_v2(
             continue
         selected = rollout.parsed_answer == target
         targets[rollout.condition].append(selected)
+        targets_by_cell[(family, mechanism)][rollout.condition].append(selected)
         target_by_question[question.question_id][rollout.condition].append(selected)
         if rollout.condition is Condition.CORRUPTED_CONTINUATION and selected:
             target_cells.add((family, mechanism))
@@ -162,6 +166,29 @@ def analyze_causal_audit_v2(
             "target_effect": effect,
             "clustered_interval_95": _clustered_effect(
                 values, samples=bootstrap_samples, seed=bootstrap_seed + len(mechanism)
+            ),
+        }
+    cell_reports = {}
+    for family, mechanism in sorted(targets_by_cell):
+        conditions = {}
+        for condition in CONDITIONS:
+            values = targets_by_cell[(family, mechanism)][condition]
+            conditions[str(condition)] = {
+                "scorable": len(values),
+                "target_selections": sum(values),
+                "target_rate": sum(values) / len(values) if values else None,
+            }
+        clean_values = targets_by_cell[(family, mechanism)][Condition.CLEAN]
+        corrupt_values = targets_by_cell[(family, mechanism)][
+            Condition.CORRUPTED_CONTINUATION
+        ]
+        cell_reports[f"{family}:{mechanism}"] = {
+            "conditions": conditions,
+            "corrupted_minus_clean_target_effect": (
+                sum(corrupt_values) / len(corrupt_values)
+                - sum(clean_values) / len(clean_values)
+                if clean_values and corrupt_values
+                else None
             ),
         }
 
@@ -227,6 +254,7 @@ def analyze_causal_audit_v2(
         "truncation_rate": truncation_rate,
         "conditions": condition_reports,
         "mechanisms": mechanism_reports,
+        "family_mechanism_cells": cell_reports,
         "corrupted_minus_clean_target_effect": target_effect,
         "clustered_target_effect_interval_95": interval,
         "gate_checks": checks,

@@ -10,12 +10,13 @@ authoritative when a milestone conflicts with convenience.
 - [x] Reframe answer shift as a counterfactual causal audit rather than a single-trace monitor.
 - [x] Freeze omission and duplication checkpoint mechanisms with exact certificates.
 - [x] Run v1 placebo, decomposition, and sibling-budget robustness analyses.
-- [ ] Collect and gate the 144-call causal-audit-v2 qualification.
-- [ ] If qualification passes, collect the untouched 648-call external test.
-- [ ] Apply only v1-fitted baselines and v1 validation thresholds to v2.
+- [x] Collect and gate the 144-call causal-audit-v2 qualification.
+- [x] Enforce the stopping rule after subset counting produced zero uptake in both mechanisms.
+- [ ] Decide whether a separately preregistered three-family replication is scientifically worth
+  the cost; it must be labelled qualification-informed and cannot count as v2 confirmation.
 
-No new judge, solver, task family, hybrid, activation, or intervention branch is authorized before
-this extension reaches its stopping rule.
+The original v2 confirmatory run is closed. No post-hoc subset removal, gate relaxation, or prompt
+repair is permitted under that protocol.
 
 ## Completed infrastructure
 

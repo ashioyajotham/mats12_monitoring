@@ -19,7 +19,7 @@ the [plain-language project overview](docs/PROJECT_OVERVIEW.md).
 | Local monitor evaluation | **Complete**: answer shift AUROC 0.917, AUPRC 0.893 |
 | Qwen judge and hybrid | **Complete**: judges near chance; hybrid below answer shift |
 | Answer-shift robustness | **Complete**: two siblings retained AUROC; one sibling did not |
-| Mechanism-held-out causal audit v2 | **Frozen**: 24-question qualification before 72-question external test |
+| Mechanism-held-out causal audit v2 | **Stopped at qualification**: aggregate transfer passed, subset diversity failed |
 | Silent-unfaithfulness research branch | Closed after preregistered null/validity results |
 | Activation probing | Outside the current study |
 
@@ -103,6 +103,7 @@ deployable single-trace monitor.
 | Causal-error-v1 confirmatory | 648/648 stored; target effect +39.5 points, interval +29.9 to +49.1 | Every gate passed; monitor evaluation authorized |
 | Causal-error-v1 monitors | Answer shift AUROC 0.917 and FPR 0.000 at 50% recall; paired FPR gain over surface −0.172, interval −0.419 to −0.032 | Primary operational hypothesis supported; generic Qwen judges failed |
 | Frozen v1 robustness | Condition-swap placebo AUROC 0.159; two-sibling AUROC 0.921; corrupted recurrence alone AUROC 0.897 | The signal depends on intervention-conditioned recurrence; two siblings are a cheaper exploratory candidate |
+| Causal-audit-v2 qualification | Aggregate target effect +35.4 points; both new mechanisms transferred, but subset counting had 0/12 corrupted targets | Frozen diversity gate failed; do not launch the 648-call confirmatory run |
 
 The central progression is:
 
@@ -129,7 +130,7 @@ Current study: can monitors distinguish the two?
 | 4. Causal mechanism discovery | Create predictable downstream errors from one corrupted state | Causal control passed; hidden-use validity failed |
 | 5. Causal-error dataset construction | Prospectively collect ordinary and causally induced failures | Passed every frozen gate |
 | 6. Behavioural monitor evaluation | Compare answer shift, surface, judges, controls, and hybrid | Completed; answer shift supported |
-| 7. Mechanism-held-out audit | Test answer shift on omission and duplication corruptions | Frozen; qualification is the next authorized run |
+| 7. Mechanism-held-out audit | Test answer shift on omission and duplication corruptions | Stopped: qualification exposed a subset-family causal-control failure |
 | 8. Internals | Test whether activations add held-out value | Outside the current extension |
 
 ## Current experimental design
@@ -322,7 +323,8 @@ resume by stable score identity.
 
 ### Run the mechanism-held-out extension
 
-The committed v2 bank and preregistration are already frozen. Run qualification first:
+The committed v2 bank and preregistration are frozen. The qualification has been completed and
+failed its diversity gate; the following commands reproduce that stopped phase:
 
 ```bash
 uv run --offline python experiments/02_generate_dataset.py \
@@ -336,10 +338,8 @@ uv run --offline python experiments/02_analyze_causal_audit_v2.py \
   --output results/causal_audit_v2_qualification.json
 ```
 
-Only a passing qualification authorizes the 648-call external collection. Replace the config and
-partition with `tinker_causal_audit_v2_confirmatory.yaml` and `confirmatory`, respectively. After
-its gate passes, run `experiments/03_evaluate_causal_audit_v2.py --run <RUN>`; it refits the
-surface model on v1 training data and transfers both v1 validation thresholds without v2 tuning.
+Only a passing qualification could authorize the 648-call external collection. The observed run
+did not pass, so `tinker_causal_audit_v2_confirmatory.yaml` must not be run under this protocol.
 
 ## Repository guide
 
@@ -365,6 +365,7 @@ tests/         CPU-only scientific and implementation contracts
 - [Confirmatory result](docs/CAUSAL_ERROR_V1_CONFIRMATORY_RESULT.md)
 - [Monitor result](docs/CAUSAL_ERROR_V1_MONITOR_RESULT.md)
 - [Mechanism-held-out v2 preregistration](docs/PREREGISTRATION_CAUSAL_AUDIT_V2.md)
+- [Mechanism-held-out v2 qualification result](docs/CAUSAL_AUDIT_V2_QUALIFICATION_RESULT.md)
 - [Research roadmap](docs/ROADMAP.md)
 - [References and design lineage](docs/REFERENCES.md)
 - [Append-only research decisions](results/decisions.md)
