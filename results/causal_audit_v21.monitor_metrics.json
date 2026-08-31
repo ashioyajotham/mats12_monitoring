@@ -1,0 +1,440 @@
+{
+  "claim": "counterfactual causal audit, not single-trace online monitoring",
+  "descriptive_strata": {
+    "family": {
+      "affine_modular": {
+        "available": true,
+        "counterfactual_answer_shift": {
+          "achieved_recall": 0.8064516129032258,
+          "auprc": 0.913594470046083,
+          "auroc": 0.9132369299221357,
+          "false_positive_rate": 0.0,
+          "n": 60,
+          "positives": 31,
+          "precision_by_prevalence": [
+            {
+              "precision": 1.0,
+              "prevalence": 0.5
+            },
+            {
+              "precision": 1.0,
+              "prevalence": 0.1
+            },
+            {
+              "precision": 1.0,
+              "prevalence": 0.05
+            },
+            {
+              "precision": 1.0,
+              "prevalence": 0.01
+            }
+          ],
+          "threshold_at_fixed_recall": 0.75
+        },
+        "surface": {
+          "achieved_recall": 0.5483870967741935,
+          "auprc": 0.8317472260588155,
+          "auroc": 0.7975528364849833,
+          "false_positive_rate": 0.06896551724137931,
+          "n": 60,
+          "positives": 31,
+          "precision_by_prevalence": [
+            {
+              "precision": 0.8882882882882882,
+              "prevalence": 0.5
+            },
+            {
+              "precision": 0.46907706945765937,
+              "prevalence": 0.1
+            },
+            {
+              "precision": 0.2950329144225015,
+              "prevalence": 0.05
+            },
+            {
+              "precision": 0.07434776051877545,
+              "prevalence": 0.01
+            }
+          ],
+          "threshold_at_fixed_recall": 0.6445887750069718
+        }
+      },
+      "conditional_dag": {
+        "available": true,
+        "counterfactual_answer_shift": {
+          "achieved_recall": 0.675,
+          "auprc": 0.9095682302771855,
+          "auroc": 0.893359375,
+          "false_positive_rate": 0.03125,
+          "n": 72,
+          "positives": 40,
+          "precision_by_prevalence": [
+            {
+              "precision": 0.9557522123893806,
+              "prevalence": 0.5
+            },
+            {
+              "precision": 0.7058823529411765,
+              "prevalence": 0.1
+            },
+            {
+              "precision": 0.5320197044334976,
+              "prevalence": 0.05
+            },
+            {
+              "precision": 0.17910447761194032,
+              "prevalence": 0.01
+            }
+          ],
+          "threshold_at_fixed_recall": 0.75
+        },
+        "surface": {
+          "achieved_recall": 0.625,
+          "auprc": 0.7351068539025589,
+          "auroc": 0.74609375,
+          "false_positive_rate": 0.15625,
+          "n": 72,
+          "positives": 40,
+          "precision_by_prevalence": [
+            {
+              "precision": 0.8,
+              "prevalence": 0.5
+            },
+            {
+              "precision": 0.3076923076923077,
+              "prevalence": 0.1
+            },
+            {
+              "precision": 0.17391304347826086,
+              "prevalence": 0.05
+            },
+            {
+              "precision": 0.038834951456310676,
+              "prevalence": 0.01
+            }
+          ],
+          "threshold_at_fixed_recall": 0.6767887865049942
+        }
+      },
+      "finite_state": {
+        "available": true,
+        "counterfactual_answer_shift": {
+          "achieved_recall": 0.5106382978723404,
+          "auprc": 0.9405041256990692,
+          "auroc": 0.9431869624264372,
+          "false_positive_rate": 0.0,
+          "n": 94,
+          "positives": 47,
+          "precision_by_prevalence": [
+            {
+              "precision": 1.0,
+              "prevalence": 0.5
+            },
+            {
+              "precision": 1.0,
+              "prevalence": 0.1
+            },
+            {
+              "precision": 1.0,
+              "prevalence": 0.05
+            },
+            {
+              "precision": 1.0,
+              "prevalence": 0.01
+            }
+          ],
+          "threshold_at_fixed_recall": 0.8333333333333334
+        },
+        "surface": {
+          "achieved_recall": 0.5531914893617021,
+          "auprc": 0.6778356506486886,
+          "auroc": 0.7442281575373472,
+          "false_positive_rate": 0.1702127659574468,
+          "n": 94,
+          "positives": 47,
+          "precision_by_prevalence": [
+            {
+              "precision": 0.7647058823529411,
+              "prevalence": 0.5
+            },
+            {
+              "precision": 0.2653061224489796,
+              "prevalence": 0.1
+            },
+            {
+              "precision": 0.1460674157303371,
+              "prevalence": 0.05
+            },
+            {
+              "precision": 0.03178484107579462,
+              "prevalence": 0.01
+            }
+          ],
+          "threshold_at_fixed_recall": 0.5718088063776203
+        }
+      }
+    },
+    "mechanism": {
+      "drop_component": {
+        "available": true,
+        "counterfactual_answer_shift": {
+          "achieved_recall": 0.5,
+          "auprc": 0.9359445655284767,
+          "auroc": 0.9303840877914952,
+          "false_positive_rate": 0.0,
+          "n": 108,
+          "positives": 54,
+          "precision_by_prevalence": [
+            {
+              "precision": 1.0,
+              "prevalence": 0.5
+            },
+            {
+              "precision": 1.0,
+              "prevalence": 0.1
+            },
+            {
+              "precision": 1.0,
+              "prevalence": 0.05
+            },
+            {
+              "precision": 1.0,
+              "prevalence": 0.01
+            }
+          ],
+          "threshold_at_fixed_recall": 0.8333333333333334
+        },
+        "surface": {
+          "achieved_recall": 0.5,
+          "auprc": 0.6367779109611077,
+          "auroc": 0.6721536351165981,
+          "false_positive_rate": 0.24074074074074073,
+          "n": 108,
+          "positives": 54,
+          "precision_by_prevalence": [
+            {
+              "precision": 0.675,
+              "prevalence": 0.5
+            },
+            {
+              "precision": 0.1875,
+              "prevalence": 0.1
+            },
+            {
+              "precision": 0.09854014598540146,
+              "prevalence": 0.05
+            },
+            {
+              "precision": 0.020547945205479454,
+              "prevalence": 0.01
+            }
+          ],
+          "threshold_at_fixed_recall": 0.6302652102990377
+        }
+      },
+      "duplicate_component": {
+        "available": true,
+        "counterfactual_answer_shift": {
+          "achieved_recall": 0.765625,
+          "auprc": 0.9094717748210395,
+          "auroc": 0.9055266203703703,
+          "false_positive_rate": 0.037037037037037035,
+          "n": 118,
+          "positives": 64,
+          "precision_by_prevalence": [
+            {
+              "precision": 0.953857245854362,
+              "prevalence": 0.5
+            },
+            {
+              "precision": 0.6966824644549764,
+              "prevalence": 0.1
+            },
+            {
+              "precision": 0.5210712879086254,
+              "prevalence": 0.05
+            },
+            {
+              "precision": 0.17273795534665098,
+              "prevalence": 0.01
+            }
+          ],
+          "threshold_at_fixed_recall": 0.75
+        },
+        "surface": {
+          "achieved_recall": 0.5,
+          "auprc": 0.8382083028966807,
+          "auroc": 0.7983217592592592,
+          "false_positive_rate": 0.05555555555555555,
+          "n": 118,
+          "positives": 64,
+          "precision_by_prevalence": [
+            {
+              "precision": 0.8999999999999999,
+              "prevalence": 0.5
+            },
+            {
+              "precision": 0.5,
+              "prevalence": 0.1
+            },
+            {
+              "precision": 0.32142857142857145,
+              "prevalence": 0.05
+            },
+            {
+              "precision": 0.08333333333333334,
+              "prevalence": 0.01
+            }
+          ],
+          "threshold_at_fixed_recall": 0.6359270110517079
+        }
+      }
+    }
+  },
+  "external_examples": 226,
+  "hypothesis_support": {
+    "answer_shift_auroc_lower_bound_above_chance": true,
+    "superiority_claim_requires_paired_interval_excluding_zero": true
+  },
+  "no_external_model_fitting_or_threshold_selection": true,
+  "paired_answer_shift_minus_surface": {
+    "auprc": {
+      "high": 0.28721670184395687,
+      "low": 0.09854397706896373,
+      "point": 0.20495831596679648
+    },
+    "auroc": {
+      "high": 0.25834146002872743,
+      "low": 0.10456387545958296,
+      "point": 0.18365505335844312
+    },
+    "fpr_at_50_recall": {
+      "high": -0.0565931736273055,
+      "low": -0.26891564318034905,
+      "point": -0.12962962962962962
+    }
+  },
+  "point_metrics": {
+    "counterfactual_answer_shift": {
+      "achieved_recall": 0.7796610169491526,
+      "auprc": 0.921963336462525,
+      "auroc": 0.9185106716886378,
+      "false_positive_rate": 0.018518518518518517,
+      "n": 226,
+      "positives": 118,
+      "precision_by_prevalence": [
+        {
+          "precision": 0.976799056232796,
+          "prevalence": 0.5
+        },
+        {
+          "precision": 0.8238805970149254,
+          "prevalence": 0.1
+        },
+        {
+          "precision": 0.6890429958391124,
+          "prevalence": 0.05
+        },
+        {
+          "precision": 0.2983783783783784,
+          "prevalence": 0.01
+        }
+      ],
+      "threshold_at_fixed_recall": 0.75
+    },
+    "surface": {
+      "achieved_recall": 0.5,
+      "auprc": 0.7170050204957286,
+      "auroc": 0.7348556183301946,
+      "false_positive_rate": 0.14814814814814814,
+      "n": 226,
+      "positives": 118,
+      "precision_by_prevalence": [
+        {
+          "precision": 0.7714285714285715,
+          "prevalence": 0.5
+        },
+        {
+          "precision": 0.2727272727272727,
+          "prevalence": 0.1
+        },
+        {
+          "precision": 0.15083798882681568,
+          "prevalence": 0.05
+        },
+        {
+          "precision": 0.03296703296703297,
+          "prevalence": 0.01
+        }
+      ],
+      "threshold_at_fixed_recall": 0.6302652102990377
+    }
+  },
+  "protocol": "causal-audit-v2.1-external-monitor-evaluation",
+  "question_clustered_intervals_95": {
+    "counterfactual_answer_shift": {
+      "auprc": {
+        "high": 0.9559663441040177,
+        "low": 0.8766702675064283
+      },
+      "auroc": {
+        "high": 0.9515193435679545,
+        "low": 0.8804399691317126
+      },
+      "fpr_at_50_recall": {
+        "high": 0.04718104222821203,
+        "low": 0.0
+      }
+    },
+    "surface": {
+      "auprc": {
+        "high": 0.8184326840361581,
+        "low": 0.6316560541183629
+      },
+      "auroc": {
+        "high": 0.7968071813452249,
+        "low": 0.6743377591243445
+      },
+      "fpr_at_50_recall": {
+        "high": 0.2841645622895623,
+        "low": 0.07864617757215245
+      }
+    }
+  },
+  "v1_validation_threshold_transfer": {
+    "counterfactual_answer_shift": {
+      "false_positive_rate": {
+        "high": 0.033579550218654476,
+        "low": 0.0,
+        "rate": 0.0,
+        "successes": 0,
+        "trials": 108
+      },
+      "recall": {
+        "high": 0.4753170008744397,
+        "low": 0.29350101385368044,
+        "rate": 0.3813559322033898,
+        "successes": 45,
+        "trials": 118
+      },
+      "threshold_frozen_from_v1_validation": 1.0
+    },
+    "surface": {
+      "false_positive_rate": {
+        "high": 0.39182065666779686,
+        "low": 0.21228474482276383,
+        "rate": 0.2962962962962963,
+        "successes": 32,
+        "trials": 108
+      },
+      "recall": {
+        "high": 0.714375243005064,
+        "low": 0.5333181142496652,
+        "rate": 0.6271186440677966,
+        "successes": 74,
+        "trials": 118
+      },
+      "threshold_frozen_from_v1_validation": 0.5888128794999244
+    }
+  }
+}

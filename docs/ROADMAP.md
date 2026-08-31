@@ -13,11 +13,15 @@ authoritative when a milestone conflicts with convenience.
 - [x] Collect and gate the 144-call causal-audit-v2 qualification.
 - [x] Enforce the stopping rule after subset counting produced zero uptake in both mechanisms.
 - [x] Freeze a separately preregistered three-family replication labelled qualification-informed.
-- [ ] Collect and gate the 648-call v2.1 external cohort.
-- [ ] If every causal and integrity gate passes, apply only v1-fitted monitors and thresholds.
+- [x] Collect and gate the 648-call v2.1 external cohort.
+- [x] Apply only v1-fitted monitors and v1 validation thresholds.
+- [x] Confirm domain-restricted transfer on all paired metrics.
 
 The original v2 confirmatory run remains closed. V2.1 is a new domain-restricted protocol with
 fresh questions; it is not a post-hoc subset of v2 data.
+
+The next research decision is no longer another intervention. It is whether to reduce audit cost,
+replicate on a second solver, or stop with the present bounded causal-audit claim.
 
 ## Completed infrastructure
 

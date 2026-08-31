@@ -115,10 +115,17 @@ errors. Zero observed false positives in a small test is promising but is not pr
 deployment-scale false-positive rate.
 
 The winning method is best understood as a **causal audit**, not a normal single-response monitor:
-it needs repeated clean, correct-state, and corrupted-state sibling attempts. The next frozen
-study therefore asks whether it transfers beyond the original `+1` corruption. It uses new
-omission and duplication mechanisms while holding the solver and task families fixed. A
-24-question qualification must pass before the untouched 72-question external test is collected.
+it needs repeated clean, correct-state, and corrupted-state sibling attempts. The external phase
+therefore tested whether it transferred beyond the original `+1` corruption, using omission and
+duplication mechanisms while holding the solver and task construction fixed.
+
+That four-family qualification found strong aggregate transfer but failed specifically on subset
+counting, so its planned confirmation was stopped. A separately preregistered follow-up then used
+72 fresh questions from the three supported recurrence families. It passed every causal gate and
+found answer-shift AUROC 0.919 versus 0.735 for the frozen surface baseline. At the unchanged v1
+threshold, answer shift detected 45/118 causal errors and flagged 0/108 ordinary errors. This
+supports transfer within the selected domain while leaving subset counting and deployment-scale
+false-positive rates unresolved.
 
 The intended end result is not a claim that one model is good or bad at mathematics. It is an
 evidence-backed answer to a monitoring question:

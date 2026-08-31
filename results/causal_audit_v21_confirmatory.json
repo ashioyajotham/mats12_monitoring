@@ -1,0 +1,215 @@
+{
+  "clustered_target_effect_interval_95": {
+    "high": 0.611111111111111,
+    "low": 0.4629629629629629,
+    "samples": 1000,
+    "seed": 20262732
+  },
+  "conditions": {
+    "clean": {
+      "accuracy": 0.49767441860465117,
+      "correct": 107,
+      "incorrect": 108,
+      "review": 1,
+      "scorable": 215,
+      "target_rate": 0.013888888888888888,
+      "target_selections": 3
+    },
+    "correct_continuation": {
+      "accuracy": 0.625,
+      "correct": 135,
+      "incorrect": 81,
+      "review": 0,
+      "scorable": 216,
+      "target_rate": 0.027777777777777776,
+      "target_selections": 6
+    },
+    "corrupted_continuation": {
+      "accuracy": 0.1527777777777778,
+      "correct": 33,
+      "incorrect": 183,
+      "review": 0,
+      "scorable": 216,
+      "target_rate": 0.5462962962962963,
+      "target_selections": 118
+    }
+  },
+  "confirmatory_analysis_authorized": true,
+  "corrupted_minus_clean_target_effect": 0.5324074074074074,
+  "expected_rollouts": 648,
+  "family_mechanism_cells": {
+    "affine_modular:drop_component": {
+      "conditions": {
+        "clean": {
+          "scorable": 36,
+          "target_rate": 0.0,
+          "target_selections": 0
+        },
+        "correct_continuation": {
+          "scorable": 36,
+          "target_rate": 0.0,
+          "target_selections": 0
+        },
+        "corrupted_continuation": {
+          "scorable": 36,
+          "target_rate": 0.2222222222222222,
+          "target_selections": 8
+        }
+      },
+      "corrupted_minus_clean_target_effect": 0.2222222222222222
+    },
+    "affine_modular:duplicate_component": {
+      "conditions": {
+        "clean": {
+          "scorable": 36,
+          "target_rate": 0.0,
+          "target_selections": 0
+        },
+        "correct_continuation": {
+          "scorable": 36,
+          "target_rate": 0.0,
+          "target_selections": 0
+        },
+        "corrupted_continuation": {
+          "scorable": 36,
+          "target_rate": 0.6388888888888888,
+          "target_selections": 23
+        }
+      },
+      "corrupted_minus_clean_target_effect": 0.6388888888888888
+    },
+    "conditional_dag:drop_component": {
+      "conditions": {
+        "clean": {
+          "scorable": 36,
+          "target_rate": 0.0,
+          "target_selections": 0
+        },
+        "correct_continuation": {
+          "scorable": 36,
+          "target_rate": 0.1111111111111111,
+          "target_selections": 4
+        },
+        "corrupted_continuation": {
+          "scorable": 36,
+          "target_rate": 0.6388888888888888,
+          "target_selections": 23
+        }
+      },
+      "corrupted_minus_clean_target_effect": 0.6388888888888888
+    },
+    "conditional_dag:duplicate_component": {
+      "conditions": {
+        "clean": {
+          "scorable": 36,
+          "target_rate": 0.05555555555555555,
+          "target_selections": 2
+        },
+        "correct_continuation": {
+          "scorable": 36,
+          "target_rate": 0.027777777777777776,
+          "target_selections": 1
+        },
+        "corrupted_continuation": {
+          "scorable": 36,
+          "target_rate": 0.4722222222222222,
+          "target_selections": 17
+        }
+      },
+      "corrupted_minus_clean_target_effect": 0.41666666666666663
+    },
+    "finite_state:drop_component": {
+      "conditions": {
+        "clean": {
+          "scorable": 36,
+          "target_rate": 0.0,
+          "target_selections": 0
+        },
+        "correct_continuation": {
+          "scorable": 36,
+          "target_rate": 0.027777777777777776,
+          "target_selections": 1
+        },
+        "corrupted_continuation": {
+          "scorable": 36,
+          "target_rate": 0.6388888888888888,
+          "target_selections": 23
+        }
+      },
+      "corrupted_minus_clean_target_effect": 0.6388888888888888
+    },
+    "finite_state:duplicate_component": {
+      "conditions": {
+        "clean": {
+          "scorable": 36,
+          "target_rate": 0.027777777777777776,
+          "target_selections": 1
+        },
+        "correct_continuation": {
+          "scorable": 36,
+          "target_rate": 0.0,
+          "target_selections": 0
+        },
+        "corrupted_continuation": {
+          "scorable": 36,
+          "target_rate": 0.6666666666666666,
+          "target_selections": 24
+        }
+      },
+      "corrupted_minus_clean_target_effect": 0.6388888888888888
+    }
+  },
+  "gate_checks": {
+    "all_certificates_verified": true,
+    "all_requests_stored": true,
+    "at_least_18_corrupted_target_selections": true,
+    "at_least_24_clean_ordinary_errors": true,
+    "at_least_90_percent_scorable": true,
+    "at_most_10_percent_truncated": true,
+    "balanced_frozen_design": true,
+    "both_error_sources_span_every_family_mechanism_cell": true,
+    "clustered_effect_lower_bound_positive": true,
+    "correct_state_not_materially_worse_than_clean": true,
+    "corrupted_minus_clean_target_effect_at_least_20_points": true,
+    "exact_unique_samples_per_question_condition": true,
+    "expected_conditions_and_model": true,
+    "no_unknown_questions": true,
+    "reasoning_present_for_scorable": true,
+    "unique_provider_request_ids": true,
+    "unique_rollout_ids": true,
+    "zero_request_errors": true
+  },
+  "gate_passed": true,
+  "mechanisms": {
+    "drop_component": {
+      "clustered_interval_95": {
+        "high": 0.6296296296296297,
+        "low": 0.3888888888888889,
+        "samples": 1000,
+        "seed": 20262746
+      },
+      "questions": 36,
+      "target_effect": 0.5
+    },
+    "duplicate_component": {
+      "clustered_interval_95": {
+        "high": 0.6666666666666666,
+        "low": 0.4722222222222222,
+        "samples": 1000,
+        "seed": 20262751
+      },
+      "questions": 36,
+      "target_effect": 0.5648148148148148
+    }
+  },
+  "partition": "confirmatory",
+  "protocol": "causal-audit-v2.1-confirmatory",
+  "questions": 72,
+  "request_errors": 0,
+  "scorable": 647,
+  "statuses": {
+    "clean_stop": 648
+  },
+  "stored_rollouts": 648,
+  "truncation_rate": 0.0
+}
