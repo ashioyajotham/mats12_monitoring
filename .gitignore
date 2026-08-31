@@ -79,4 +79,8 @@ results/*.jsonl
 !results/procedural_assistant_prefill_v3.json
 !results/causal_error_v1_qualification.json
 !results/causal_error_v1_confirmatory.json
+!results/causal_error_v1.local_metrics.json
+!results/causal_error_v1.local_scores.manifest.json
+!results/causal_error_v1.monitor_metrics.json
+!results/causal_error_v1.monitor_metrics.manifest.json
 !results/figures/.gitkeep

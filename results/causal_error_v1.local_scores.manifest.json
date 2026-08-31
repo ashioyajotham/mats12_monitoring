@@ -1,0 +1,25 @@
+{
+  "code_revision": "17faa84b84ae33b1f3c101d6a51c7d24fe8a9ca9",
+  "components": [
+    "correctness_only",
+    "reasoning_length",
+    "template_identity",
+    "shuffled_label_surface",
+    "surface",
+    "counterfactual_answer_shift"
+  ],
+  "confirmatory_rollouts_sha256": "ae99d49bf8248e2997ba24c729639a864d69ab2cbb8e16d9a86238d4e1192400",
+  "entrypoint_sha256": "3d48e86caf0bb2407c22bba03432c37abbf3927955c4e798e4f77dbfd745e5fc",
+  "manifest_sha256": "90c58b7669fbd3f28302b71534cbd20b6d9b74a54058e9b5915f2044314d0299",
+  "monitor_dataset_manifest_sha256": "cf0c15d43dd542a858f4bed29978d04cd894031e8bc41c9a375d392d0a778a0e",
+  "primary_sha256": "191682a9409738f4437a62ee0eb753fc8cc14119655e277708a42b05306babd5",
+  "purpose": "causal_error_v1_local_monitor_scores",
+  "report_sha256": "0de537d9c1cec1dd692ceb43bb1c5f5afc215ccdc66e598c79a5fc9b49706314",
+  "runtime_environment": {
+    "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7"
+  },
+  "scores_sha256": "3d8ade017592fec745a1816b9cd0fa0d0b9690937b0a7ac8823fea3a67726e5b",
+  "secondary_audit_sha256": "964b7e25a0cf01858a1833ea50b53b4ac7e8c3df989565ea2a91cd6b94123119",
+  "seed": 20262630
+}

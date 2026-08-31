@@ -1,12 +1,12 @@
 # Claim ledger
 
 The causal-error-v1 confirmatory collection establishes the controlled causal mechanism described
-in E9. Monitor-performance claims remain pending the complete frozen stack.
+in E9. The completed frozen monitor stack establishes the bounded operational result in C2.
 
 | ID | Proposed claim | Required evidence | Artifact | Status |
 |---|---|---|---|---|
 | C1 | Incorrect hints causally shift answers | Paired answer distributions, group bootstrap CI, manual transcript audit | TBD | Unrun |
-| C2 | Resampling beats surface monitoring | Frozen grouped test; FPR@50% recall and CI | TBD | Unrun |
+| C2 | Counterfactual answer shift beats surface monitoring at the preregistered operating metric | Frozen grouped test; FPR@50% recall and paired clustered CI | `docs/CAUSAL_ERROR_V1_MONITOR_RESULT.md` | Supported: FPR difference −0.172, 95% interval −0.419 to −0.032; AUROC/AUPRC differences are positive but intervals narrowly cross zero |
 | C3 | Monitor precision collapses at 1% prevalence | TPR/FPR with group bootstrap; analytic and sampled prevalence check | TBD | Unrun |
 | C4 | Activation probes add little/no value | Same-group comparison; nested selection; shuffled-label control | TBD | Stretch/unrun |
 | E1 | Authority and directive language interact in ARC hint uptake | Replication on grouped questions with bootstrap CI | Tinker ARC calibration manifests | Exploratory: 0/10 informational, 3/10 ordinary-directive, 5/10 trusted-directive |

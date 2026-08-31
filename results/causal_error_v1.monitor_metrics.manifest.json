@@ -1,0 +1,32 @@
+{
+  "bootstrap_samples": 1000,
+  "bootstrap_seed": 20262632,
+  "code_revision": "046aaa37e248dcdd70d104a7bfb351c7ad803424",
+  "components": [
+    "correctness_only",
+    "reasoning_length",
+    "template_identity",
+    "shuffled_label_surface",
+    "surface",
+    "counterfactual_answer_shift",
+    "transcript_only_judge",
+    "context_aware_judge",
+    "hybrid"
+  ],
+  "entrypoint_sha256": "d57dce80be24eb54767f8a045f71e3988c09352057c720a8f84b75b9e729896d",
+  "hybrid_seed": 20262631,
+  "judge_scores_sha256": "abbd73277b2c138f1e477f75974c0f14be084daebd12e7336d3a44a1bfc306a0",
+  "local_manifest_sha256": "f0e3bf42b8fc482d4a47fade2567dfd85367de6b7a9ffd79791188c2d1f2401c",
+  "local_scores_sha256": "3d8ade017592fec745a1816b9cd0fa0d0b9690937b0a7ac8823fea3a67726e5b",
+  "manifest_sha256": "c934c201456639e6456228f3bf32e73b990394872474e81082af3f85630d8e7a",
+  "monitor_dataset_manifest_sha256": "cf0c15d43dd542a858f4bed29978d04cd894031e8bc41c9a375d392d0a778a0e",
+  "primary_sha256": "191682a9409738f4437a62ee0eb753fc8cc14119655e277708a42b05306babd5",
+  "purpose": "causal_error_v1_complete_monitor_evaluation",
+  "report_sha256": "2163cdfe3a10f941644c95fa775861a5a4a7d3e66f509202ba2c3b612bde88e1",
+  "runtime_environment": {
+    "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7"
+  },
+  "scores_sha256": "e44923a7572f9994bc925d53889a89b9d33a2596f1444be70e2f1642fb2d6523",
+  "secondary_audit_sha256": "964b7e25a0cf01858a1833ea50b53b4ac7e8c3df989565ea2a91cd6b94123119"
+}

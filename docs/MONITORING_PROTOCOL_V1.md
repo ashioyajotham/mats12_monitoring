@@ -1,6 +1,6 @@
 # Causal-error-v1 monitoring protocol
 
-Status: **implemented; execution blocked on the confirmatory gate**
+Status: **completed; see `CAUSAL_ERROR_V1_MONITOR_RESULT.md`**
 
 This protocol asks whether monitors can distinguish ordinary completed errors from errors caused
 by a certified intermediate-state perturbation. It does not test whether GPT-OSS can do

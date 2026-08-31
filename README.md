@@ -16,13 +16,13 @@ the [plain-language project overview](docs/PROJECT_OVERVIEW.md).
 | Clean mixed-outcome qualification | **Passed**: 29 correct, 43 ordinary errors, 0 invalid |
 | Confirmatory randomized causal collection | **Passed**: +39.5-point effect, 95% CI +29.9 to +49.1 |
 | Behavioural monitor stack | Implemented and tested |
-| Local monitor evaluation | **Complete**: answer-shift and controls scored |
-| Qwen judge and hybrid | Final excluded-cohort smoke pending |
+| Local monitor evaluation | **Complete**: answer shift AUROC 0.917, AUPRC 0.893 |
+| Qwen judge and hybrid | **Complete**: judges near chance; hybrid below answer shift |
 | Silent-unfaithfulness research branch | Closed after preregistered null/validity results |
 | Activation probing | Outside the current study |
 
-The confirmatory gate now authorizes monitor evaluation. Raw generations remain immutable and all
-monitor splits remain grouped by question.
+The passed confirmatory gate authorized the now-completed behavioural evaluation. Raw generations
+remain immutable and all monitor splits remain grouped by question.
 
 ## The problem
 
@@ -98,6 +98,7 @@ These are bounded task-construction and mechanism findings—not monitor-perform
 | Assistant prefill | 1/24 corrupted targets versus 2/24 correct-prefill targets; effect −4.2 points, interval −16.7 to +8.3 | Causal gate failed; silent-unfaithfulness branch closed |
 | Causal-error-v1 qualification | 72/72 scorable: 29 correct and 43 errors across 19 questions and all four families | Frozen confirmatory causal collection authorized |
 | Causal-error-v1 confirmatory | 648/648 stored; target effect +39.5 points, interval +29.9 to +49.1 | Every gate passed; monitor evaluation authorized |
+| Causal-error-v1 monitors | Answer shift AUROC 0.917 and FPR 0.000 at 50% recall; paired FPR gain over surface −0.172, interval −0.419 to −0.032 | Primary operational hypothesis supported; generic Qwen judges failed |
 
 The central progression is:
 
@@ -123,7 +124,7 @@ Current study: can monitors distinguish the two?
 | 3. Procedural task construction | Create original, solver-verified tasks with reliable mixed outcomes | Passed with 64 correct and 56 incorrect responses |
 | 4. Causal mechanism discovery | Create predictable downstream errors from one corrupted state | Causal control passed; hidden-use validity failed |
 | 5. Causal-error dataset construction | Prospectively collect ordinary and causally induced failures | Passed every frozen gate |
-| 6. Behavioural monitor evaluation | Compare answer shift, surface, judges, controls, and hybrid | **Current phase** |
+| 6. Behavioural monitor evaluation | Compare answer shift, surface, judges, controls, and hybrid | Completed; answer shift supported |
 | 7. Internals | Test whether activations add held-out value | Optional future work; not authorized now |
 
 ## Current experimental design
@@ -336,6 +337,7 @@ tests/         CPU-only scientific and implementation contracts
 - [Methodology and threat models](docs/METHODOLOGY.md)
 - [Qualification result](docs/CAUSAL_ERROR_V1_QUALIFICATION_RESULT.md)
 - [Confirmatory result](docs/CAUSAL_ERROR_V1_CONFIRMATORY_RESULT.md)
+- [Monitor result](docs/CAUSAL_ERROR_V1_MONITOR_RESULT.md)
 - [Research roadmap](docs/ROADMAP.md)
 - [References and design lineage](docs/REFERENCES.md)
 - [Append-only research decisions](results/decisions.md)

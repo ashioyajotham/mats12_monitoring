@@ -62,8 +62,8 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
   machine-readable gate report.
 - [x] Implement the gate-bound monitor materializer, typed evidence boundaries, local controls,
   two-view resumable Qwen judge, five-fold grouped OOF hybrid, and clustered evaluation.
-- [ ] Fit or call monitors only if the confirmatory causal, diversity, clean-negative, and integrity
-  gates all pass. Do not revive silent-unfaithfulness labels from these data.
+- [x] After every confirmatory gate passed, run the complete behavioural monitor stack and publish
+  grouped held-out results without reviving silent-unfaithfulness labels.
 
 ## Historical milestone 1: freeze the pilot inputs
 
