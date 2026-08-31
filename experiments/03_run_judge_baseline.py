@@ -83,13 +83,30 @@ def _create_or_resume_output(
     purpose: str,
     resume_from: Path | None,
     plan_record: dict[str, object],
+    allow_parser_amendment: bool,
 ) -> tuple[Path, list[JudgeScoreRecord], list[dict[str, object]]]:
     """Create an append-only output directory or verify a compatible partial run."""
     if resume_from:
         output_dir = resume_from
         observed = _load_mapping(output_dir / "plan.json")
         if observed != plan_record:
-            raise ValueError("resume judge plan differs from the current frozen plan")
+            observed_comparable = json.loads(json.dumps(observed))
+            current_comparable = json.loads(json.dumps(plan_record))
+            observed_inputs = observed_comparable.get("input_sha256", {})
+            current_inputs = current_comparable.get("input_sha256", {})
+            if isinstance(observed_inputs, dict):
+                observed_inputs.pop("judge_implementation", None)
+            if isinstance(current_inputs, dict):
+                current_inputs.pop("judge_implementation", None)
+            if not allow_parser_amendment or observed_comparable != current_comparable:
+                raise ValueError("resume judge plan differs from the current frozen plan")
+            amendment_path = output_dir / "plan_parser_amendment.json"
+            if amendment_path.is_file():
+                if _load_mapping(amendment_path) != plan_record:
+                    raise ValueError("resume parser amendment differs from the current plan")
+            else:
+                with amendment_path.open("x", encoding="utf-8") as handle:
+                    handle.write(json.dumps(plan_record, indent=2, sort_keys=True) + "\n")
         scores = list(read_jsonl(output_dir / "scores.jsonl", model=JudgeScoreRecord))
         failures_path = output_dir / "request_errors.jsonl"
         failures = (
@@ -142,6 +159,14 @@ def main() -> None:
     )
     parser.add_argument("--smoke-manifest", type=Path)
     parser.add_argument("--resume-from", type=Path)
+    parser.add_argument(
+        "--allow-parser-amendment",
+        action="store_true",
+        help=(
+            "Resume when only the hashed judge implementation changed under a documented "
+            "parser-validity amendment"
+        ),
+    )
     parser.add_argument("--request-delay-seconds", type=float, default=0.0)
     parser.add_argument("--max-errors", type=int, default=4)
     parser.add_argument("--dry-run", action="store_true")
@@ -254,6 +279,7 @@ def main() -> None:
         purpose=purpose,
         resume_from=args.resume_from,
         plan_record=plan_record,
+        allow_parser_amendment=args.allow_parser_amendment,
     )
     current_failures: list[dict[str, str]] = []
     completed_ids = {row.score_id for row in records}
@@ -287,6 +313,13 @@ def main() -> None:
         "complete": complete,
         "judge_smoke_gate_passed": smoke_gate,
         "failures_in_previous_attempts": len(previous_failures),
+        "parser_amendment_used": args.allow_parser_amendment,
+        "original_plan_sha256": sha256_file(output_dir / "plan.json"),
+        "parser_amendment_plan_sha256": (
+            sha256_file(output_dir / "plan_parser_amendment.json")
+            if (output_dir / "plan_parser_amendment.json").is_file()
+            else None
+        ),
         "scores_sha256": sha256_file(output_dir / "scores.jsonl"),
         "request_errors_sha256": sha256_file(output_dir / "request_errors.jsonl"),
         "entrypoint_sha256": sha256_file(__file__),

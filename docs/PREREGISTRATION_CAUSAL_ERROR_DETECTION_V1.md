@@ -134,6 +134,21 @@ the 628-call full plan computationally defensible. Exactly one fresh four-call s
 Failure closes the Qwen-judge and hybrid branches rather than triggering another renderer, prompt,
 or token-budget change.
 
+### Full-run parser-validity amendment
+
+The disabled-thinking smoke passed 4/4. The full run then stored 477/628 unique scores before
+stopping at its four-error limit. Only failure metadata—not completed scores or rationales—was
+inspected. Every failed identity had at least one response that parsed as the required two-key JSON
+object and probability but was rejected because its rationale exceeded the locally imposed
+2,000-character maximum. Other attempts contained malformed JSON. This is a local schema-validity
+failure, not a provider, evidence, or label failure.
+
+Freeze one parser-only amendment: raise the accepted rationale maximum to 8,000 characters. Do not
+change the prompt, model, renderer, evidence, generation parameters, logical seeds, probability
+validation, or any stored score. Resume from the append-only run, bind the changed implementation
+hash in a separate amendment plan, and request only missing score identities. The four historical
+failures remain recorded. Any further terminal incomplete run closes judge and hybrid evaluation.
+
 ## Frozen implementation
 
 The committed construction contains 96 unique, solver-verified problems: 24 per family and six in

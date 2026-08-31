@@ -61,6 +61,12 @@ first context-aware request exhausted the token ceiling three times. No confirma
 were used. The disabled-thinking renderer is the single frozen validity amendment; another smoke
 failure closes the judge and hybrid branches.
 
+During the full run, four responses exhausted the error limit after 477 valid scores. Each failed
+identity had at least one structurally valid score rejected solely by the original 2,000-character
+rationale cap. The single parser-validity amendment raises that cap to 8,000 without changing the
+prompt, probability schema, generation, evidence, seeds, or stored scores. Resumption records both
+the original and amended plan hashes and requests only missing identities.
+
 Before full scoring, two stable incorrect examples from the permanently excluded qualification
 cohort are each scored under both views. Full scoring requires 4/4 valid responses, balanced views,
 and four unique provider request IDs. Full runs are append-only and resume by stable score identity;

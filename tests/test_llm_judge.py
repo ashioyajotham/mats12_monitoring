@@ -61,6 +61,14 @@ def test_judge_payload_is_strict_but_accepts_one_json_fence() -> None:
         parse_judge_payload(
             '{"causal_error_probability":0.5,"rationale":"x","condition":"corrupt"}'
         )
+    verbose = parse_judge_payload(
+        '{"causal_error_probability":0.5,"rationale":"' + "x" * 4000 + '"}'
+    )
+    assert len(verbose.rationale) == 4000
+    with pytest.raises(ValidationError, match="at most 8000"):
+        parse_judge_payload(
+            '{"causal_error_probability":0.5,"rationale":"' + "x" * 8001 + '"}'
+        )
 
 
 def test_tinker_judge_retries_truncation_and_malformed_json() -> None:
