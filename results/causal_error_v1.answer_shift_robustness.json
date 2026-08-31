@@ -1,0 +1,185 @@
+{
+  "cheaper_sibling_candidates": {
+    "cheapest_qualifying": "two_siblings_per_condition",
+    "one_sibling_per_condition": {
+      "absolute_auroc_loss_at_most_0_05": false,
+      "qualifies": false,
+      "retains_at_least_90_percent_full_auroc": false
+    },
+    "status": "exploratory_not_confirmatory",
+    "two_siblings_per_condition": {
+      "absolute_auroc_loss_at_most_0_05": true,
+      "qualifies": true,
+      "retains_at_least_90_percent_full_auroc": true
+    }
+  },
+  "condition_identity_swap_placebo": {
+    "achieved_recall": 0.7,
+    "auprc": 0.3160089080354861,
+    "auroc": 0.15862068965517243,
+    "false_positive_rate": 1.0,
+    "n": 49,
+    "positives": 20,
+    "precision_by_prevalence": [
+      {
+        "precision": 0.4117647058823529,
+        "prevalence": 0.5
+      },
+      {
+        "precision": 0.07216494845360824,
+        "prevalence": 0.1
+      },
+      {
+        "precision": 0.035532994923857864,
+        "prevalence": 0.05
+      },
+      {
+        "precision": 0.0070210631895687055,
+        "prevalence": 0.01
+      }
+    ],
+    "threshold_at_fixed_recall": 0.25
+  },
+  "n": 49,
+  "partition": "frozen_test_only",
+  "protocol": "causal-error-v1-answer-shift-robustness",
+  "score_decomposition": {
+    "control_suppression_only": {
+      "achieved_recall": 1.0,
+      "auprc": 0.46511627906976744,
+      "auroc": 0.603448275862069,
+      "false_positive_rate": 0.7931034482758621,
+      "n": 49,
+      "positives": 20,
+      "precision_by_prevalence": [
+        {
+          "precision": 0.5576923076923077,
+          "prevalence": 0.5
+        },
+        {
+          "precision": 0.12288135593220338,
+          "prevalence": 0.1
+        },
+        {
+          "precision": 0.06223175965665236,
+          "prevalence": 0.05
+        },
+        {
+          "precision": 0.012575888985255855,
+          "prevalence": 0.01
+        }
+      ],
+      "threshold_at_fixed_recall": 1.0
+    },
+    "corrupted_recurrence_only": {
+      "achieved_recall": 0.8,
+      "auprc": 0.8816326530612244,
+      "auroc": 0.896551724137931,
+      "false_positive_rate": 0.0,
+      "n": 49,
+      "positives": 20,
+      "precision_by_prevalence": [
+        {
+          "precision": 1.0,
+          "prevalence": 0.5
+        },
+        {
+          "precision": 1.0,
+          "prevalence": 0.1
+        },
+        {
+          "precision": 1.0,
+          "prevalence": 0.05
+        },
+        {
+          "precision": 1.0,
+          "prevalence": 0.01
+        }
+      ],
+      "threshold_at_fixed_recall": 0.5
+    }
+  },
+  "sibling_sensitivity": {
+    "all_available": {
+      "achieved_recall": 0.8,
+      "auprc": 0.8930232558139535,
+      "auroc": 0.9172413793103449,
+      "false_positive_rate": 0.0,
+      "n": 49,
+      "positives": 20,
+      "precision_by_prevalence": [
+        {
+          "precision": 1.0,
+          "prevalence": 0.5
+        },
+        {
+          "precision": 1.0,
+          "prevalence": 0.1
+        },
+        {
+          "precision": 1.0,
+          "prevalence": 0.05
+        },
+        {
+          "precision": 1.0,
+          "prevalence": 0.01
+        }
+      ],
+      "threshold_at_fixed_recall": 0.75
+    },
+    "one_sibling_per_condition": {
+      "achieved_recall": 0.5,
+      "auprc": 0.7272727272727273,
+      "auroc": 0.7931034482758621,
+      "false_positive_rate": 0.0,
+      "n": 49,
+      "positives": 20,
+      "precision_by_prevalence": [
+        {
+          "precision": 1.0,
+          "prevalence": 0.5
+        },
+        {
+          "precision": 1.0,
+          "prevalence": 0.1
+        },
+        {
+          "precision": 1.0,
+          "prevalence": 0.05
+        },
+        {
+          "precision": 1.0,
+          "prevalence": 0.01
+        }
+      ],
+      "threshold_at_fixed_recall": 1.0
+    },
+    "two_siblings_per_condition": {
+      "achieved_recall": 0.8,
+      "auprc": 0.8930232558139535,
+      "auroc": 0.9206896551724139,
+      "false_positive_rate": 0.0,
+      "n": 49,
+      "positives": 20,
+      "precision_by_prevalence": [
+        {
+          "precision": 1.0,
+          "prevalence": 0.5
+        },
+        {
+          "precision": 1.0,
+          "prevalence": 0.1
+        },
+        {
+          "precision": 1.0,
+          "prevalence": 0.05
+        },
+        {
+          "precision": 1.0,
+          "prevalence": 0.01
+        }
+      ],
+      "threshold_at_fixed_recall": 0.75
+    }
+  }
+}

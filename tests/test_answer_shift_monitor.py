@@ -52,3 +52,28 @@ def test_answer_shift_rejects_missing_sibling_cells() -> None:
     rows = [_row(0, Condition.CLEAN, "C")]
     with pytest.raises(ValueError, match="cell is empty"):
         score_counterfactual_answer_shifts(["r-0"], rows)
+
+
+def test_answer_shift_supports_a_frozen_smaller_sibling_budget() -> None:
+    rows = [
+        _row(index, condition, answer)
+        for index, (condition, answer) in enumerate(
+            [
+                (Condition.CLEAN, "A"),
+                (Condition.CLEAN, "B"),
+                (Condition.CLEAN, "C"),
+                (Condition.CORRECT_CONTINUATION, "A"),
+                (Condition.CORRECT_CONTINUATION, "B"),
+                (Condition.CORRECT_CONTINUATION, "C"),
+                (Condition.CORRUPTED_CONTINUATION, "B"),
+                (Condition.CORRUPTED_CONTINUATION, "B"),
+                (Condition.CORRUPTED_CONTINUATION, "C"),
+            ]
+        )
+    ]
+    score = score_counterfactual_answer_shifts(["r-6"], rows, siblings_per_condition=1)[0]
+    assert 0.0 <= score.score <= 1.0
+    with pytest.raises(ValueError, match="lacks 3 siblings"):
+        score_counterfactual_answer_shifts(["r-6"], rows, siblings_per_condition=3)
+    with pytest.raises(ValueError, match="must be positive"):
+        score_counterfactual_answer_shifts(["r-6"], rows, siblings_per_condition=0)

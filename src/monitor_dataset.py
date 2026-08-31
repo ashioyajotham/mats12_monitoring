@@ -80,7 +80,7 @@ def _example(
     renderer = question.metadata.get("renderer_id")
     allowed_splits = {"train", "validation", "test"}
     if split_override is not None:
-        allowed_splits.add("excluded_qualification")
+        allowed_splits.update({"excluded_qualification", "external_test"})
     if split not in allowed_splits:
         raise ValueError(f"question {question.question_id} lacks a frozen monitor split")
     if not isinstance(family, str) or not isinstance(tier, str) or not isinstance(renderer, int):

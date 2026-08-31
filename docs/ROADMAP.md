@@ -4,7 +4,20 @@ This roadmap separates implemented research infrastructure from work that must b
 the repository can support empirical claims. The preregistration and pilot gates remain
 authoritative when a milestone conflicts with convenience.
 
-## Current milestone: hardened scaffold
+## Current milestone: mechanism-held-out external audit
+
+- [x] Complete and publish causal-error-v1 monitor evaluation.
+- [x] Reframe answer shift as a counterfactual causal audit rather than a single-trace monitor.
+- [x] Freeze omission and duplication checkpoint mechanisms with exact certificates.
+- [x] Run v1 placebo, decomposition, and sibling-budget robustness analyses.
+- [ ] Collect and gate the 144-call causal-audit-v2 qualification.
+- [ ] If qualification passes, collect the untouched 648-call external test.
+- [ ] Apply only v1-fitted baselines and v1 validation thresholds to v2.
+
+No new judge, solver, task family, hybrid, activation, or intervention branch is authorized before
+this extension reaches its stopping rule.
+
+## Completed infrastructure
 
 - [x] Define immutable question, rollout, answer-shift, and causal-label records.
 - [x] Implement controlled prompt conditions and deterministic mock generation.

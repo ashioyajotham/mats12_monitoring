@@ -18,6 +18,8 @@ the [plain-language project overview](docs/PROJECT_OVERVIEW.md).
 | Behavioural monitor stack | Implemented and tested |
 | Local monitor evaluation | **Complete**: answer shift AUROC 0.917, AUPRC 0.893 |
 | Qwen judge and hybrid | **Complete**: judges near chance; hybrid below answer shift |
+| Answer-shift robustness | **Complete**: two siblings retained AUROC; one sibling did not |
+| Mechanism-held-out causal audit v2 | **Frozen**: 24-question qualification before 72-question external test |
 | Silent-unfaithfulness research branch | Closed after preregistered null/validity results |
 | Activation probing | Outside the current study |
 
@@ -84,7 +86,8 @@ distinguishing ordinary failures from errors caused by certified state perturbat
 
 ## Findings so far
 
-These are bounded task-construction and mechanism findings—not monitor-performance results.
+These are bounded results from the controlled environment, not evidence of hidden influence or a
+deployable single-trace monitor.
 
 | Phase | Result | Decision |
 |---|---|---|
@@ -99,6 +102,7 @@ These are bounded task-construction and mechanism findings—not monitor-perform
 | Causal-error-v1 qualification | 72/72 scorable: 29 correct and 43 errors across 19 questions and all four families | Frozen confirmatory causal collection authorized |
 | Causal-error-v1 confirmatory | 648/648 stored; target effect +39.5 points, interval +29.9 to +49.1 | Every gate passed; monitor evaluation authorized |
 | Causal-error-v1 monitors | Answer shift AUROC 0.917 and FPR 0.000 at 50% recall; paired FPR gain over surface −0.172, interval −0.419 to −0.032 | Primary operational hypothesis supported; generic Qwen judges failed |
+| Frozen v1 robustness | Condition-swap placebo AUROC 0.159; two-sibling AUROC 0.921; corrupted recurrence alone AUROC 0.897 | The signal depends on intervention-conditioned recurrence; two siblings are a cheaper exploratory candidate |
 
 The central progression is:
 
@@ -125,7 +129,8 @@ Current study: can monitors distinguish the two?
 | 4. Causal mechanism discovery | Create predictable downstream errors from one corrupted state | Causal control passed; hidden-use validity failed |
 | 5. Causal-error dataset construction | Prospectively collect ordinary and causally induced failures | Passed every frozen gate |
 | 6. Behavioural monitor evaluation | Compare answer shift, surface, judges, controls, and hybrid | Completed; answer shift supported |
-| 7. Internals | Test whether activations add held-out value | Optional future work; not authorized now |
+| 7. Mechanism-held-out audit | Test answer shift on omission and duplication corruptions | Frozen; qualification is the next authorized run |
+| 8. Internals | Test whether activations add held-out value | Outside the current extension |
 
 ## Current experimental design
 
@@ -315,6 +320,27 @@ uv run --offline python experiments/03_evaluate_monitor_stack.py \
 Every collection and derived artifact is immutable and content-addressed. Interrupted judge runs
 resume by stable score identity.
 
+### Run the mechanism-held-out extension
+
+The committed v2 bank and preregistration are already frozen. Run qualification first:
+
+```bash
+uv run --offline python experiments/02_generate_dataset.py \
+  --config configs/tinker_causal_audit_v2_qualification.yaml \
+  --continue-on-error \
+  --max-errors 4
+
+uv run --offline python experiments/02_analyze_causal_audit_v2.py \
+  --partition qualification \
+  --run data/generated/tinker_causal_audit_v2_qualification_<TIMESTAMP> \
+  --output results/causal_audit_v2_qualification.json
+```
+
+Only a passing qualification authorizes the 648-call external collection. Replace the config and
+partition with `tinker_causal_audit_v2_confirmatory.yaml` and `confirmatory`, respectively. After
+its gate passes, run `experiments/03_evaluate_causal_audit_v2.py --run <RUN>`; it refits the
+surface model on v1 training data and transfers both v1 validation thresholds without v2 tuning.
+
 ## Repository guide
 
 ```text
@@ -338,6 +364,7 @@ tests/         CPU-only scientific and implementation contracts
 - [Qualification result](docs/CAUSAL_ERROR_V1_QUALIFICATION_RESULT.md)
 - [Confirmatory result](docs/CAUSAL_ERROR_V1_CONFIRMATORY_RESULT.md)
 - [Monitor result](docs/CAUSAL_ERROR_V1_MONITOR_RESULT.md)
+- [Mechanism-held-out v2 preregistration](docs/PREREGISTRATION_CAUSAL_AUDIT_V2.md)
 - [Research roadmap](docs/ROADMAP.md)
 - [References and design lineage](docs/REFERENCES.md)
 - [Append-only research decisions](results/decisions.md)

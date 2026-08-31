@@ -1,0 +1,72 @@
+{
+  "all_certificates_verified": true,
+  "all_partitions_frozen_before_collection": true,
+  "artifact_paths": {
+    "all_questions": "data/raw/causal_audit_v2.jsonl",
+    "confirmatory_questions": "data/raw/causal_audit_v2.confirmatory.jsonl",
+    "intervention_certificates": "data/raw/causal_audit_v2.intervention_certificates.jsonl",
+    "manifest": "data/raw/causal_audit_v2.manifest.json",
+    "qualification_questions": "data/raw/causal_audit_v2.qualification.jsonl",
+    "selection": "data/raw/causal_audit_v2.selection.json",
+    "source_certificates": "data/raw/causal_audit_v2.source_certificates.jsonl"
+  },
+  "artifact_sha256": {
+    "all_questions": "4cff23fbe4ef6ea901f67d7cdc7a44f0852454b219fea6b0a7f29c0555142d98",
+    "confirmatory_questions": "f692192d7cee32fb8ae7e0889d9636c4048b4c1a65feb496dafd06422a63ee30",
+    "intervention_certificates": "6377039954b4150bdc00cd1fb80a15bb24b9885fb434bdbccb5f2b5f8263be18",
+    "qualification_questions": "3c6f96fee40a434d0441d4a5f7a6ee765d8ade9e77da98f73175061ce8a3f9c9",
+    "selection": "44f5e0fcfdb0a0d2c42de5074c9fc603cead0061fa91a19cd9fb3a986fa7768f",
+    "source_certificates": "a8dfa802b64db78ed746843064924fae3f096a8cd5bf01dccdca27c7aa43155c"
+  },
+  "cell_counts": {
+    "confirmatory:affine_modular:drop_component": 9,
+    "confirmatory:affine_modular:duplicate_component": 9,
+    "confirmatory:conditional_dag:drop_component": 9,
+    "confirmatory:conditional_dag:duplicate_component": 9,
+    "confirmatory:finite_state:drop_component": 9,
+    "confirmatory:finite_state:duplicate_component": 9,
+    "confirmatory:subset_counting:drop_component": 9,
+    "confirmatory:subset_counting:duplicate_component": 9,
+    "qualification:affine_modular:drop_component": 3,
+    "qualification:affine_modular:duplicate_component": 3,
+    "qualification:conditional_dag:drop_component": 3,
+    "qualification:conditional_dag:duplicate_component": 3,
+    "qualification:finite_state:drop_component": 3,
+    "qualification:finite_state:duplicate_component": 3,
+    "qualification:subset_counting:drop_component": 3,
+    "qualification:subset_counting:duplicate_component": 3
+  },
+  "code_revision": "0d7558aba30f1c98a6bb4428bc888d9f5bec0a1e",
+  "confirmatory_config_sha256": "9430bce9132e245e634b055d3a06788ab5c10203eaf5550719dd8298627911a5",
+  "confirmatory_is_external_test_only": true,
+  "confirmatory_questions": 72,
+  "entrypoint_sha256": "ce6260ffbe0c750812e2c083a7bb8d443a506e92f1a9762f69ddae206f1c0a9c",
+  "generator_code_sha256": "055b1a3ab814ffcbb54d3b29047e7e97af3026cf1fe00ad2ef6a132177dbe6db",
+  "license": "MIT",
+  "manifest_sha256": "11f4e7304911167bd9684c0e5585214f70f1d511cb6bdaea6359c44fd8033029",
+  "planned_tinker_calls": 792,
+  "preregistration_sha256": "ad961e1afd495da7202373a2f502e7e75b48043026deddd9e90682f2b940e7a2",
+  "prior_question_files": {
+    "data/raw/causal_error_detection_v1.jsonl": "c5e17b1ad148c1e4ddd9e0487e26e6f6504515acdf9f51997cf7d9c547ffde94",
+    "data/raw/procedural_assistant_prefill_v3.jsonl": "f0fd6dc95341e09b3c491aab3f0918961574052d4ebb9200afae64551f208848",
+    "data/raw/procedural_causal_yield_v1.jsonl": "e4fc2aefa7c56a4ab184d3449a5e0bb1d02923cddcb9953823ca50559ab4b3b7",
+    "data/raw/procedural_continuation_yield_v2.jsonl": "1115ee695cbaa80ab7f6df50d5e96436ef1bb777631d89583c2d384c998395da",
+    "data/raw/procedural_low_reasoning_diagnostic_v1.jsonl": "1882a424ba93e12fed9295020b81af8509f3a60dbea33cc76ae835536f4923ab",
+    "data/raw/procedural_math_candidates_v1.jsonl": "683837f9bc33aba246c7867f824ae76952732a752a9f81e3b2f0a21dd8526379",
+    "data/raw/procedural_math_candidates_v2.jsonl": "07e6ee69edff2cdf06f36aaa7aad4e9bb32d2bd03a20b6d9b532fad9ba727455",
+    "data/raw/procedural_math_pilot_v21.jsonl": "fa52e11b830181ed914d652c0ac0657f9abbba729319f4ab1c66ea329733178a",
+    "data/raw/procedural_math_subset_replacements_v21.jsonl": "6076d224011dedf730e8bc00b300685b73371d4fcc60d3aa8dd4cbd47f96c73a"
+  },
+  "prior_question_ids_excluded": 324,
+  "protocol": "causal-audit-v2",
+  "purpose": "causal_audit_v2_freeze",
+  "qualification_config_sha256": "b2acafeeec04c8d146a06d9f47174a9aad93a7c8a4f99ad4d09b41f29700e312",
+  "qualification_questions": 24,
+  "questions": 96,
+  "root_seed": 20262680,
+  "runtime_environment": {
+    "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7"
+  },
+  "selection_uses_model_outcomes": false
+}

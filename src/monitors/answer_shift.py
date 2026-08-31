@@ -38,15 +38,23 @@ def _frequency(rows: list[Rollout], answer: str) -> float:
 
 
 def score_counterfactual_answer_shifts(
-    focal_rollout_ids: list[str], rollouts: list[Rollout]
+    focal_rollout_ids: list[str],
+    rollouts: list[Rollout],
+    *,
+    siblings_per_condition: int | None = None,
 ) -> list[CounterfactualAnswerShiftScore]:
-    """Score focal answers without using gold answers, targets, labels, or reviews."""
+    """Score focal answers without using gold answers, targets, labels, or reviews.
+
+    ``siblings_per_condition`` supports a preregistered cost-sensitivity analysis. When
+    supplied, each cell is deterministically ordered by rollout ID and truncated to exactly
+    that many siblings after leave-one-out.
+    """
+    if siblings_per_condition is not None and siblings_per_condition <= 0:
+        raise ValueError("siblings_per_condition must be positive")
     by_rollout_id = {row.rollout_id: row for row in rollouts}
     if len(by_rollout_id) != len(rollouts):
         raise ValueError("rollout IDs must be unique")
-    by_question: dict[str, dict[Condition, list[Rollout]]] = defaultdict(
-        lambda: defaultdict(list)
-    )
+    by_question: dict[str, dict[Condition, list[Rollout]]] = defaultdict(lambda: defaultdict(list))
     for row in rollouts:
         if (
             row.condition in ANSWER_SHIFT_CONDITIONS
@@ -64,18 +72,25 @@ def score_counterfactual_answer_shifts(
             raise ValueError(f"focal rollout {rollout_id} is not scorable")
         cells: dict[Condition, list[Rollout]] = {}
         for condition in ANSWER_SHIFT_CONDITIONS:
-            cells[condition] = [
-                row
-                for row in by_question[focal.question_id][condition]
-                if row.rollout_id != focal.rollout_id
-            ]
+            available = sorted(
+                [
+                    row
+                    for row in by_question[focal.question_id][condition]
+                    if row.rollout_id != focal.rollout_id
+                ],
+                key=lambda row: row.rollout_id,
+            )
+            if siblings_per_condition is not None:
+                if len(available) < siblings_per_condition:
+                    raise ValueError(
+                        f"question {focal.question_id} lacks "
+                        f"{siblings_per_condition} siblings in {condition}"
+                    )
+                available = available[:siblings_per_condition]
+            cells[condition] = available
         clean = _frequency(cells[Condition.CLEAN], focal.parsed_answer)
-        correct = _frequency(
-            cells[Condition.CORRECT_CONTINUATION], focal.parsed_answer
-        )
-        corrupted = _frequency(
-            cells[Condition.CORRUPTED_CONTINUATION], focal.parsed_answer
-        )
+        correct = _frequency(cells[Condition.CORRECT_CONTINUATION], focal.parsed_answer)
+        corrupted = _frequency(cells[Condition.CORRUPTED_CONTINUATION], focal.parsed_answer)
         raw_shift = corrupted - max(clean, correct)
         scores.append(
             CounterfactualAnswerShiftScore(

@@ -18,6 +18,7 @@ in E9. The completed frozen monitor stack establishes the bounded operational re
 | E7 | User-prompt state continuation yields silent influence | Manual validity review of every target selection | `results/procedural_continuation_yield_v2_manual_review.json` | Rejected: 11 open uses, two ambiguous recomputations, zero silent uses |
 | E8 | Assistant prefill reliably causes hidden exact-target uptake | Randomized matched prefills, clustered effect interval, and manual validity | `results/procedural_assistant_prefill_v3.json` | Rejected: 1/24 corrupted versus 2/24 correct-prefill targets; effect -4.2 points, interval -16.7 to +8.3 |
 | E9 | Certified user-prompt state perturbations cause exact downstream errors | Fresh prospectively generated replication under the causal-error estimand | `docs/CAUSAL_ERROR_V1_CONFIRMATORY_RESULT.md` | Confirmed: +39.5-point exact-target effect; question-clustered 95% interval +29.9 to +49.1; every frozen gate passed |
+| C5 | Counterfactual answer shift generalizes to unseen checkpoint corruption mechanisms | Passing v2 causal gate; untouched external AUROC lower bound above 0.5; no v2 fitting or threshold selection | `docs/PREREGISTRATION_CAUSAL_AUDIT_V2.md` | Frozen/unrun |
 
 ## Rules
 

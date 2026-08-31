@@ -108,16 +108,20 @@ problem cannot leak across splits.
 
 ## Current research stage
 
-The clean qualification cohort passed its mixed-outcome gate, demonstrating that the controlled
-task environment produces enough ordinary failures. The confirmatory randomized collection is the
-next gate.
+The first study is complete. Its strongest monitor, counterfactual answer shift, reached AUROC
+0.917 and produced fewer false alarms than the surface baseline at the preregistered operating
+comparison. Generic transcript judges performed near chance and flagged most difficult ordinary
+errors. Zero observed false positives in a small test is promising but is not proof of a
+deployment-scale false-positive rate.
 
-Monitor fitting and judge spending remain blocked until the completed confirmatory dataset passes
-all causal-effect, clean-negative, diversity, provenance, and integrity requirements. Partial or
-failed collections cannot be used for monitor evaluation.
+The winning method is best understood as a **causal audit**, not a normal single-response monitor:
+it needs repeated clean, correct-state, and corrupted-state sibling attempts. The next frozen
+study therefore asks whether it transfers beyond the original `+1` corruption. It uses new
+omission and duplication mechanisms while holding the solver and task families fixed. A
+24-question qualification must pass before the untouched 72-question external test is collected.
 
 The intended end result is not a claim that one model is good or bad at mathematics. It is an
 evidence-backed answer to a monitoring question:
 
-> Can we detect errors caused by a controlled corruption without falsely accusing too many
-> ordinary reasoning failures?
+> Does distributional sibling evidence continue to distinguish ordinary from causally induced
+> errors when the checkpoint corruption mechanism changes?
