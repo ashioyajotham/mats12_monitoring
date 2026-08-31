@@ -95,9 +95,7 @@ def test_committed_v2_freeze_matches_generator_and_manifest() -> None:
     assert json.loads(paths["selection"].read_text(encoding="utf-8")) == regenerated[3]
     assert manifest["artifact_sha256"] == {key: sha256_file(path) for key, path in paths.items()}
     assert manifest["generator_code_sha256"] == sha256_file("src/causal_audit_v2.py")
-    assert manifest["entrypoint_sha256"] == sha256_file(
-        "experiments/00_prepare_causal_audit_v2.py"
-    )
+    assert manifest["entrypoint_sha256"] == sha256_file("experiments/00_prepare_causal_audit_v2.py")
     assert manifest["preregistration_sha256"] == sha256_file(
         "docs/PREREGISTRATION_CAUSAL_AUDIT_V2.md"
     )
@@ -106,13 +104,19 @@ def test_committed_v2_freeze_matches_generator_and_manifest() -> None:
     assert recorded == hashlib.sha256(canonical.encode()).hexdigest()
 
 
-def _gate_fixture(partition: str, *, propagate: bool = True):
-    per_cell = 3 if partition == "qualification" else 9
+def _gate_fixture(
+    partition: str,
+    *,
+    propagate: bool = True,
+    families: tuple[str, ...] = FAMILIES,
+    per_cell_override: int | None = None,
+):
+    per_cell = per_cell_override or (3 if partition == "qualification" else 9)
     samples = 2 if partition == "qualification" else 3
     questions: list[MathProblem] = []
     rollouts: list[Rollout] = []
     question_index = 0
-    for family in FAMILIES:
+    for family in families:
         for mechanism in MECHANISMS:
             for _ in range(per_cell):
                 qid = f"{partition}-{family}-{mechanism}-{question_index}"
@@ -207,3 +211,30 @@ def test_v2_gates_pass_balanced_effects_and_stop_without_propagation() -> None:
     )
     assert failed["gate_passed"] is False
     assert failed["gate_checks"]["each_mechanism_target_effect_at_least_10_points"] is False
+
+
+def test_gate_supports_the_separately_preregistered_three_family_design() -> None:
+    supported = ("affine_modular", "conditional_dag", "finite_state")
+    questions, rollouts = _gate_fixture("confirmatory", families=supported, per_cell_override=12)
+    questions = [
+        row.model_copy(
+            update={
+                "metadata": {
+                    **row.metadata,
+                    "study_partition": "external_confirmatory",
+                }
+            }
+        )
+        for row in questions
+    ]
+    report = analyze_causal_audit_v2(
+        questions,
+        rollouts,
+        partition="confirmatory",
+        bootstrap_samples=50,
+        expected_families=supported,
+        expected_per_cell=12,
+        protocol_version="causal-audit-v2.1",
+    )
+    assert report["protocol"] == "causal-audit-v2.1-confirmatory"
+    assert report["gate_passed"] is True

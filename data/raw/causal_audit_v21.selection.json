@@ -1,0 +1,28 @@
+{
+  "all_questions_frozen_before_v21_collection": true,
+  "excluded_family": "subset_counting",
+  "exclusion_basis": "failed both causal-audit-v2 qualification mechanism cells",
+  "external_test_only": true,
+  "families": [
+    "affine_modular",
+    "conditional_dag",
+    "finite_state"
+  ],
+  "family_mechanism_counts": {
+    "affine_modular:drop_component": 12,
+    "affine_modular:duplicate_component": 12,
+    "conditional_dag:drop_component": 12,
+    "conditional_dag:duplicate_component": 12,
+    "finite_state:drop_component": 12,
+    "finite_state:duplicate_component": 12
+  },
+  "mechanisms": [
+    "drop_component",
+    "duplicate_component"
+  ],
+  "protocol": "causal-audit-v2.1",
+  "questions": 72,
+  "root_seed": 20262720,
+  "selection_uses_prior_qualification_outcomes": true,
+  "selection_uses_v21_model_outcomes": false
+}

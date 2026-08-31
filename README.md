@@ -20,6 +20,7 @@ the [plain-language project overview](docs/PROJECT_OVERVIEW.md).
 | Qwen judge and hybrid | **Complete**: judges near chance; hybrid below answer shift |
 | Answer-shift robustness | **Complete**: two siblings retained AUROC; one sibling did not |
 | Mechanism-held-out causal audit v2 | **Stopped at qualification**: aggregate transfer passed, subset diversity failed |
+| Three-family causal audit v2.1 | **Frozen**: 72-question qualification-informed external replication |
 | Silent-unfaithfulness research branch | Closed after preregistered null/validity results |
 | Activation probing | Outside the current study |
 
@@ -104,6 +105,7 @@ deployable single-trace monitor.
 | Causal-error-v1 monitors | Answer shift AUROC 0.917 and FPR 0.000 at 50% recall; paired FPR gain over surface −0.172, interval −0.419 to −0.032 | Primary operational hypothesis supported; generic Qwen judges failed |
 | Frozen v1 robustness | Condition-swap placebo AUROC 0.159; two-sibling AUROC 0.921; corrupted recurrence alone AUROC 0.897 | The signal depends on intervention-conditioned recurrence; two siblings are a cheaper exploratory candidate |
 | Causal-audit-v2 qualification | Aggregate target effect +35.4 points; both new mechanisms transferred, but subset counting had 0/12 corrupted targets | Frozen diversity gate failed; do not launch the 648-call confirmatory run |
+| Causal-audit-v2.1 | Fresh three-family external replication, 12 questions per family/mechanism cell | Frozen before calls; explicitly qualification-informed rather than full-domain confirmation |
 
 The central progression is:
 
@@ -131,7 +133,8 @@ Current study: can monitors distinguish the two?
 | 5. Causal-error dataset construction | Prospectively collect ordinary and causally induced failures | Passed every frozen gate |
 | 6. Behavioural monitor evaluation | Compare answer shift, surface, judges, controls, and hybrid | Completed; answer shift supported |
 | 7. Mechanism-held-out audit | Test answer shift on omission and duplication corruptions | Stopped: qualification exposed a subset-family causal-control failure |
-| 8. Internals | Test whether activations add held-out value | Outside the current extension |
+| 8. Domain-restricted replication | Test unchanged monitors on fresh supported-family questions | Frozen as v2.1; 648-call collection is next |
+| 9. Internals | Test whether activations add held-out value | Outside the current extension |
 
 ## Current experimental design
 
@@ -341,6 +344,15 @@ uv run --offline python experiments/02_analyze_causal_audit_v2.py \
 Only a passing qualification could authorize the 648-call external collection. The observed run
 did not pass, so `tinker_causal_audit_v2_confirmatory.yaml` must not be run under this protocol.
 
+The separately preregistered v2.1 follow-up uses fresh questions from the three supported families:
+
+```bash
+uv run --offline python experiments/02_generate_dataset.py \
+  --config configs/tinker_causal_audit_v21_confirmatory.yaml \
+  --continue-on-error \
+  --max-errors 4
+```
+
 ## Repository guide
 
 ```text
@@ -366,6 +378,7 @@ tests/         CPU-only scientific and implementation contracts
 - [Monitor result](docs/CAUSAL_ERROR_V1_MONITOR_RESULT.md)
 - [Mechanism-held-out v2 preregistration](docs/PREREGISTRATION_CAUSAL_AUDIT_V2.md)
 - [Mechanism-held-out v2 qualification result](docs/CAUSAL_AUDIT_V2_QUALIFICATION_RESULT.md)
+- [Qualification-informed v2.1 preregistration](docs/PREREGISTRATION_CAUSAL_AUDIT_V21.md)
 - [Research roadmap](docs/ROADMAP.md)
 - [References and design lineage](docs/REFERENCES.md)
 - [Append-only research decisions](results/decisions.md)

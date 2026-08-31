@@ -1,0 +1,61 @@
+{
+  "all_certificates_verified": true,
+  "all_questions_frozen_before_collection": true,
+  "artifact_paths": {
+    "confirmatory_questions": "data/raw/causal_audit_v21.confirmatory.jsonl",
+    "intervention_certificates": "data/raw/causal_audit_v21.intervention_certificates.jsonl",
+    "manifest": "data/raw/causal_audit_v21.manifest.json",
+    "selection": "data/raw/causal_audit_v21.selection.json",
+    "source_certificates": "data/raw/causal_audit_v21.source_certificates.jsonl"
+  },
+  "artifact_sha256": {
+    "confirmatory_questions": "5af67f612ca4c55986dd63973f1b838aa453c3f80911896b9b5b4293915dade2",
+    "intervention_certificates": "74ed0cf0e65ddc4564a89761793d42ad154ec07384f0bb0f11ef1a6ff1376866",
+    "selection": "249b4df3a9e7334dc1223fc489f50f0f44cd48876c612f57f72f2d9d9947af23",
+    "source_certificates": "d2207e2f18f45adac9883787eb7b4e21e6a0eee44939f4ed5ef950e7305491a8"
+  },
+  "cell_counts": {
+    "affine_modular:drop_component": 12,
+    "affine_modular:duplicate_component": 12,
+    "conditional_dag:drop_component": 12,
+    "conditional_dag:duplicate_component": 12,
+    "finite_state:drop_component": 12,
+    "finite_state:duplicate_component": 12
+  },
+  "code_revision": "3fcbd9edb5e4f43c81e2b442fe16085e6905559b",
+  "config_sha256": "948aaef29149855cc28b7c9c2c9a7ac3515201c6685b7ff303764bbd81baa294",
+  "entrypoint_sha256": "36ebe7b3f011472b5984236bf1371e2cc5fad17e19b7f0a8967b6803f82ea6c3",
+  "evaluation_entrypoint_sha256": "45462d8cb857ee9ee6c7d5a247f10446860875937a221019f8e8785e20cfe257",
+  "excluded_family": "subset_counting",
+  "external_test_only": true,
+  "gate_code_sha256": "863402142b7bcc27662070cd652518056d5a5b8a577fe85cf4b0e0828bf518a5",
+  "gate_entrypoint_sha256": "d2463b132b059bfe447d6ed88a076aeca96cf680764758c18f8a933404b806f2",
+  "generator_code_sha256": "63942e65b4fdb07fb1175804b00360703ea44ad556dd1b85660371fffc55e79d",
+  "license": "MIT",
+  "manifest_sha256": "02d7045206a328f6de31f4ba989404c263a13e6f67ea653ef75aeb1bb14f6979",
+  "planned_tinker_calls": 648,
+  "preregistration_sha256": "83b02bef2757c4a37a65dba0b15cedd39d4dfb2f8496e1450c4d39de2c50307b",
+  "prior_question_files": {
+    "data/raw/causal_audit_v2.jsonl": "4cff23fbe4ef6ea901f67d7cdc7a44f0852454b219fea6b0a7f29c0555142d98",
+    "data/raw/causal_error_detection_v1.jsonl": "c5e17b1ad148c1e4ddd9e0487e26e6f6504515acdf9f51997cf7d9c547ffde94",
+    "data/raw/procedural_assistant_prefill_v3.jsonl": "f0fd6dc95341e09b3c491aab3f0918961574052d4ebb9200afae64551f208848",
+    "data/raw/procedural_causal_yield_v1.jsonl": "e4fc2aefa7c56a4ab184d3449a5e0bb1d02923cddcb9953823ca50559ab4b3b7",
+    "data/raw/procedural_continuation_yield_v2.jsonl": "1115ee695cbaa80ab7f6df50d5e96436ef1bb777631d89583c2d384c998395da",
+    "data/raw/procedural_low_reasoning_diagnostic_v1.jsonl": "1882a424ba93e12fed9295020b81af8509f3a60dbea33cc76ae835536f4923ab",
+    "data/raw/procedural_math_candidates_v1.jsonl": "683837f9bc33aba246c7867f824ae76952732a752a9f81e3b2f0a21dd8526379",
+    "data/raw/procedural_math_candidates_v2.jsonl": "07e6ee69edff2cdf06f36aaa7aad4e9bb32d2bd03a20b6d9b532fad9ba727455",
+    "data/raw/procedural_math_pilot_v21.jsonl": "fa52e11b830181ed914d652c0ac0657f9abbba729319f4ab1c66ea329733178a",
+    "data/raw/procedural_math_subset_replacements_v21.jsonl": "6076d224011dedf730e8bc00b300685b73371d4fcc60d3aa8dd4cbd47f96c73a"
+  },
+  "prior_question_ids_excluded": 420,
+  "protocol": "causal-audit-v2.1",
+  "purpose": "causal_audit_v21_freeze",
+  "qualification_informed_family_selection": true,
+  "questions": 72,
+  "root_seed": 20262720,
+  "runtime_environment": {
+    "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+    "python": "3.14.7"
+  },
+  "selection_uses_v21_model_outcomes": false
+}

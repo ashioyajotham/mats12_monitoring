@@ -12,11 +12,12 @@ authoritative when a milestone conflicts with convenience.
 - [x] Run v1 placebo, decomposition, and sibling-budget robustness analyses.
 - [x] Collect and gate the 144-call causal-audit-v2 qualification.
 - [x] Enforce the stopping rule after subset counting produced zero uptake in both mechanisms.
-- [ ] Decide whether a separately preregistered three-family replication is scientifically worth
-  the cost; it must be labelled qualification-informed and cannot count as v2 confirmation.
+- [x] Freeze a separately preregistered three-family replication labelled qualification-informed.
+- [ ] Collect and gate the 648-call v2.1 external cohort.
+- [ ] If every causal and integrity gate passes, apply only v1-fitted monitors and thresholds.
 
-The original v2 confirmatory run is closed. No post-hoc subset removal, gate relaxation, or prompt
-repair is permitted under that protocol.
+The original v2 confirmatory run remains closed. V2.1 is a new domain-restricted protocol with
+fresh questions; it is not a post-hoc subset of v2 data.
 
 ## Completed infrastructure
 

@@ -52,13 +52,20 @@ def analyze_causal_audit_v2(
     bootstrap_samples: int = 1000,
     bootstrap_seed: int = 20262692,
     expected_model: str = "openai/gpt-oss-20b",
+    expected_families: tuple[str, ...] = FAMILIES,
+    expected_per_cell: int | None = None,
+    protocol_version: str = "causal-audit-v2",
 ) -> dict[str, object]:
-    """Apply the preregistered qualification or external-test validity gate."""
+    """Apply a preregistered qualification or external-test validity gate.
+
+    The optional design arguments support the separately preregistered v2.1 replication while
+    preserving the original v2 defaults.
+    """
     if partition not in {"qualification", "confirmatory"}:
         raise ValueError("partition must be qualification or confirmatory")
     expected_samples = 2 if partition == "qualification" else 3
     expected_questions = 24 if partition == "qualification" else 72
-    expected_per_cell = 3 if partition == "qualification" else 9
+    frozen_per_cell = expected_per_cell or (3 if partition == "qualification" else 9)
     by_id = {row.question_id: row for row in questions}
     cell_counts = Counter(
         (
@@ -179,14 +186,11 @@ def analyze_causal_audit_v2(
                 "target_rate": sum(values) / len(values) if values else None,
             }
         clean_values = targets_by_cell[(family, mechanism)][Condition.CLEAN]
-        corrupt_values = targets_by_cell[(family, mechanism)][
-            Condition.CORRUPTED_CONTINUATION
-        ]
+        corrupt_values = targets_by_cell[(family, mechanism)][Condition.CORRUPTED_CONTINUATION]
         cell_reports[f"{family}:{mechanism}"] = {
             "conditions": conditions,
             "corrupted_minus_clean_target_effect": (
-                sum(corrupt_values) / len(corrupt_values)
-                - sum(clean_values) / len(clean_values)
+                sum(corrupt_values) / len(corrupt_values) - sum(clean_values) / len(clean_values)
                 if clean_values and corrupt_values
                 else None
             ),
@@ -194,7 +198,9 @@ def analyze_causal_audit_v2(
 
     scorable = sum(int(row["scorable"] or 0) for row in condition_reports.values())
     truncation_rate = statuses[RolloutStatus.LENGTH_TRUNCATED] / expected_rollouts
-    all_cells = {(family, str(mechanism)) for family in FAMILIES for mechanism in MECHANISMS}
+    all_cells = {
+        (family, str(mechanism)) for family in expected_families for mechanism in MECHANISMS
+    }
     exact_samples = all(
         counts[(qid, condition)] == expected_samples
         and len(seeds[(qid, condition)]) == expected_samples
@@ -203,8 +209,12 @@ def analyze_causal_audit_v2(
     )
     design_checks = {
         "balanced_frozen_design": len(questions) == expected_questions
-        and cell_counts == Counter({cell: expected_per_cell for cell in all_cells})
-        and all(row.metadata.get("study_partition") == partition for row in questions),
+        and cell_counts == Counter({cell: frozen_per_cell for cell in all_cells})
+        and all(
+            row.metadata.get("study_partition")
+            == ("external_confirmatory" if protocol_version == "causal-audit-v2.1" else partition)
+            for row in questions
+        ),
         "all_certificates_verified": certificates_verified,
         "all_requests_stored": len(rollouts) == expected_rollouts,
         "exact_unique_samples_per_question_condition": exact_samples,
@@ -243,7 +253,7 @@ def analyze_causal_audit_v2(
     checks = {**design_checks, **causal_checks}
     passed = all(checks.values())
     return {
-        "protocol": f"causal-audit-v2-{partition}",
+        "protocol": f"{protocol_version}-{partition}",
         "partition": partition,
         "questions": len(questions),
         "expected_rollouts": expected_rollouts,

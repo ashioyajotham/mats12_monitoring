@@ -83,12 +83,19 @@ def _rate_interval(successes: int, trials: int) -> dict[str, float | int | None]
 
 
 def main() -> None:
-    """Evaluate answer shift and a v1-trained surface model without v2 tuning."""
+    """Evaluate answer shift and a v1-trained surface model without external tuning."""
     parser = argparse.ArgumentParser()
     parser.add_argument("--run", type=Path, required=True)
     parser.add_argument(
         "--gate-report", type=Path, default=Path("results/causal_audit_v2_confirmatory.json")
     )
+    parser.add_argument(
+        "--questions",
+        type=Path,
+        default=Path("data/raw/causal_audit_v2.confirmatory.jsonl"),
+    )
+    parser.add_argument("--expected-gate-protocol", default="causal-audit-v2-confirmatory")
+    parser.add_argument("--protocol", default="causal-audit-v2-external-monitor-evaluation")
     parser.add_argument(
         "--v1-primary", type=Path, default=Path("data/reviewed/causal_error_v1.primary.jsonl")
     )
@@ -100,12 +107,9 @@ def main() -> None:
     parser.add_argument("--bootstrap-seed", type=int, default=20262700)
     args = parser.parse_args()
     gate = json.loads(args.gate_report.read_text(encoding="utf-8"))
-    if (
-        gate.get("protocol") != "causal-audit-v2-confirmatory"
-        or gate.get("gate_passed") is not True
-    ):
+    if gate.get("protocol") != args.expected_gate_protocol or gate.get("gate_passed") is not True:
         raise SystemExit("external evaluation requires a passing frozen confirmatory gate")
-    questions = list(read_jsonl("data/raw/causal_audit_v2.confirmatory.jsonl", model=MathProblem))
+    questions = list(read_jsonl(args.questions, model=MathProblem))
     rollouts = list(read_jsonl(args.run / "rollouts.jsonl", model=Rollout))
     external = _materialize(questions, rollouts)
     v1 = list(read_jsonl(args.v1_primary, model=MonitorExample))
@@ -220,7 +224,7 @@ def main() -> None:
                     },
                 }
     report = {
-        "protocol": "causal-audit-v2-external-monitor-evaluation",
+        "protocol": args.protocol,
         "claim": "counterfactual causal audit, not single-trace online monitoring",
         "external_examples": len(external),
         "point_metrics": point,
@@ -234,7 +238,7 @@ def main() -> None:
             ),
             "superiority_claim_requires_paired_interval_excluding_zero": True,
         },
-        "no_v2_model_fitting_or_threshold_selection": True,
+        "no_external_model_fitting_or_threshold_selection": True,
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("x", encoding="utf-8") as handle:
