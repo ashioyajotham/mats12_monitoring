@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1180" height="300" viewBox="0 0 1180 300">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="590.0" y="34" font-family="Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle" fill="#172033">Research progression under preregistered stopping rules</text>
+  <rect x="37.5" y="86" width="165" height="118" rx="9" fill="#ffffff" stroke="#a7b0bf" stroke-width="3"/>
+  <text x="120.0" y="121" font-family="Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#172033">Silent-use attempts</text>
+  <text x="120.0" y="155" font-family="Arial, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#172033">Weak, acknowledged,</text>
+  <text x="120.0" y="174" font-family="Arial, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#172033">or null</text>
+  <line x1="206.5" y1="145.0" x2="220.5" y2="145.0" stroke="#687386" stroke-width="2"/>
+  <polygon points="220.5,145.0 212.5,140.0 212.5,150.0" fill="#687386"/>
+  <rect x="225.5" y="86" width="165" height="118" rx="9" fill="#ffffff" stroke="#4f78a8" stroke-width="3"/>
+  <text x="308.0" y="121" font-family="Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#172033">Mixed-outcome tasks</text>
+  <text x="308.0" y="155" font-family="Arial, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#172033">Ordinary</text>
+  <text x="308.0" y="174" font-family="Arial, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#172033">failures established</text>
+  <line x1="394.5" y1="145.0" x2="408.5" y2="145.0" stroke="#687386" stroke-width="2"/>
+  <polygon points="408.5,145.0 400.5,140.0 400.5,150.0" fill="#687386"/>
+  <rect x="413.5" y="86" width="165" height="118" rx="9" fill="#ffffff" stroke="#d89032" stroke-width="3"/>
+  <text x="496.0" y="121" font-family="Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#172033">Causal-error v1</text>
+  <text x="496.0" y="155" font-family="Arial, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#172033">+1</text>
+  <text x="496.0" y="174" font-family="Arial, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#172033">intervention passed</text>
+  <line x1="582.5" y1="145.0" x2="596.5" y2="145.0" stroke="#687386" stroke-width="2"/>
+  <polygon points="596.5,145.0 588.5,140.0 588.5,150.0" fill="#687386"/>
+  <rect x="601.5" y="86" width="165" height="118" rx="9" fill="#ffffff" stroke="#d1495b" stroke-width="3"/>
+  <text x="684.0" y="121" font-family="Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#172033">Monitor evaluation</text>
+  <text x="684.0" y="155" font-family="Arial, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#172033">Answer shift</text>
+  <text x="684.0" y="174" font-family="Arial, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#172033">&gt; surface</text>
+  <line x1="770.5" y1="145.0" x2="784.5" y2="145.0" stroke="#687386" stroke-width="2"/>
+  <polygon points="784.5,145.0 776.5,140.0 776.5,150.0" fill="#687386"/>
+  <rect x="789.5" y="86" width="165" height="118" rx="9" fill="#ffffff" stroke="#8b5e83" stroke-width="3"/>
+  <text x="872.0" y="121" font-family="Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#172033">Four-family v2</text>
+  <text x="872.0" y="155" font-family="Arial, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#172033">Stopped:</text>
+  <text x="872.0" y="174" font-family="Arial, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#172033">subset failed</text>
+  <line x1="958.5" y1="145.0" x2="972.5" y2="145.0" stroke="#687386" stroke-width="2"/>
+  <polygon points="972.5,145.0 964.5,140.0 964.5,150.0" fill="#687386"/>
+  <rect x="977.5" y="86" width="165" height="118" rx="9" fill="#ffffff" stroke="#2b8a6e" stroke-width="3"/>
+  <text x="1060.0" y="121" font-family="Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#172033">Three-family v2.1</text>
+  <text x="1060.0" y="155" font-family="Arial, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#172033">External</text>
+  <text x="1060.0" y="174" font-family="Arial, sans-serif" font-size="12" font-weight="400" text-anchor="middle" fill="#172033">transfer passed</text>
+  <text x="590.0" y="254" font-family="Arial, sans-serif" font-size="14" font-weight="700" text-anchor="middle" fill="#172033">Failures constrain the claim; they are not discarded pilot noise.</text>
+</svg>

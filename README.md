@@ -7,7 +7,8 @@ errors caused by a **certified corrupted intermediate state**—without overwhel
 with false alarms.
 
 This is the MATS 12 application project of Victor Ashioya. For a non-technical introduction, see
-the [plain-language project overview](docs/PROJECT_OVERVIEW.md).
+the [plain-language project overview](docs/PROJECT_OVERVIEW.md). The complete research narrative is
+in the [working paper](docs/PAPER_DRAFT.md).
 
 ## Current status
 
@@ -21,6 +22,7 @@ the [plain-language project overview](docs/PROJECT_OVERVIEW.md).
 | Answer-shift robustness | **Complete**: two siblings retained AUROC; one sibling did not |
 | Mechanism-held-out causal audit v2 | **Stopped at qualification**: aggregate transfer passed, subset diversity failed |
 | Three-family causal audit v2.1 | **Passed**: external answer-shift AUROC 0.919; all paired comparisons decisive |
+| Working paper and figures | **Complete first draft**: methods, results, limitations, and reproducible SVGs |
 | Silent-unfaithfulness research branch | Closed after preregistered null/validity results |
 | Activation probing | Outside the current study |
 
@@ -372,6 +374,7 @@ tests/         CPU-only scientific and implementation contracts
 
 ### Core research documents
 
+- [Working paper draft](docs/PAPER_DRAFT.md)
 - [Plain-language project overview](docs/PROJECT_OVERVIEW.md)
 - [Current causal-error preregistration](docs/PREREGISTRATION_CAUSAL_ERROR_DETECTION_V1.md)
 - [Frozen monitoring protocol](docs/MONITORING_PROTOCOL_V1.md)

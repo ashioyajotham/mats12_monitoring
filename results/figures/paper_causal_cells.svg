@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="600" viewBox="0 0 1040 600">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="520.0" y="35" font-family="Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle" fill="#172033">Exact-target uptake under corrupted continuation</text>
+  <text x="520.0" y="59" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#172033">V2 qualification exposed the subset boundary; v2.1 used fresh supported-family questions</text>
+  <text x="322.5" y="96" font-family="Arial, sans-serif" font-size="13" font-weight="700" text-anchor="middle" fill="#172033">Affine</text>
+  <text x="427.5" y="96" font-family="Arial, sans-serif" font-size="13" font-weight="700" text-anchor="middle" fill="#172033">DAG</text>
+  <text x="532.5" y="96" font-family="Arial, sans-serif" font-size="13" font-weight="700" text-anchor="middle" fill="#172033">Finite state</text>
+  <text x="637.5" y="96" font-family="Arial, sans-serif" font-size="13" font-weight="700" text-anchor="middle" fill="#172033">Subset</text>
+  <text x="18" y="177" font-family="Arial, sans-serif" font-size="15" font-weight="700" text-anchor="start" fill="#172033">v2 qualification</text>
+  <text x="255" y="153" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="end" fill="#172033">Drop</text>
+  <rect x="270" y="115" width="97" height="54" rx="5" fill="rgb(210,233,200)" stroke="#c5ccda"/>
+  <text x="318.5" y="148" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">2/6</text>
+  <rect x="375" y="115" width="97" height="54" rx="5" fill="rgb(177,218,148)" stroke="#c5ccda"/>
+  <text x="423.5" y="148" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">4/6</text>
+  <rect x="480" y="115" width="97" height="54" rx="5" fill="rgb(194,225,174)" stroke="#c5ccda"/>
+  <text x="528.5" y="148" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">3/6</text>
+  <rect x="585" y="115" width="97" height="54" rx="5" fill="rgb(244,248,252)" stroke="#c5ccda"/>
+  <text x="633.5" y="148" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">0/6</text>
+  <text x="255" y="215" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="end" fill="#172033">Duplicate</text>
+  <rect x="270" y="177" width="97" height="54" rx="5" fill="rgb(210,233,200)" stroke="#c5ccda"/>
+  <text x="318.5" y="210" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">2/6</text>
+  <rect x="375" y="177" width="97" height="54" rx="5" fill="rgb(177,218,148)" stroke="#c5ccda"/>
+  <text x="423.5" y="210" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">4/6</text>
+  <rect x="480" y="177" width="97" height="54" rx="5" fill="rgb(177,218,148)" stroke="#c5ccda"/>
+  <text x="528.5" y="210" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">4/6</text>
+  <rect x="585" y="177" width="97" height="54" rx="5" fill="rgb(244,248,252)" stroke="#c5ccda"/>
+  <text x="633.5" y="210" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">0/6</text>
+  <line x1="270" y1="261" x2="682" y2="261" stroke="#9da8ba" stroke-width="1"/>
+  <text x="18" y="363" font-family="Arial, sans-serif" font-size="15" font-weight="700" text-anchor="start" fill="#172033">v2.1 external</text>
+  <text x="255" y="339" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="end" fill="#172033">Drop</text>
+  <rect x="270" y="301" width="97" height="54" rx="5" fill="rgb(221,238,217)" stroke="#c5ccda"/>
+  <text x="318.5" y="334" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">8/36</text>
+  <rect x="375" y="301" width="97" height="54" rx="5" fill="rgb(180,219,152)" stroke="#c5ccda"/>
+  <text x="423.5" y="334" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">23/36</text>
+  <rect x="480" y="301" width="97" height="54" rx="5" fill="rgb(180,219,152)" stroke="#c5ccda"/>
+  <text x="528.5" y="334" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">23/36</text>
+  <rect x="585" y="301" width="97" height="54" rx="5" fill="#eceff4" stroke="#c5ccda"/>
+  <text x="633.5" y="334" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#687386">excluded</text>
+  <text x="255" y="401" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="end" fill="#172033">Duplicate</text>
+  <rect x="270" y="363" width="97" height="54" rx="5" fill="rgb(180,219,152)" stroke="#c5ccda"/>
+  <text x="318.5" y="396" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">23/36</text>
+  <rect x="375" y="363" width="97" height="54" rx="5" fill="rgb(196,226,178)" stroke="#c5ccda"/>
+  <text x="423.5" y="396" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">17/36</text>
+  <rect x="480" y="363" width="97" height="54" rx="5" fill="rgb(177,218,148)" stroke="#c5ccda"/>
+  <text x="528.5" y="396" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#172033">24/36</text>
+  <rect x="585" y="363" width="97" height="54" rx="5" fill="#eceff4" stroke="#c5ccda"/>
+  <text x="633.5" y="396" font-family="Arial, sans-serif" font-size="16" font-weight="700" text-anchor="middle" fill="#687386">excluded</text>
+  <text x="520.0" y="565" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#172033">Cell values are exact target selections / scorable corrupted-condition rollouts</text>
+</svg>

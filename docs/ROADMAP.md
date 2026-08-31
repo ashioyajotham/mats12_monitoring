@@ -23,6 +23,14 @@ fresh questions; it is not a post-hoc subset of v2 data.
 The next research decision is no longer another intervention. It is whether to reduce audit cost,
 replicate on a second solver, or stop with the present bounded causal-audit claim.
 
+## Paper consolidation
+
+- [x] Freeze the central domain-restricted claim and non-claims.
+- [x] Integrate v1, robustness, failed v2 qualification, and successful v2.1 replication.
+- [x] Generate result-bound study-flow, causal-cell, and monitor-performance figures.
+- [x] Document audit cost, family selection, low-FPR uncertainty, and single-solver limitations.
+- [ ] Obtain external technical review and revise the working paper without changing frozen results.
+
 ## Completed infrastructure
 
 - [x] Define immutable question, rollout, answer-shift, and causal-label records.

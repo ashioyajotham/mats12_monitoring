@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="570" viewBox="0 0 980 570">
+  <rect width="100%" height="100%" fill="#ffffff"/>
+  <text x="490.0" y="35" font-family="Arial, sans-serif" font-size="22" font-weight="700" text-anchor="middle" fill="#172033">Monitor performance across frozen evaluations</text>
+  <text x="490.0" y="59" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#172033">Bars are point estimates; whiskers are question-clustered 95% intervals</text>
+  <line x1="105" y1="470.0" x2="945" y2="470.0" stroke="#d9dfeb" stroke-width="1"/>
+  <text x="93" y="475.0" font-family="Arial, sans-serif" font-size="14" font-weight="400" text-anchor="end" fill="#172033">0.0</text>
+  <line x1="105" y1="392.0" x2="945" y2="392.0" stroke="#d9dfeb" stroke-width="1"/>
+  <text x="93" y="397.0" font-family="Arial, sans-serif" font-size="14" font-weight="400" text-anchor="end" fill="#172033">0.2</text>
+  <line x1="105" y1="314.0" x2="945" y2="314.0" stroke="#d9dfeb" stroke-width="1"/>
+  <text x="93" y="319.0" font-family="Arial, sans-serif" font-size="14" font-weight="400" text-anchor="end" fill="#172033">0.4</text>
+  <line x1="105" y1="236.0" x2="945" y2="236.0" stroke="#d9dfeb" stroke-width="1"/>
+  <text x="93" y="241.0" font-family="Arial, sans-serif" font-size="14" font-weight="400" text-anchor="end" fill="#172033">0.6</text>
+  <line x1="105" y1="158.0" x2="945" y2="158.0" stroke="#d9dfeb" stroke-width="1"/>
+  <text x="93" y="163.0" font-family="Arial, sans-serif" font-size="14" font-weight="400" text-anchor="end" fill="#172033">0.8</text>
+  <line x1="105" y1="80.0" x2="945" y2="80.0" stroke="#d9dfeb" stroke-width="1"/>
+  <text x="93" y="85.0" font-family="Arial, sans-serif" font-size="14" font-weight="400" text-anchor="end" fill="#172033">1.0</text>
+  <rect x="146.5" y="112.2758620689655" width="55" height="357.72413793103453" rx="3" fill="#d1495b"/>
+  <line x1="174.0" y1="85.90909090909086" x2="174.0" y2="165.31250000000006" stroke="#172033" stroke-width="2"/>
+  <line x1="166.0" y1="85.90909090909086" x2="182.0" y2="85.90909090909086" stroke="#172033" stroke-width="2"/>
+  <line x1="166.0" y1="165.31250000000006" x2="182.0" y2="165.31250000000006" stroke="#172033" stroke-width="2"/>
+  <text x="174.0" y="103.2758620689655" font-family="Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle" fill="#172033">0.917</text>
+  <rect x="218.5" y="182.20689655172418" width="55" height="287.7931034482758" rx="3" fill="#4f78a8"/>
+  <line x1="246.0" y1="129.4896551724138" x2="246.0" y2="246.1257606490872" stroke="#172033" stroke-width="2"/>
+  <line x1="238.0" y1="129.4896551724138" x2="254.0" y2="129.4896551724138" stroke="#172033" stroke-width="2"/>
+  <line x1="238.0" y1="246.1257606490872" x2="254.0" y2="246.1257606490872" stroke="#172033" stroke-width="2"/>
+  <text x="246.0" y="173.20689655172418" font-family="Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle" fill="#172033">0.738</text>
+  <text x="210.0" y="499" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#172033">v1 AUROC</text>
+  <rect x="356.5" y="121.72093023255815" width="55" height="348.27906976744185" rx="3" fill="#d1495b"/>
+  <line x1="384.0" y1="87.20652173913047" x2="384.0" y2="194.19607843137257" stroke="#172033" stroke-width="2"/>
+  <line x1="376.0" y1="87.20652173913047" x2="392.0" y2="87.20652173913047" stroke="#172033" stroke-width="2"/>
+  <line x1="376.0" y1="194.19607843137257" x2="392.0" y2="194.19607843137257" stroke="#172033" stroke-width="2"/>
+  <text x="384.0" y="112.72093023255815" font-family="Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle" fill="#172033">0.893</text>
+  <rect x="428.5" y="199.17470910127574" width="55" height="270.82529089872423" rx="3" fill="#4f78a8"/>
+  <line x1="456.0" y1="129.96285332314744" x2="456.0" y2="281.68944917520093" stroke="#172033" stroke-width="2"/>
+  <line x1="448.0" y1="129.96285332314744" x2="464.0" y2="129.96285332314744" stroke="#172033" stroke-width="2"/>
+  <line x1="448.0" y1="281.68944917520093" x2="464.0" y2="281.68944917520093" stroke="#172033" stroke-width="2"/>
+  <text x="456.0" y="190.17470910127574" font-family="Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle" fill="#172033">0.694</text>
+  <text x="420.0" y="499" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#172033">v1 AUPRC</text>
+  <rect x="566.5" y="111.78083804143128" width="55" height="358.21916195856875" rx="3" fill="#d1495b"/>
+  <line x1="594.0" y1="98.90745600849773" x2="594.0" y2="126.62841203863208" stroke="#172033" stroke-width="2"/>
+  <line x1="586.0" y1="98.90745600849773" x2="602.0" y2="98.90745600849773" stroke="#172033" stroke-width="2"/>
+  <line x1="586.0" y1="126.62841203863208" x2="602.0" y2="126.62841203863208" stroke="#172033" stroke-width="2"/>
+  <text x="594.0" y="102.78083804143128" font-family="Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle" fill="#172033">0.919</text>
+  <rect x="638.5" y="183.40630885122408" width="55" height="286.5936911487759" rx="3" fill="#4f78a8"/>
+  <line x1="666.0" y1="159.2451992753623" x2="666.0" y2="207.00827394150565" stroke="#172033" stroke-width="2"/>
+  <line x1="658.0" y1="159.2451992753623" x2="674.0" y2="159.2451992753623" stroke="#172033" stroke-width="2"/>
+  <line x1="658.0" y1="207.00827394150565" x2="674.0" y2="207.00827394150565" stroke="#172033" stroke-width="2"/>
+  <text x="666.0" y="174.40630885122408" font-family="Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle" fill="#172033">0.735</text>
+  <text x="630.0" y="499" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#172033">v2.1 AUROC</text>
+  <rect x="776.5" y="110.43429877961523" width="55" height="359.56570122038477" rx="3" fill="#d1495b"/>
+  <line x1="804.0" y1="97.1731257994331" x2="804.0" y2="128.09859567249296" stroke="#172033" stroke-width="2"/>
+  <line x1="796.0" y1="97.1731257994331" x2="812.0" y2="97.1731257994331" stroke="#172033" stroke-width="2"/>
+  <line x1="796.0" y1="128.09859567249296" x2="812.0" y2="128.09859567249296" stroke="#172033" stroke-width="2"/>
+  <text x="804.0" y="101.43429877961523" font-family="Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle" fill="#172033">0.922</text>
+  <rect x="848.5" y="190.36804200666586" width="55" height="279.63195799333414" rx="3" fill="#4f78a8"/>
+  <line x1="876.0" y1="150.81125322589833" x2="876.0" y2="223.65413889383848" stroke="#172033" stroke-width="2"/>
+  <line x1="868.0" y1="150.81125322589833" x2="884.0" y2="150.81125322589833" stroke="#172033" stroke-width="2"/>
+  <line x1="868.0" y1="223.65413889383848" x2="884.0" y2="223.65413889383848" stroke="#172033" stroke-width="2"/>
+  <text x="876.0" y="181.36804200666586" font-family="Arial, sans-serif" font-size="12" font-weight="700" text-anchor="middle" fill="#172033">0.717</text>
+  <text x="840.0" y="499" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="middle" fill="#172033">v2.1 AUPRC</text>
+  <rect x="360.0" y="528" width="16" height="16" fill="#d1495b"/>
+  <text x="384.0" y="541" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="start" fill="#172033">Answer shift</text>
+  <rect x="510.0" y="528" width="16" height="16" fill="#4f78a8"/>
+  <text x="534.0" y="541" font-family="Arial, sans-serif" font-size="13" font-weight="400" text-anchor="start" fill="#172033">Surface</text>
+  <text x="25" y="275.0" font-family="Arial, sans-serif" font-size="15" font-weight="700" text-anchor="middle" fill="#172033">Score</text>
+</svg>
