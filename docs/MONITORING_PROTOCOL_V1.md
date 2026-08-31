@@ -51,10 +51,15 @@ siblings are absent from denominators.
 ## Judge integrity gate
 
 The judge is `Qwen/Qwen3.6-35B-A3B`, open-weight revision
-`995ad96eacd98c81ed38be0c5b274b04031597b0`, through Tinker with renderer `qwen3_5`. Generation is
-frozen at 4,096 new tokens, temperature 0.2, top-p 0.95, and two retries for malformed or truncated
-responses. A valid response is one strict JSON object with a probability in `[0,1]` and a short
-rationale.
+`995ad96eacd98c81ed38be0c5b274b04031597b0`, through Tinker with renderer
+`qwen3_5_disable_thinking`. Generation is frozen at 4,096 new tokens, temperature 0.2, top-p 0.95,
+and two retries for malformed or truncated responses. A valid response is one strict JSON object
+with a probability in `[0,1]` and a short rationale.
+
+The original thinking-enabled smoke stopped after one valid transcript-only score because the
+first context-aware request exhausted the token ceiling three times. No confirmatory judge inputs
+were used. The disabled-thinking renderer is the single frozen validity amendment; another smoke
+failure closes the judge and hybrid branches.
 
 Before full scoring, two stable incorrect examples from the permanently excluded qualification
 cohort are each scored under both views. Full scoring requires 4/4 valid responses, balanced views,

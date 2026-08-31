@@ -14,14 +14,15 @@ the [plain-language project overview](docs/PROJECT_OVERVIEW.md).
 | Research component | Status |
 |---|---|
 | Clean mixed-outcome qualification | **Passed**: 29 correct, 43 ordinary errors, 0 invalid |
-| Confirmatory randomized causal collection | **In progress** |
+| Confirmatory randomized causal collection | **Passed**: +39.5-point effect, 95% CI +29.9 to +49.1 |
 | Behavioural monitor stack | Implemented and tested |
-| Monitor fitting and full judge scoring | **Blocked** until every confirmatory gate passes |
+| Local monitor evaluation | **Complete**: answer-shift and controls scored |
+| Qwen judge and hybrid | Final excluded-cohort smoke pending |
 | Silent-unfaithfulness research branch | Closed after preregistered null/validity results |
 | Activation probing | Outside the current study |
 
-No partial confirmatory outcomes may be used for labels, monitor fitting, or research claims. A
-failed confirmatory gate stops the study before monitor evaluation.
+The confirmatory gate now authorizes monitor evaluation. Raw generations remain immutable and all
+monitor splits remain grouped by question.
 
 ## The problem
 
@@ -96,6 +97,7 @@ These are bounded task-construction and mechanism findings—not monitor-perform
 | Exact state continuation | 13/24 corrupted targets versus 0/24 in each control; effect +54.2 points, interval +33.3 to +75.0 | Strong causal control, but manual review found zero defensible silent-use cases |
 | Assistant prefill | 1/24 corrupted targets versus 2/24 correct-prefill targets; effect −4.2 points, interval −16.7 to +8.3 | Causal gate failed; silent-unfaithfulness branch closed |
 | Causal-error-v1 qualification | 72/72 scorable: 29 correct and 43 errors across 19 questions and all four families | Frozen confirmatory causal collection authorized |
+| Causal-error-v1 confirmatory | 648/648 stored; target effect +39.5 points, interval +29.9 to +49.1 | Every gate passed; monitor evaluation authorized |
 
 The central progression is:
 
@@ -120,8 +122,8 @@ Current study: can monitors distinguish the two?
 | 2. Natural-error discovery | Find enough ordinary failures on licensed static tasks | Closed: ARC and selected MATH slices were too easy |
 | 3. Procedural task construction | Create original, solver-verified tasks with reliable mixed outcomes | Passed with 64 correct and 56 incorrect responses |
 | 4. Causal mechanism discovery | Create predictable downstream errors from one corrupted state | Causal control passed; hidden-use validity failed |
-| 5. Causal-error dataset construction | Prospectively collect ordinary and causally induced failures | **Current phase: confirmatory collection** |
-| 6. Behavioural monitor evaluation | Compare answer shift, surface, judges, controls, and hybrid | Pending confirmatory authorization |
+| 5. Causal-error dataset construction | Prospectively collect ordinary and causally induced failures | Passed every frozen gate |
+| 6. Behavioural monitor evaluation | Compare answer shift, surface, judges, controls, and hybrid | **Current phase** |
 | 7. Internals | Test whether activations add held-out value | Optional future work; not authorized now |
 
 ## Current experimental design
@@ -333,6 +335,7 @@ tests/         CPU-only scientific and implementation contracts
 - [Frozen monitoring protocol](docs/MONITORING_PROTOCOL_V1.md)
 - [Methodology and threat models](docs/METHODOLOGY.md)
 - [Qualification result](docs/CAUSAL_ERROR_V1_QUALIFICATION_RESULT.md)
+- [Confirmatory result](docs/CAUSAL_ERROR_V1_CONFIRMATORY_RESULT.md)
 - [Research roadmap](docs/ROADMAP.md)
 - [References and design lineage](docs/REFERENCES.md)
 - [Append-only research decisions](results/decisions.md)

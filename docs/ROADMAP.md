@@ -58,7 +58,7 @@ Mock generations validate plumbing only. They are not evidence for any claim in 
   qualification/confirmatory split without consulting model outcomes.
 - [x] Run the 72-request clean qualification cohort and stop unless every mixed-outcome and
   integrity gate passes.
-- [ ] If authorized, run the 648-request randomized confirmatory causal collection and publish its
+- [x] Run the 648-request randomized confirmatory causal collection and publish its
   machine-readable gate report.
 - [x] Implement the gate-bound monitor materializer, typed evidence boundaries, local controls,
   two-view resumable Qwen judge, five-fold grouped OOF hybrid, and clustered evaluation.

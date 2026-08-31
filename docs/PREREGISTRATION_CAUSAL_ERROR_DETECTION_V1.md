@@ -1,6 +1,6 @@
 # Causal-error-detection-v1 preregistration
 
-Status: **qualification passed; frozen confirmatory collection authorized**
+Status: **confirmatory gate passed; monitor evaluation authorized**
 
 ## Research question
 
@@ -116,6 +116,23 @@ underspecified:
 Typed evidence models enforce the information boundary with unknown fields forbidden. In
 particular, transcript-only judge requests cannot carry condition, provenance, sibling outcomes,
 certificates, split, family, or derived labels.
+
+### Excluded-smoke validity amendment
+
+The first four-call judge smoke was attempted on 2026-08-31 using only the two permanently excluded
+qualification errors. One transcript-only score was valid, but the first context-aware request
+exhausted the 4,096-token ceiling on all three allowed attempts. The smoke stopped at its one-error
+limit, no confirmatory judge examples were scored, and no substantive smoke score or rationale was
+used to choose the response.
+
+The installed official renderer explicitly supports `qwen3_5_disable_thinking`. Before any retry,
+freeze one validity-and-cost amendment: retain the model, open-weight revision, prompt, typed views,
+seeds, sampling parameters, 4,096-token ceiling, strict JSON schema, and retry limit, but replace
+`qwen3_5` with `qwen3_5_disable_thinking`. This judge is a fixed classifier; hidden reasoning is not
+an observed monitor input or scientific target. The change addresses terminal validity and makes
+the 628-call full plan computationally defensible. Exactly one fresh four-call smoke is permitted.
+Failure closes the Qwen-judge and hybrid branches rather than triggering another renderer, prompt,
+or token-budget change.
 
 ## Frozen implementation
 
